@@ -6,7 +6,7 @@ const shotSoundPath = '/sound/shot-sound.mp3';
 
 const gameBackgroundImage = '/images/pumpkins-bg.jpg';
 const backgroundMusicPath = '/sound/background-music.mp3';
-export const aimTargetImagePath = '/images/aim-target.png';
+const aimTargetImagePath = '/images/aim-target.png';
 
 const challengeBackgroundMusicPath = '/sound/challenge-background-music.mp3';
 
@@ -31,7 +31,7 @@ function toggleImageBg(toggle: boolean) {
 
 export const getIsGameModeOn = () => isGameModeOn;
 
-export function buildAimCursor(imgPath: string, position = '30 30') {
+function buildAimCursor(imgPath: string, position = '30 30') {
   return `url('${imgPath}') ${position}, auto`;
 }
 
@@ -150,4 +150,8 @@ export function calcAccuracy(shotCounter: number, killCounter: number) {
 
   const raw = killCounter / shotCounter;
   return Math.round(raw * 100);
+}
+
+export function getAimCursorOverTarget() {
+  return buildAimCursor(aimTargetImagePath);
 }
