@@ -1,16 +1,15 @@
 const officeContainerId = '#office-container';
 const batGameId = '#bat-kill-dashboard';
 
-const aimImagePath = '/images/hack-day/aim.png';
-const aimImageShotPath = '/images/hack-day/aim-shot.png';
-const shotSoundPath = '/images/hack-day/shot-sound.mp3';
-const backgroundMusicPath = '/images/hack-day/background-music.mp3';
-const challengeBackgroundMusicPath =
-  '/images/hack-day/challenge-background-music.mp3';
+const aimImagePath = '/images/aim.png';
+const aimImageShotPath = '/images/aim-shot.png';
+const shotSoundPath = '/sound/shot-sound.mp3';
+const backgroundMusicPath = '/sound/background-music.mp3';
+const challengeBackgroundMusicPath = '/sound/challenge-background-music.mp3';
 
-const gameBackgroundImage = '/images/hack-day/pumpkins-bg.jpg';
+const gameBackgroundImage = '/images/pumpkins-bg.jpg';
 
-export const aimTargetImagePath = '/images/hack-day/aim-target.png';
+export const aimTargetImagePath = '/images/aim-target.png';
 
 const bodyEl = document.querySelector('body');
 const bgMusic = new Audio(backgroundMusicPath);
