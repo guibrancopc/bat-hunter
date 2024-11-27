@@ -1,23 +1,22 @@
-const officeContainerId = '#office-container';
 const batGameId = '#bat-kill-dashboard';
 
 const aimImagePath = '/images/aim.png';
 const aimImageShotPath = '/images/aim-shot.png';
 const shotSoundPath = '/sound/shot-sound.mp3';
-const backgroundMusicPath = '/sound/background-music.mp3';
-const challengeBackgroundMusicPath = '/sound/challenge-background-music.mp3';
 
 const gameBackgroundImage = '/images/pumpkins-bg.jpg';
-
+const backgroundMusicPath = '/sound/background-music.mp3';
 export const aimTargetImagePath = '/images/aim-target.png';
 
-const bodyEl = document.querySelector('body');
+const challengeBackgroundMusicPath = '/sound/challenge-background-music.mp3';
+
+const bodyEl = document.querySelector('body')!;
 const bgMusic = new Audio(backgroundMusicPath);
 const challengeBgMusic = new Audio(challengeBackgroundMusicPath);
 
 let isGameModeOn = false;
 
-function toggleImageBg(toggle) {
+function toggleImageBg(toggle: boolean) {
   if (toggle) {
     bodyEl.style.backgroundImage = `url(${gameBackgroundImage})`;
     bodyEl.style.backgroundSize = 'cover';
@@ -32,7 +31,7 @@ function toggleImageBg(toggle) {
 
 export const getIsGameModeOn = () => isGameModeOn;
 
-export function buildAimCursor(imgPath, position = '30 30') {
+export function buildAimCursor(imgPath: string, position = '30 30') {
   return `url('${imgPath}') ${position}, auto`;
 }
 
@@ -83,30 +82,31 @@ export function enableBatGame() {
   isGameModeOn = true;
   toggleImageBg(true);
   playBackgroundMusic();
-  const officeContainerEl = document.querySelector(officeContainerId);
-  const batGameEl = document.querySelector(batGameId);
+  const batGameEl = document.querySelector(batGameId) as HTMLElement;
 
   bodyEl.style.cursor = buildAimCursor(aimImagePath);
-  officeContainerEl.style.display = 'none';
-  batGameEl.style.display = 'block';
+
+  if (batGameEl) {
+    batGameEl.style.display = 'block';
+  }
 }
 
 export function disableBatGame() {
   isGameModeOn = false;
   toggleImageBg(false);
   pauseAllBackgroundMusic();
-  const officeContainerEl = document.querySelector(officeContainerId);
-  const batGameEl = document.querySelector(batGameId);
+  const batGameEl = document.querySelector(batGameId) as HTMLElement;
 
-  officeContainerEl.style.display = '';
-  batGameEl.style.display = 'none';
+  if (batGameEl) {
+    batGameEl.style.display = 'none';
+  }
 
   setTimeout(() => {
     bodyEl.style.cursor = '';
   }, 200);
 }
 
-export function setBodyOnClick(cb) {
+export function setBodyOnClick(cb: () => void) {
   bodyEl.onmousedown = cb;
 }
 
@@ -121,9 +121,9 @@ bodyEl.onkeydown = (e) => {
   }
 };
 
-export function isShotEnabled(e) {
+export function isShotEnabled(e: { target: EventTarget | null }) {
   const computedCursor =
-    window.getComputedStyle(e.target).cursor ||
+    window.getComputedStyle(e.target as Element).cursor ||
     window.getComputedStyle(bodyEl).cursor;
 
   return computedCursor.includes('aim');
@@ -143,7 +143,7 @@ document.onmousedown = (e) => {
   }, 75);
 };
 
-export function calcAccuracy(shotCounter, killCounter) {
+export function calcAccuracy(shotCounter: number, killCounter: number) {
   if (!shotCounter) {
     return 100;
   }
