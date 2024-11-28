@@ -5,7 +5,7 @@ import {
   getIsGameModeOn,
   setBodyOnClick,
   calcAccuracy,
-} from 'src/services/bat-service';
+} from 'src/services/game-service';
 import { createBat } from 'src/services/flying-engine-service';
 import {
   MenuSectionChallenge,
