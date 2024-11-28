@@ -6,7 +6,7 @@ import {
   setBodyOnClick,
   calcAccuracy,
 } from 'src/services/game-service';
-import { createBat } from 'src/services/flying-engine-service';
+import { createBat } from '@services/fly-engine-service';
 import {
   MenuSectionChallenge,
   CHALLENGE_STATES,
