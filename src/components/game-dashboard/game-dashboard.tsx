@@ -1,10 +1,8 @@
 import { useEffect, useReducer, useState } from 'react';
 // import { Card, Divider } from '@material-ui/core';
 import {
-  killAllBats,
   disableBatGame,
   getIsGameModeOn,
-  isShotEnabled,
   setBodyOnClick,
   calcAccuracy,
 } from 'src/services/bat-service';
@@ -17,6 +15,7 @@ import { Card, Divider } from '@components';
 import { MenuSectionScore } from '@components/menu-section-score';
 import { MenuSectionProfile } from '@components/menu-section-profile';
 import { MenuSectionActions } from '@components/menu-section-actions';
+import { isShotEnabled, killAllBats } from 'src/services/shot-service';
 
 const useStyles = {
   container: {

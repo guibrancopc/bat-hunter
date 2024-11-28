@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
-import { killAllBats } from 'src/services/bat-service';
 import { Button } from '@components/button';
 import {
   playBackgroundMusic,
   playChallengeBackgroundMusic,
 } from 'src/services/audio-service';
+import { killAllBats } from 'src/services/shot-service';
 
 const styles = {
   gameModeLabel: {
