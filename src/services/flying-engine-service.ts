@@ -51,8 +51,6 @@ export function createBat(killCallback = () => {}) {
     divStyle.opacity = opacity;
     opacity = '1';
 
-    console.log('timeout', timeout);
-
     // eslint-disable-next-line no-multi-assign, prefer-template
     divStyle.transition = divStyle.webkitTransition =
       timeout / 1000 + 's linear';
