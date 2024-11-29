@@ -1,9 +1,9 @@
 export const Divider = () => {
   return (
     <>
-      <div className="c-divider" />
+      <div className="bh-divider" />
       <style>{`
-        .c-divider {
+        .bh-divider {
           border: solid 1px black;
         }
       `}</style>

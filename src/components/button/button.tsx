@@ -12,7 +12,7 @@ export function Button({
   onClick,
 }: PropsWithChildren<Props>) {
   return (
-    <button className="c-button" disabled={disabled} onClick={onClick}>
+    <button className="bh-button" disabled={disabled} onClick={onClick}>
       {children}
     </button>
   );

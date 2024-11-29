@@ -1,3 +1,3 @@
 export function Avatar({ src }: { src: string }) {
-  return <img className="c-avatar" src={src} />;
+  return <img className="bh-avatar" src={src} />;
 }
