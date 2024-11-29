@@ -45,7 +45,7 @@ function iterate(times: number, cb: (i: number) => void) {
     .map((_, i) => cb(i));
 }
 
-export function MenuSectionChallenge({
+export function GameDashboardChallenge({
   currentGameStateFull = [CHALLENGE_STATES.FREE_PLAY, () => {}],
   onCreateBat = () => {},
   setIsScoreEnabled = () => {},

@@ -10,7 +10,7 @@ type Props = {
   onResetScore: () => void;
 };
 
-export function MenuSectionScore({
+export function GameDashboardScore({
   killCounter = 0,
   accuracy = 100,
   resetDisabled = false,

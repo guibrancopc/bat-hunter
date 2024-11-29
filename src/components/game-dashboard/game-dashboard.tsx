@@ -8,13 +8,13 @@ import {
 } from 'src/services/game-service';
 import { createBat } from '@services/fly-engine-service';
 import {
-  MenuSectionChallenge,
+  GameDashboardChallenge,
   CHALLENGE_STATES,
-} from '../menu-section-challenge/menu-section-challenge';
+} from '../game-dashboard-challenge/game-dashboard-challenge';
 import { Card, Divider } from '@components';
-import { MenuSectionScore } from '@components/menu-section-score';
-import { MenuSectionProfile } from '@components/menu-section-profile';
-import { MenuSectionActions } from '@components/menu-section-actions';
+import { GameDashboardScore } from 'src/components/game-dashboard-score';
+import { GameDashboardProfile } from 'src/components/game-dashboard-profile';
+import { GameDashboardActions } from 'src/components/game-dashboard-actions';
 import {
   isShotEnabled,
   killAllBats,
@@ -86,7 +86,7 @@ export function GameDashboard() {
 
   return (
     <Card id="bat-kill-dashboard">
-      <MenuSectionScore
+      <GameDashboardScore
         killCounter={killCounter}
         accuracy={calcAccuracy(shotCounter, killCounter)}
         resetDisabled={currentGameState !== 'FREE_PLAY'}
@@ -97,15 +97,15 @@ export function GameDashboard() {
         onResetScore={cleanScore}
       />
       <Divider />
-      <MenuSectionChallenge
+      <GameDashboardChallenge
         currentGameStateFull={currentGameStateFull}
         setIsScoreEnabled={setIsScoreEnabled}
         onResetScore={cleanScore}
         onCreateBat={createControlledBat}
       />
       <Divider />
-      <MenuSectionProfile />
-      <MenuSectionActions
+      <GameDashboardProfile />
+      <GameDashboardActions
         buttonsDisabled={currentGameState === 'CHALLENGE_IN_PROGRESS'}
         onCleanBats={killAllBats}
         onClose={disableBatGame}

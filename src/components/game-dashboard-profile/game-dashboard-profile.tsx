@@ -36,7 +36,7 @@ function getUserData() {
   };
 }
 
-export function MenuSectionProfile() {
+export function GameDashboardProfile() {
   const user = getUserData();
 
   return (

@@ -1,7 +1,7 @@
 import { Button } from '../button';
 import { ButtonGroup } from '../button-group';
 
-export function MenuSectionActions({
+export function GameDashboardActions({
   buttonsDisabled = false,
   onClose = () => {},
   onCleanBats = () => {},
