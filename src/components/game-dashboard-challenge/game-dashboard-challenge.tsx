@@ -155,7 +155,7 @@ export function GameDashboardChallenge({
             variant="outlined"
             onClick={currentGameModel.onFreePlay}
           >
-            Fre Play
+            Free Play
           </Button>
         )}
         {currentGameModel.onChallengeReady && (

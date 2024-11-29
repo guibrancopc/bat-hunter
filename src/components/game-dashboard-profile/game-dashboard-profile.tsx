@@ -44,10 +44,10 @@ export function GameDashboardProfile() {
       <div>
         <span>Player</span>
       </div>
-      <div>
+      <div className="text-center">
         <Avatar src={decodeURIComponent(user.imageUrl)} />
       </div>
-      <div>{user.name}</div>
+      <div className="text-center">{user.name}</div>
     </section>
   );
 }

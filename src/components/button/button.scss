@@ -1,0 +1,11 @@
+.bh-button {
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  background-color: #e3e3e3;
+  cursor: pointer;
+}
+
+.bh-button[disabled] {
+  cursor: not-allowed;
+}

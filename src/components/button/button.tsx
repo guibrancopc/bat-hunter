@@ -1,4 +1,5 @@
 import { PropsWithChildren } from 'react';
+import './button.scss';
 
 type Props = {
   onClick: () => void;

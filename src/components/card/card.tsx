@@ -1,4 +1,5 @@
 import { PropsWithChildren } from 'react';
+import './card.scss';
 
 export const Card = ({ children, id }: PropsWithChildren<{ id?: string }>) => {
   return (
