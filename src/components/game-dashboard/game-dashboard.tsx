@@ -1,5 +1,5 @@
-import { useEffect, useReducer, useState } from 'react';
-// import { Card, Divider } from '@material-ui/core';
+import { PropsWithChildren, useEffect, useReducer, useState } from 'react';
+import './game-dashboard.scss';
 import {
   disableBatGame,
   getIsGameModeOn,
@@ -85,31 +85,46 @@ export function GameDashboard() {
   }
 
   return (
-    <Card id="bat-kill-dashboard">
-      <GameDashboardScore
-        killCounter={killCounter}
-        accuracy={calcAccuracy(shotCounter, killCounter)}
-        resetDisabled={currentGameState !== 'FREE_PLAY'}
-        sendBatDisabled={['CHALLENGE_READY', 'CHALLENGE_FINISHED'].includes(
-          currentGameState
-        )}
-        onCreateBat={createControlledBat}
-        onResetScore={cleanScore}
-      />
-      <Divider />
-      <GameDashboardChallenge
-        currentGameStateFull={currentGameStateFull}
-        setIsScoreEnabled={setIsScoreEnabled}
-        onResetScore={cleanScore}
-        onCreateBat={createControlledBat}
-      />
-      <Divider />
-      <GameDashboardProfile />
-      <GameDashboardActions
-        buttonsDisabled={currentGameState === 'CHALLENGE_IN_PROGRESS'}
-        onCleanBats={killAllBats}
-        onClose={disableBatGame}
-      />
-    </Card>
+    <div className="game-dashboard">
+      <Card id="bat-kill-dashboard">
+        <Section>
+          <GameDashboardScore
+            killCounter={killCounter}
+            accuracy={calcAccuracy(shotCounter, killCounter)}
+            resetDisabled={currentGameState !== 'FREE_PLAY'}
+            sendBatDisabled={['CHALLENGE_READY', 'CHALLENGE_FINISHED'].includes(
+              currentGameState
+            )}
+            onCreateBat={createControlledBat}
+            onResetScore={cleanScore}
+          />
+        </Section>
+        <Divider />
+        <Section>
+          <GameDashboardChallenge
+            currentGameStateFull={currentGameStateFull}
+            setIsScoreEnabled={setIsScoreEnabled}
+            onResetScore={cleanScore}
+            onCreateBat={createControlledBat}
+          />
+        </Section>
+        <Divider />
+        <Section>
+          <GameDashboardProfile />
+        </Section>
+        <Divider />
+        <Section>
+          <GameDashboardActions
+            buttonsDisabled={currentGameState === 'CHALLENGE_IN_PROGRESS'}
+            onCleanBats={killAllBats}
+            onClose={disableBatGame}
+          />
+        </Section>
+      </Card>
+    </div>
   );
+}
+
+function Section({ children }: PropsWithChildren) {
+  return <div className="game-dashboard-section">{children}</div>;
 }
