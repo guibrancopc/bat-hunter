@@ -1,4 +1,4 @@
-import './App.css';
+import './App.scss';
 import { GameDashboard } from './components/game-dashboard';
 
 function App() {
