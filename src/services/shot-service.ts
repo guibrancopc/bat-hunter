@@ -21,7 +21,9 @@ function buildAimCursor(imgPath: string, position = '30 30') {
   return `url('${imgPath}') ${position}, auto`;
 }
 
-export function isShotEnabled(e: { target: EventTarget | null }) {
+export type ShotEventType = { target: EventTarget | null };
+
+export function isShotEnabled(e: ShotEventType) {
   const computedCursor =
     window.getComputedStyle(e.target as Element).cursor ||
     window.getComputedStyle(bodyEl).cursor;

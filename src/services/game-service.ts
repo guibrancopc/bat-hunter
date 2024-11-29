@@ -1,4 +1,4 @@
-import { getAimCursorRegular } from './shot-service';
+import { getAimCursorRegular, ShotEventType } from './shot-service';
 import { pauseAllBackgroundMusic, playBackgroundMusic } from './audio-service';
 
 const batGameId = '#bat-kill-dashboard';
@@ -51,7 +51,7 @@ export function disableBatGame() {
   }, 200);
 }
 
-export function setBodyOnClick(cb: () => void) {
+export function setBodyOnClick(cb: (e: ShotEventType) => void) {
   bodyEl.onmousedown = cb;
 }
 

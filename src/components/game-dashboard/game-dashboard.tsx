@@ -15,7 +15,11 @@ import { Card, Divider } from '@components';
 import { MenuSectionScore } from '@components/menu-section-score';
 import { MenuSectionProfile } from '@components/menu-section-profile';
 import { MenuSectionActions } from '@components/menu-section-actions';
-import { isShotEnabled, killAllBats } from 'src/services/shot-service';
+import {
+  isShotEnabled,
+  killAllBats,
+  ShotEventType,
+} from 'src/services/shot-service';
 
 const useStyles = {
   container: {
@@ -63,7 +67,7 @@ export function GameDashboard() {
     createBat(() => isScoreEnabled && dispatchKillCounter('add'));
 
   useEffect(() => {
-    setBodyOnClick((e: any) => {
+    setBodyOnClick((e: ShotEventType) => {
       if (isScoreEnabled && getIsGameModeOn() && isShotEnabled(e)) {
         dispatchShotCounter('add');
       }
