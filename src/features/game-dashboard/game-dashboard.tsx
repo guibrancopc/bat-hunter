@@ -10,16 +10,16 @@ import { createBat } from '@services/fly-engine-service';
 import {
   GameDashboardChallenge,
   CHALLENGE_STATES,
-} from '../game-dashboard-challenge/game-dashboard-challenge';
+} from './_game-dashboard-challenge';
 import { Card, Divider } from '@components';
-import { GameDashboardScore } from 'src/components/game-dashboard-score';
-import { GameDashboardProfile } from 'src/components/game-dashboard-profile';
-import { GameDashboardActions } from 'src/components/game-dashboard-actions';
+import { GameDashboardScore } from 'src/features/game-dashboard/_game-dashboard-score';
+import { GameDashboardProfile } from 'src/features/game-dashboard/_game-dashboard-profile';
+import { GameDashboardActions } from 'src/features/game-dashboard/_game-dashboard-actions';
 import {
   isShotEnabled,
   killAllBats,
   ShotEventType,
-} from 'src/services/shot-service';
+} from '@services/shot-service';
 
 const useStyles = {
   container: {

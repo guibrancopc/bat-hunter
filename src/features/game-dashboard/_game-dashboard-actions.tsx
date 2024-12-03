@@ -1,5 +1,5 @@
-import { Button } from '../button';
-import { ButtonGroup } from '../button-group';
+import { Button } from '@components/button';
+import { ButtonGroup } from '@components/button-group';
 
 export function GameDashboardActions({
   buttonsDisabled = false,

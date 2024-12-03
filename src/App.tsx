@@ -1,4 +1,4 @@
-import { GameDashboard } from './components/game-dashboard';
+import { GameDashboard } from './features/game-dashboard';
 
 function App() {
   return <GameDashboard />;
