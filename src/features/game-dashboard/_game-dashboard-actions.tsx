@@ -8,12 +8,12 @@ export function GameDashboardActions({
 }) {
   return (
     <section>
-      <ButtonGroup>
-        <Button kind="primary" disabled={buttonsDisabled} onClick={onClose}>
+      <ButtonGroup flex>
+        <Button kind="tertiary" disabled={buttonsDisabled} onClick={onClose}>
           Close
         </Button>
         <Button
-          kind="secondary"
+          kind="tertiary"
           disabled={buttonsDisabled}
           onClick={onCleanBats}
         >

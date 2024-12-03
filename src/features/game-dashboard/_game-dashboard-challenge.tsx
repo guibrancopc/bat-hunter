@@ -133,13 +133,11 @@ export function GameDashboardChallenge({
     <section>
       <div style={styles.label}>Game Mode</div>
       <div style={styles.gameModeLabel}>
-        {handleGameLabel(countdownTime, currentGameModel.label)}
+        {handleGameLabel(countdownTime, currentGameModel.label || '')}
       </div>
       <div style={styles.buttonGroup}>
         {currentGameModel.onCancel && (
           <Button
-            color="secondary"
-            variant="outlined"
             onClick={() => {
               currentGameModel.onCancel();
               clearInterval(intervalId);
@@ -150,29 +148,13 @@ export function GameDashboardChallenge({
           </Button>
         )}
         {currentGameModel.onFreePlay && (
-          <Button
-            color="primary"
-            variant="outlined"
-            onClick={currentGameModel.onFreePlay}
-          >
-            Free Play
-          </Button>
+          <Button onClick={currentGameModel.onFreePlay}>Free Play</Button>
         )}
         {currentGameModel.onChallengeReady && (
-          <Button
-            color="primary"
-            variant="outlined"
-            onClick={currentGameModel.onChallengeReady}
-          >
-            Challenge
-          </Button>
+          <Button onClick={currentGameModel.onChallengeReady}>Challenge</Button>
         )}
         {currentGameModel.onChallengeStart && (
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={currentGameModel.onChallengeStart}
-          >
+          <Button kind="primary" onClick={currentGameModel.onChallengeStart}>
             Start
           </Button>
         )}
