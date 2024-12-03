@@ -1,11 +1,30 @@
 .bh-button {
-  border: none;
   padding: 8px 16px;
   border-radius: 4px;
-  background-color: #e3e3e3;
+  height: max-content;
   cursor: pointer;
-}
 
-.bh-button[disabled] {
-  cursor: not-allowed;
+  &.bh-button--primary {
+    border: none;
+    background-color: #e3e3e3;
+    color: #333;
+  }
+
+  &.bh-button--secondary {
+    border: solid 1px #e3e3e3;
+    color: #e3e3e3;
+    background-color: transparent;
+  }
+
+  &.bh-button--tertiary {
+    border: none;
+    background-color: transparent;
+    color: #e3e3e3;
+    font-weight: 800;
+  }
+
+  &[disabled] {
+    cursor: not-allowed;
+    opacity: 0.4;
+  }
 }
