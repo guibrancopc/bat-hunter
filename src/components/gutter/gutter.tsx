@@ -1,6 +1,8 @@
 import clsx from 'clsx';
 import { PropsWithChildren } from 'react';
 
+type MarginPaddingKeyType = 'margin' | 'padding';
+
 type FragmentedValuesType = {
   horizontal?: number;
   vertical?: number;
@@ -40,37 +42,40 @@ export function Gutter({
   );
 }
 
-type MarginPaddingKeyType = 'margin' | 'padding';
+const SIZE_MULTIPLE = 8;
 
 function calcMarginPadding(
   key: MarginPaddingKeyType,
   value: MarginPaddingValueType
 ) {
-  const MULTIPLE = 8;
-
   if (isValidNumber(value)) {
     return {
       // @ts-ignore: already checked
-      [key]: toNumber(value) * MULTIPLE,
+      [key]: toNumber(value) * SIZE_MULTIPLE,
     };
   }
 
   const { vertical, horizontal } = value as FragmentedValuesType;
   if (isValidNumber(vertical) || isValidNumber(horizontal)) {
-    return {
-      [`${key}Left`]: toNumber(horizontal) * MULTIPLE,
-      [`${key}Right`]: toNumber(horizontal) * MULTIPLE,
-      [`${key}Top`]: toNumber(vertical) * MULTIPLE,
-      [`${key}Bottom`]: toNumber(vertical) * MULTIPLE,
-    };
+    return calcSides(key, vertical, horizontal, vertical, horizontal);
   }
 
   const { top, right, bottom, left } = value as FragmentedValuesType;
+  return calcSides(key, top, right, bottom, left);
+}
+
+function calcSides(
+  key: MarginPaddingKeyType,
+  top?: number,
+  right?: number,
+  bottom?: number,
+  left?: number
+) {
   return {
-    [`${key}Left`]: toNumber(left) * MULTIPLE,
-    [`${key}Right`]: toNumber(right) * MULTIPLE,
-    [`${key}Top`]: toNumber(top) * MULTIPLE,
-    [`${key}Bottom`]: toNumber(bottom) * MULTIPLE,
+    [`${key}Left`]: toNumber(left) * SIZE_MULTIPLE,
+    [`${key}Right`]: toNumber(right) * SIZE_MULTIPLE,
+    [`${key}Top`]: toNumber(top) * SIZE_MULTIPLE,
+    [`${key}Bottom`]: toNumber(bottom) * SIZE_MULTIPLE,
   };
 }
 
