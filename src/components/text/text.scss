@@ -1,0 +1,29 @@
+.bh-text {
+  margin: 0;
+
+  &.bh-text__size--sm {
+    font-size: 12px;
+  }
+
+  &.bh-text__size--md {
+    font-size: 24px;
+  }
+
+  &.bh-text__size--lg {
+    font-size: 32px;
+  }
+
+  &.bh-text__size--xl {
+    font-size: 64px;
+  }
+
+  &.bh-text__weight--light {
+    font-weight: 300;
+  }
+  &.bh-text__weight--medium {
+    font-weight: 500;
+  }
+  &.bh-text__weight--bold {
+    font-weight: 800;
+  }
+}
