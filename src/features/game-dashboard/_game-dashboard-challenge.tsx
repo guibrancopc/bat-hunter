@@ -121,7 +121,7 @@ export function GameDashboardChallenge({
     <section>
       <Title>Game Mode</Title>
       <Gutter className="text-center" margin={6}>
-        <Text>
+        <Text size="lg">
           {handleGameLabel(countdownTime, currentGameModel.label || '')}
         </Text>
       </Gutter>
