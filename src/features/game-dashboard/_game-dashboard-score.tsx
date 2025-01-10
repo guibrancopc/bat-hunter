@@ -1,5 +1,4 @@
-import { Button } from '@components/button';
-import { ButtonGroup } from '@components/button-group';
+import { Button, ButtonGroup, Gutter, Text, Title } from '@components';
 
 type Props = {
   killCounter: number;
@@ -22,8 +21,13 @@ export function GameDashboardScore({
   return (
     <section className="bat-game-score-section">
       <div>
-        <div>Your Score</div>
-        <div>{killCounter}</div>
+        <Title>Your Score</Title>
+        <div className="text-center">
+          <Gutter margin={4}>
+            <Text size="xl">{killCounter}</Text>
+          </Gutter>
+        </div>
+        <div></div>
       </div>
       <ButtonGroup flex>
         <div>

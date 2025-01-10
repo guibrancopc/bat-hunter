@@ -1,22 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Button } from '@components/button';
 import {
   playBackgroundMusic,
   playChallengeBackgroundMusic,
 } from 'src/services/audio-service';
 import { killAllBats } from 'src/services/shot-service';
-
-const styles = {
-  gameModeLabel: {
-    fontSize: '32px',
-    textAlign: 'center',
-    padding: '40px 0',
-  },
-  buttonGroup: {
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-};
+import { Button, ButtonGroup, Gutter, Text, Title } from '@components';
 
 export const CHALLENGE_STATES = {
   FREE_PLAY: 'FREE_PLAY',
@@ -131,11 +119,13 @@ export function GameDashboardChallenge({
 
   return (
     <section>
-      <div style={styles.label}>Game Mode</div>
-      <div style={styles.gameModeLabel}>
-        {handleGameLabel(countdownTime, currentGameModel.label || '')}
-      </div>
-      <div style={styles.buttonGroup}>
+      <Title>Game Mode</Title>
+      <Gutter className="text-center" margin={6}>
+        <Text>
+          {handleGameLabel(countdownTime, currentGameModel.label || '')}
+        </Text>
+      </Gutter>
+      <ButtonGroup flex>
         {currentGameModel.onCancel && (
           <Button
             onClick={() => {
@@ -158,7 +148,7 @@ export function GameDashboardChallenge({
             Start
           </Button>
         )}
-      </div>
+      </ButtonGroup>
     </section>
   );
 }

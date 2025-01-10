@@ -1,4 +1,5 @@
 import { Avatar } from '@components/avatar';
+import { Title } from 'src/components';
 
 function getUserData() {
   return {
@@ -13,9 +14,7 @@ export function GameDashboardProfile() {
 
   return (
     <section>
-      <div>
-        <span>Player</span>
-      </div>
+      <Title>Player</Title>
       <div className="text-center">
         <Avatar src={decodeURIComponent(user.imageUrl)} />
       </div>
