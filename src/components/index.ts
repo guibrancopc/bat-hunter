@@ -6,3 +6,4 @@ export * from './divider';
 export * from './gutter';
 export * from './title';
 export * from './text';
+export * from './modal';
