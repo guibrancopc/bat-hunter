@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Modal, Text, Title } from 'src/components';
+import { Button, Modal, Title } from 'src/components';
 
 export function WelcomeModal({ onClick }: { onClick: () => void }) {
   return (

@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { GameDashboard } from './features/game-dashboard';
 import { WelcomeModal } from './features/welcome-modal';
-import { playBackgroundMusic } from './services/audio-service';
+import { MusicToggle } from './features/music-toogle';
+import { enableBatGame } from './services/game-service';
 
 function App() {
   const [welcomeModalOpen, setWelcomeModalOpen] = useState(true);
 
   function initGame() {
-    playBackgroundMusic();
+    enableBatGame();
     setWelcomeModalOpen(false);
   }
 
@@ -18,6 +19,7 @@ function App() {
       ) : (
         <GameDashboard />
       )}
+      <MusicToggle />
     </>
   );
 }
