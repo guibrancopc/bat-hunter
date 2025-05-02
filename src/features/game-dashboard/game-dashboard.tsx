@@ -21,37 +21,6 @@ import {
   ShotEventType,
 } from '@services/shot-service';
 
-const useStyles = {
-  container: {
-    display: 'none',
-    userSelect: 'none',
-    position: 'fixed',
-    width: '300px',
-    zIndex: '234',
-    top: '90px',
-    left: '30px',
-    padding: '16px',
-    '& section:not(:last-child):not(:first-child)': {
-      padding: '24px 0',
-    },
-    '& section:first-child': {
-      paddingBottom: '24px',
-    },
-  },
-  label: {
-    marginBottom: '12px',
-    display: 'inline-block',
-  },
-  buttonGroup: {
-    display: 'flex',
-    justifyContent: 'space-between',
-  },
-  hourglass: {
-    textAlign: 'center',
-    fontSize: '44px',
-  },
-};
-
 export function counterReducer(state: number, action: string) {
   return action === 'add' ? state + 1 : 0;
 }
