@@ -3,7 +3,7 @@ import './button.scss';
 import clsx from 'clsx';
 
 type Props = {
-  onClick: () => void;
+  onClick?: () => void;
   kind?: 'primary' | 'secondary' | 'tertiary';
   disabled?: boolean;
 };

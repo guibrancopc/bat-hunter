@@ -1,7 +1,6 @@
 import { PropsWithChildren, useEffect, useReducer, useState } from 'react';
 import './game-dashboard.scss';
 import {
-  disableBatGame,
   getIsGameModeOn,
   setBodyOnClick,
   calcAccuracy,
@@ -86,7 +85,6 @@ export function GameDashboard() {
           <GameDashboardActions
             buttonsDisabled={currentGameState === 'CHALLENGE_IN_PROGRESS'}
             onCleanBats={killAllBats}
-            onClose={disableBatGame}
           />
         </Section>
       </Card>

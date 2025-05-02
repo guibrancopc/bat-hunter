@@ -1,17 +1,19 @@
 import { Button } from '@components/button';
 import { ButtonGroup } from '@components/button-group';
+import { NavLink } from 'react-router';
 
 export function GameDashboardActions({
   buttonsDisabled = false,
-  onClose = () => {},
   onCleanBats = () => {},
 }) {
   return (
     <section>
       <ButtonGroup flex>
-        <Button kind="tertiary" disabled={buttonsDisabled} onClick={onClose}>
-          Close
-        </Button>
+        <NavLink to={'/'}>
+          <Button kind="tertiary" disabled={buttonsDisabled}>
+            Close
+          </Button>
+        </NavLink>
         <Button
           kind="tertiary"
           disabled={buttonsDisabled}
