@@ -2,30 +2,15 @@ import { getAimCursorRegular, ShotEventType } from './shot-service';
 import { pauseAllBackgroundMusic, playBackgroundMusic } from './audio-service';
 
 const batGameId = '#bat-kill-dashboard';
-const gameBackgroundImage = '/images/pumpkins-bg.jpg';
 
 const bodyEl = document.querySelector('body')!;
 
 let isGameModeOn = false;
 
-function toggleImageBg(toggle: boolean) {
-  if (toggle) {
-    bodyEl.style.backgroundImage = `url(${gameBackgroundImage})`;
-    bodyEl.style.backgroundSize = 'cover';
-    bodyEl.style.backgroundAttachment = 'fixed';
-    return;
-  }
-
-  bodyEl.style.backgroundImage = '';
-  bodyEl.style.backgroundSize = '';
-  bodyEl.style.backgroundAttachment = '';
-}
-
 export const getIsGameModeOn = () => isGameModeOn;
 
 export function enableBatGame() {
   isGameModeOn = true;
-  toggleImageBg(true);
   playBackgroundMusic();
   const batGameEl = document.querySelector(batGameId) as HTMLElement;
 
@@ -38,7 +23,6 @@ export function enableBatGame() {
 
 export function disableBatGame() {
   isGameModeOn = false;
-  toggleImageBg(false);
   pauseAllBackgroundMusic();
   const batGameEl = document.querySelector(batGameId) as HTMLElement;
 
