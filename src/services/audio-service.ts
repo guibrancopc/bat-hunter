@@ -16,21 +16,16 @@ function setInitialAudioDetails(audioInstance: HTMLAudioElement) {
 
   audioInstance.loop = true;
   audioInstance.currentTime = 0;
-  audioInstance.volume = isMuted ? 0 : backgroundMusicVolume;
+  audioInstance.volume = backgroundMusicVolume;
+  audioInstance.muted = isMuted;
 }
 
 export function isMutedStateLocalStorage() {
   return !!getLocalStorageValue('bh-background-music-muted');
 }
 
-export function toggleMusicService() {
-  if (backgroundAudioSingleton.volume === 0) {
-    backgroundAudioSingleton.volume = backgroundMusicVolume;
-    return true;
-  }
-
-  backgroundAudioSingleton.volume = 0;
-  return false;
+export function setBackgroundMusicMute(value: boolean) {
+  backgroundAudioSingleton.muted = value;
 }
 
 export function playBackgroundMusic() {

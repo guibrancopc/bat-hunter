@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from 'src/components';
 import {
   isMutedStateLocalStorage,
-  toggleMusicService,
+  setBackgroundMusicMute,
 } from 'src/services/audio-service';
 import './music-toggle.scss';
 import { setLocalStorageValue } from 'src/services/local-storage-service';
@@ -13,10 +13,10 @@ export function MusicToggle() {
   const [isMuted, setIsMuted] = useState(isMutedLocalStorage);
 
   function onClick() {
-    const isEnabled = toggleMusicService();
+    setBackgroundMusicMute(!isMuted);
 
-    setIsMuted(!isEnabled);
-    setLocalStorageValue('bh-background-music-muted', !isEnabled);
+    setIsMuted(!isMuted);
+    setLocalStorageValue('bh-background-music-muted', !isMuted);
   }
 
   return (
