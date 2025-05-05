@@ -1,7 +1,13 @@
+import { useEffect } from 'react';
 import { NavLink } from 'react-router';
 import { Button } from 'src/components';
+import { disableBatGame } from 'src/services/game-service';
 
 export function HomePage() {
+  useEffect(() => {
+    disableBatGame();
+  }, []);
+
   return (
     <div className="text-center">
       HOME PAGEEE

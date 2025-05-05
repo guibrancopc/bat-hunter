@@ -45,7 +45,3 @@ document.onmousedown = (e) => {
     bodyEl.style.cursor = getAimCursorRegular();
   }, 75);
 };
-
-export function killAllBats() {
-  document.querySelectorAll('.flying-bat').forEach((bat) => bat.remove());
-}

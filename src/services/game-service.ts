@@ -47,3 +47,7 @@ export function calcAccuracy(shotCounter: number, killCounter: number) {
   const raw = killCounter / shotCounter;
   return Math.round(raw * 100);
 }
+
+export function killAllBats() {
+  document.querySelectorAll('.flying-bat').forEach((bat) => bat.remove());
+}

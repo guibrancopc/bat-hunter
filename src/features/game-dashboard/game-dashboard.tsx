@@ -4,6 +4,7 @@ import {
   getIsGameModeOn,
   setBodyOnClick,
   calcAccuracy,
+  killAllBats,
 } from 'src/services/game-service';
 import { createBat } from '@services/fly-engine-service';
 import {
@@ -14,11 +15,7 @@ import { Card, Divider } from '@components';
 import { GameDashboardScore } from 'src/features/game-dashboard/_game-dashboard-score';
 import { GameDashboardProfile } from 'src/features/game-dashboard/_game-dashboard-profile';
 import { GameDashboardActions } from 'src/features/game-dashboard/_game-dashboard-actions';
-import {
-  isShotEnabled,
-  killAllBats,
-  ShotEventType,
-} from '@services/shot-service';
+import { isShotEnabled, ShotEventType } from '@services/shot-service';
 
 export function counterReducer(state: number, action: string) {
   return action === 'add' ? state + 1 : 0;

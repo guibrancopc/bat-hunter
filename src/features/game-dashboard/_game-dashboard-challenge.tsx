@@ -3,7 +3,7 @@ import {
   playBackgroundMusic,
   playChallengeBackgroundMusic,
 } from 'src/services/audio-service';
-import { killAllBats } from 'src/services/shot-service';
+import { killAllBats } from 'src/services/game-service';
 import { Button, ButtonGroup, Gutter, Text, Title } from '@components';
 
 export const CHALLENGE_STATES = {
