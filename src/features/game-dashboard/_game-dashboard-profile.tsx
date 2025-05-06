@@ -4,7 +4,7 @@ import { Title } from 'src/components';
 function getUserData() {
   return {
     id: '123',
-    name: 'Gui',
+    name: 'You',
     imageUrl: 'images/user.jpg',
   };
 }
