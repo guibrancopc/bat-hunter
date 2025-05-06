@@ -16,7 +16,7 @@ export function GameDashboardProfile() {
     <section>
       <Title>Player</Title>
       <div className="text-center">
-        <Avatar src={decodeURIComponent(user.imageUrl)} />
+        <Avatar src={'images/user.jpg'} />
       </div>
       <div className="text-center">{user.name}</div>
     </section>

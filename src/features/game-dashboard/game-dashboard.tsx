@@ -51,7 +51,7 @@ export function GameDashboard() {
 
   return (
     <div className="game-dashboard">
-      <Card id="bat-kill-dashboard">
+      <Card>
         <Section>
           <GameDashboardScore
             killCounter={killCounter}
