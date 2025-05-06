@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { NavLink } from 'react-router';
 import { Button } from 'src/components';
 import { disableBatGame } from 'src/services/game-service';
+import './home-page.scss';
 
 export function HomePage() {
   useEffect(() => {
@@ -9,15 +10,14 @@ export function HomePage() {
   }, []);
 
   return (
-    <div className="text-center">
-      HOME PAGEEE
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
-      <NavLink to="/single-player">
-        <Button kind="primary">Play Single</Button>
-      </NavLink>
+    <div className="home-page">
+      <div className="box">
+        <div className="text">Too many bats, time to drop some.</div>
+        <br />
+        <NavLink to="/single-player">
+          <Button kind="primary">Play Single</Button>
+        </NavLink>
+      </div>
     </div>
   );
 }

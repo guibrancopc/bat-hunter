@@ -5,7 +5,7 @@ function getUserData() {
   return {
     id: '123',
     name: 'Gui',
-    imageUrl: 'https://avatars.githubusercontent.com/u/11657454?v=4',
+    imageUrl: 'images/user.jpg',
   };
 }
 
@@ -16,7 +16,7 @@ export function GameDashboardProfile() {
     <section>
       <Title>Player</Title>
       <div className="text-center">
-        <Avatar src={'images/user.jpg'} />
+        <Avatar src={user.imageUrl} />
       </div>
       <div className="text-center">{user.name}</div>
     </section>
