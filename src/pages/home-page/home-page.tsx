@@ -11,6 +11,7 @@ export function HomePage() {
 
   return (
     <div className="home-page">
+      <img className="home-page-bg" src="/images/sniper-aim-bg.jpg" />
       <div className="box">
         <div className="text">Too many bats, time to drop some.</div>
         <br />

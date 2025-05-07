@@ -1,17 +1,20 @@
 .home-page {
-  background-image: url(/images/sniper-aim-bg.jpg);
-  background-repeat: no-repeat;
-  background-position-x: center;
-  background-size: contain;
   background-color: #00070a;
   height: 100vh;
   display: flex;
   justify-content: center;
 
+  & .home-page-bg {
+    position: fixed;
+    height: 100vh;
+    z-index: 1;
+  }
+
   & .box {
     padding-top: 100px;
     width: 500px;
     text-align: center;
+    z-index: 2;
   }
 
   & .text {
