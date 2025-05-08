@@ -20,7 +20,7 @@ body {
   height: 100vh;
 }
 
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
   :root {
     color: #213547;
     background-color: #ffffff;
@@ -31,6 +31,12 @@ body {
   button {
     background-color: #f9f9f9;
   }
+}
+
+// VARIABLES
+
+:root {
+  --full-height: calc(100vh - 50px);
 }
 
 // IMMUTABLES

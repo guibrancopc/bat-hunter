@@ -2,5 +2,5 @@
   background-image: url(/images/pumpkins-bg.jpg);
   background-size: cover;
   background-attachment: fixed;
-  height: 100vh;
+  height: var(--full-height);
 }

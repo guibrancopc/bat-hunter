@@ -1,24 +1,30 @@
 .home-page {
   background-color: #00070a;
-  height: 100vh;
+  height: var(--full-height);
   display: flex;
   justify-content: center;
 
   & .home-page-bg {
+    opacity: 0;
     position: fixed;
-    height: 100vh;
+    height: var(--full-height);
     z-index: 1;
+    transition: opacity ease-in-out 3s;
+  }
+
+  & .home-page-bg.visible {
+    opacity: 1;
   }
 
   & .box {
     padding-top: 100px;
-    width: 500px;
+    width: 450px;
     text-align: center;
     z-index: 2;
   }
 
   & .text {
-    font-size: 56px;
+    font-size: 48px;
     color: white;
     text-shadow: 3px 3px 21px black;
   }
