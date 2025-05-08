@@ -18,6 +18,8 @@ export function GameDashboardScore({
   onCreateBat = () => {},
   onResetScore = () => {},
 }: Props) {
+  const finalScore = killCounter * accuracy;
+
   return (
     <section className="bat-game-score-section">
       <div>
@@ -27,7 +29,8 @@ export function GameDashboardScore({
             <Text size="xl">{killCounter}</Text>
           </Gutter>
         </div>
-        <div></div>
+        <div className="text-center">Final Score: {finalScore}</div>
+        <br />
       </div>
       <ButtonGroup flex>
         <div>

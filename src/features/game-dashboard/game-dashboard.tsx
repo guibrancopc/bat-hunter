@@ -13,7 +13,6 @@ import {
 } from './_game-dashboard-challenge';
 import { Card, Divider } from '@components';
 import { GameDashboardScore } from 'src/features/game-dashboard/_game-dashboard-score';
-import { GameDashboardProfile } from 'src/features/game-dashboard/_game-dashboard-profile';
 import { GameDashboardActions } from 'src/features/game-dashboard/_game-dashboard-actions';
 import { isShotEnabled, ShotEventType } from '@services/shot-service';
 
