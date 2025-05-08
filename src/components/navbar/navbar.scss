@@ -1,0 +1,26 @@
+.bh-navbar {
+  height: 50px;
+  max-height: 50px;
+  min-height: 50px;
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  background-color: #353535;
+  width: 100%;
+
+  & .bh-navbar-logo {
+    margin: 8px 12px;
+    height: 36px;
+  }
+
+  & .bh-navbar__right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-right: 16px;
+  }
+
+  & .bh-avatar {
+    width: 32px;
+  }
+}

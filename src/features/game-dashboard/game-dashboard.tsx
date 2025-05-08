@@ -73,10 +73,7 @@ export function GameDashboard() {
             onCreateBat={createControlledBat}
           />
         </Section>
-        <Divider />
-        <Section>
-          <GameDashboardProfile />
-        </Section>
+
         <Divider />
         <Section>
           <GameDashboardActions
