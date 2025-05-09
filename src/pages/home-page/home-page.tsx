@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { NavLink } from 'react-router';
 import { Button } from 'src/components';
-import { disableBatGame } from 'src/services/game-service';
+import { disableBatGame, killAllBats } from 'src/services/game-service';
 import './home-page.scss';
 import clsx from 'clsx';
 
@@ -10,6 +10,7 @@ export function HomePage() {
 
   useEffect(() => {
     disableBatGame();
+    killAllBats();
     setTimeout(() => setShowBg(true), 100);
   }, []);
 
