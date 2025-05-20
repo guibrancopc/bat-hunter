@@ -1,0 +1,12 @@
+.login-page {
+  display: flex;
+  justify-content: center;
+  height: var(--full-height);
+
+  & .box {
+    padding-top: 300px;
+    width: 300px;
+    text-align: center;
+    z-index: 2;
+  }
+}

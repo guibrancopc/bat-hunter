@@ -13,9 +13,9 @@ export function Navbar() {
       <div className="bh-navbar__right">
         <div className="bh-navbar__greetings">Hi guest!</div>{' '}
         <Avatar src="/images/user-sm.jpg" />
-        <a>
+        <NavLink to="/login">
           <div>Sign in</div>
-        </a>
+        </NavLink>
       </div>
     </div>
   );
