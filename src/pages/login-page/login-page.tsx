@@ -3,6 +3,7 @@ import './login-page.scss';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import { verboseJwt } from 'src/services/jwt-service';
 import { useNavigate } from 'react-router';
+import { setLocalStorageValue } from 'src/services/local-storage-service';
 
 export function LoginPage() {
   useEffect(() => {
@@ -12,9 +13,15 @@ export function LoginPage() {
   const navigate = useNavigate();
 
   function onSuccess(r: CredentialResponse) {
+    const userSession = verboseJwt(r.credential || '');
+
     console.log('response: ', r);
-    console.log('user: ', verboseJwt(r.credential || ''));
-    navigate('/');
+    console.log('user: ', userSession);
+
+    if (userSession) {
+      setLocalStorageValue('bh-user-session', userSession);
+      navigate('/');
+    }
   }
 
   return (

@@ -1,4 +1,7 @@
-const VALID_LOCAL_STORAGE_KEYS = ['bh-background-music-muted'] as const;
+const VALID_LOCAL_STORAGE_KEYS = [
+  'bh-background-music-muted',
+  'bh-user-session',
+] as const;
 
 type ValidLocalStorageKeysType = (typeof VALID_LOCAL_STORAGE_KEYS)[number];
 
