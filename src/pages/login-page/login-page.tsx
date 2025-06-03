@@ -1,25 +1,30 @@
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import './login-page.scss';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
-import { verboseJwt } from 'src/services/jwt-service';
+import { verboseJwt } from 'src/services/authentication-service';
 import { useNavigate } from 'react-router';
 import { setLocalStorageValue } from 'src/services/local-storage-service';
+import { disableBatGame, killAllBats } from 'src/services/game-service';
+import { AuthContext } from 'src/features/authentication';
 
 export function LoginPage() {
   useEffect(() => {
-    // disableBatGame();
+    disableBatGame();
+    killAllBats();
   }, []);
 
+  const { setCurrentUser } = useContext(AuthContext);
   const navigate = useNavigate();
 
   function onSuccess(r: CredentialResponse) {
-    const userSession = verboseJwt(r.credential || '');
+    const userSession = r.credential && verboseJwt(r.credential);
 
     console.log('response: ', r);
     console.log('user: ', userSession);
 
     if (userSession) {
-      setLocalStorageValue('bh-user-session', userSession);
+      setCurrentUser(userSession);
+      setLocalStorageValue('bh-user-session', r.credential);
       navigate('/');
     }
   }
