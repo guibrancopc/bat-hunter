@@ -5,6 +5,7 @@ import {
 } from 'src/services/audio-service';
 import { killAllBats } from 'src/services/game-service';
 import { Button, ButtonGroup, Gutter, Text, Title } from '@components';
+import { iterate } from 'src/services/iteration-service';
 
 export const CHALLENGE_STATES = {
   FREE_PLAY: 'FREE_PLAY',
@@ -25,12 +26,6 @@ function handleGameLabel(countdownTime: number, label: string) {
   }
 
   return seconds;
-}
-
-function iterate(times: number, cb: (i: number) => void) {
-  return Array(times)
-    .fill(undefined)
-    .map((_, i) => cb(i));
 }
 
 export function GameDashboardChallenge({

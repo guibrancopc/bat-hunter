@@ -41,7 +41,7 @@ export function GameDashboardScore({
           Reset
         </Button>
         <Button kind="primary" disabled={sendBatDisabled} onClick={onCreateBat}>
-          Send Bat
+          Send Bats
         </Button>
       </ButtonGroup>
     </section>

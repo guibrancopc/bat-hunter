@@ -15,6 +15,7 @@ import { Card, Divider } from '@components';
 import { GameDashboardScore } from 'src/features/game-dashboard/_game-dashboard-score';
 import { GameDashboardActions } from 'src/features/game-dashboard/_game-dashboard-actions';
 import { isShotEnabled, ShotEventType } from '@services/shot-service';
+import { iterate } from 'src/services/iteration-service';
 
 export function counterReducer(state: number, action: string) {
   return action === 'add' ? state + 1 : 0;
@@ -59,7 +60,7 @@ export function GameDashboard() {
             sendBatDisabled={['CHALLENGE_READY', 'CHALLENGE_FINISHED'].includes(
               currentGameState
             )}
-            onCreateBat={createControlledBat}
+            onCreateBat={() => iterate(10, createControlledBat)}
             onResetScore={cleanScore}
           />
         </Section>
