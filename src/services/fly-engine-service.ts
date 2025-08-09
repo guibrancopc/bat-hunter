@@ -1,3 +1,4 @@
+import { playBatSound } from './audio-service';
 import { getAimCursorOverTarget } from './shot-service';
 
 const FLYING_BAT_IMG =
@@ -21,6 +22,7 @@ export function createBat(killCallback = () => {}) {
     const targetEl = e.target as HTMLElement;
     targetEl?.remove();
     killCallback();
+    playBatSound();
   };
 
   div.style.cursor = getAimCursorOverTarget();
