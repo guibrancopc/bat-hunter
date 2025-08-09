@@ -26,6 +26,10 @@ export function HomePage() {
         <NavLink to="/single-player">
           <Button kind="primary">Play Single</Button>
         </NavLink>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <NavLink to="/multi-player">
+          <Button kind="primary">Play Multi</Button>
+        </NavLink>
       </div>
     </div>
   );

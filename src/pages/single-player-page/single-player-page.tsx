@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { GameDashboard } from 'src/features/game-dashboard';
 import { MusicToggle } from 'src/features/music-toogle';
 import { enableBatGame } from 'src/services/game-service';
-import './single-player.scss';
+import './single-player-page.scss';
 
 export function SinglePlayerPage() {
   useEffect(() => {
