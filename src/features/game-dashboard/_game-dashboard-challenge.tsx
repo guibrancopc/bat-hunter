@@ -43,7 +43,7 @@ export function GameDashboardChallenge({
 
   const [currentGameState, setCurrentGameState] = currentGameStateFull;
   const [countdownTime, setCountdownTime] = useState(0);
-  const [intervalId, setIntervalId] = useState<number>();
+  const [intervalId, setIntervalId] = useState<any>();
 
   const GAME_MODE = useMemo(
     () => ({

@@ -4,6 +4,7 @@ import { Button } from 'src/components';
 import { disableBatGame, killAllBats } from 'src/services/game-service';
 import './home-page.scss';
 import clsx from 'clsx';
+import { GoogleSignIn } from 'src/services/firebase-service';
 
 export function HomePage() {
   const [showBg, setShowBg] = useState(false);
@@ -26,6 +27,9 @@ export function HomePage() {
         <NavLink to="/single-player">
           <Button kind="primary">Play Single</Button>
         </NavLink>
+        <Button kind="primary" onClick={GoogleSignIn}>
+          Sign In Test
+        </Button>
       </div>
     </div>
   );
