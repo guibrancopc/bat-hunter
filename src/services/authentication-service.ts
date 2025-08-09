@@ -23,8 +23,10 @@ export type UserSessionType = {
   email: string;
   tokenId: string;
   tokenCreatedAt: number;
-  tokenEexpiresAt: number;
+  tokenExpiresAt: number;
 };
+
+const thirtyDays = 30 * 24 * 60 * 60 * 1000;
 
 export function verboseJwt(token: string) {
   const jwt = parseJwt(token);
@@ -38,8 +40,8 @@ export function verboseJwt(token: string) {
       email: jwt.email,
       tokenId: jwt.jti,
       picture: jwt.picture,
-      tokenCreatedAt: jwt.iat,
-      tokenEexpiresAt: jwt.exp,
+      tokenCreatedAt: jwt.iat * 1000,
+      tokenExpiresAt: jwt.iat * 1000 + thirtyDays,
     }
   );
 }

@@ -1,6 +1,5 @@
 import { initializeApp } from 'firebase/app';
-import { getDatabase, ref, set } from 'firebase/database';
-import { UserSessionType } from './authentication-service';
+import { child, get, getDatabase, onValue, ref, set } from 'firebase/database';
 
 // TODO: Replace the following with your app's Firebase project configuration
 // See: https://firebase.google.com/docs/web/learn-more#config-object
@@ -16,27 +15,29 @@ const app = initializeApp(firebaseConfig);
 // Initialize Realtime Database and get a reference to the service
 const database = getDatabase(app);
 
-// TODO: create models for it
-export function storeUserData({
-  id,
-  email,
-  firstName,
-  lastName,
-  name,
-  picture,
-  tokenCreatedAt,
-  tokenEexpiresAt,
-  tokenId,
-}: UserSessionType) {
-  set(ref(database, 'users/' + id), {
-    id,
-    email,
-    firstName,
-    lastName,
-    name,
-    picture,
-    tokenCreatedAt,
-    tokenEexpiresAt,
-    tokenId,
+export function setData(path: string, data: any) {
+  set(ref(database, path), data);
+}
+
+export function getData(path: string) {
+  return new Promise((resolve, reject) => {
+    get(child(ref(database), path))
+      .then((snapshot) => {
+        if (snapshot.exists()) {
+          resolve(snapshot.val());
+        } else {
+          resolve({});
+        }
+      })
+      .catch(reject);
+  });
+}
+
+export function getReactively(path: string, cb: (data: any) => void) {
+  const theRef = ref(database, path);
+
+  return onValue(theRef, (snapshot: any) => {
+    const data = snapshot.val();
+    cb(data);
   });
 }

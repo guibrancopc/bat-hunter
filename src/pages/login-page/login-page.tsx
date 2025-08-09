@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router';
 import { setLocalStorageValue } from 'src/services/local-storage-service';
 import { disableBatGame, killAllBats } from 'src/services/game-service';
 import { AuthContext } from 'src/features/authentication';
-import { storeUserData } from 'src/services/firebase-service';
+import { setUserData } from 'src/models/user-model';
 
 export function LoginPage() {
   useEffect(() => {
@@ -24,7 +24,7 @@ export function LoginPage() {
     console.log('user: ', userSession);
 
     if (userSession) {
-      storeUserData(userSession);
+      setUserData(userSession);
       setCurrentUser(userSession);
       setLocalStorageValue('bh-user-session', r.credential);
       navigate('/');
