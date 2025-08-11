@@ -1,0 +1,66 @@
+.bh-gap {
+  display: flex;
+}
+.bh-gap--vertical {
+  flex-direction: column;
+}
+.bh-gap--wrap {
+  flex-wrap: wrap;
+}
+.bh-gap--size-xs {
+  gap: 4px;
+}
+.bh-gap--size-sm {
+  gap: 8px;
+}
+.bh-gap--size-md {
+  gap: 16px;
+}
+.bh-gap--size-lg {
+  gap: 24px;
+}
+.bh-gap--size-xl {
+  gap: 32px;
+}
+.bh-gap--size-xxl {
+  gap: 40px;
+}
+.bh-gap--align-stretch {
+  align-items: stretch;
+}
+.bh-gap--align-start {
+  align-items: flex-start;
+}
+.bh-gap--align-center {
+  align-items: center;
+}
+.bh-gap--align-end {
+  align-items: flex-end;
+}
+.bh-gap--align-baseline {
+  align-items: baseline;
+}
+.bh-gap--justify-normal {
+  justify-content: normal;
+}
+.bh-gap--justify-space-around {
+  justify-content: space-around;
+}
+.bh-gap--justify-space-between {
+  justify-content: space-between;
+}
+.bh-gap--justify-space-evenly {
+  justify-content: space-evenly;
+}
+.bh-gap--justify-center {
+  justify-content: center;
+}
+.bh-gap--justify-stretch {
+  justify-content: stretch;
+}
+.bh-gap--full-width {
+  width: 100%;
+}
+.bh-gap--full-height {
+  height: 100%;
+}
