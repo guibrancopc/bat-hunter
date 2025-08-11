@@ -9,7 +9,7 @@ function getUserData() {
   };
 }
 
-export function GameDashboardProfile() {
+export function SinglePlayerDashboardProfile() {
   const user = getUserData();
 
   return (

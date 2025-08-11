@@ -2,7 +2,7 @@ import { Button } from '@components/button';
 import { ButtonGroup } from '@components/button-group';
 import { NavLink } from 'react-router';
 
-export function GameDashboardActions({
+export function SinglePlayerDashboardActions({
   buttonsDisabled = false,
   onCleanBats = () => {},
 }) {

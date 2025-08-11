@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { GameDashboard } from 'src/features/game-dashboard';
+import { SinglePlayerDashboard } from 'src/features/single-player-dashboard';
 import { MusicToggle } from 'src/features/music-toogle';
 import { enableBatGame } from 'src/services/game-service';
 import './single-player-page.scss';
@@ -11,7 +11,7 @@ export function SinglePlayerPage() {
 
   return (
     <div className="single-player-page">
-      <GameDashboard />
+      <SinglePlayerDashboard />
       <MusicToggle />
     </div>
   );

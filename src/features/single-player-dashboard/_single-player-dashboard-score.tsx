@@ -9,11 +9,10 @@ type Props = {
   onResetScore: () => void;
 };
 
-export function GameDashboardScore({
+export function SinglePlayerDashboardScore({
   killCounter = 0,
   accuracy = 100,
   resetDisabled = false,
-
   sendBatDisabled = false,
   onCreateBat = () => {},
   onResetScore = () => {},

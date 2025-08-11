@@ -28,7 +28,7 @@ function handleGameLabel(countdownTime: number, label: string) {
   return seconds;
 }
 
-export function GameDashboardChallenge({
+export function SinglePlayerDashboardChallenge({
   currentGameStateFull = [CHALLENGE_STATES.FREE_PLAY, () => {}],
   onCreateBat = () => {},
   setIsScoreEnabled = () => {},
@@ -43,7 +43,7 @@ export function GameDashboardChallenge({
 
   const [currentGameState, setCurrentGameState] = currentGameStateFull;
   const [countdownTime, setCountdownTime] = useState(0);
-  const [intervalId, setIntervalId] = useState<number>();
+  const [intervalId, setIntervalId] = useState<NodeJS.Timeout>();
 
   const GAME_MODE = useMemo(
     () => ({
