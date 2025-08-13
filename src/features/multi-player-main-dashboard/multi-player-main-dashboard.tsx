@@ -1,32 +1,31 @@
-import { useEffect, useReducer, useState } from 'react';
-import './single-player-dashboard.scss';
+import { useContext, useEffect, useReducer, useState } from 'react';
+import './multi-player-main-dashboard.scss';
 import {
   getIsGameModeOn,
   setBodyOnClick,
   calcAccuracy,
-  killAllBats,
 } from 'src/services/game-service';
 import { createBat } from '@services/fly-engine-service';
 import {
-  SinglePlayerDashboardChallenge,
   CHALLENGE_STATES,
-} from './_single-player-dashboard-challenge';
+  MultiPlayerMainDashboardChallenge,
+} from './_multi-player-main-dashboard-challenge';
 import { Card, Divider, Gutter } from '@components';
-import { SinglePlayerDashboardScore } from 'src/features/single-player-dashboard/_single-player-dashboard-score';
-import { SinglePlayerDashboardActions } from 'src/features/single-player-dashboard/_single-player-dashboard-actions';
 import { isShotEnabled, ShotEventType } from '@services/shot-service';
-import { iterate } from 'src/services/iteration-service';
+import { MultiPlayerMainDashboardScore } from './_multi-player-main-dashboard-score';
+import { SinglePlayerDashboardProfile } from './_multi-player-main-dashboard-profile';
+import { AuthContext } from '../authentication';
 
 export function counterReducer(state: number, action: string) {
   return action === 'add' ? state + 1 : 0;
 }
 
-export function SinglePlayerDashboard() {
+export function MultiPlayerMainDashboard() {
+  const { currentUser } = useContext(AuthContext);
   const [isScoreEnabled, setIsScoreEnabled] = useState(true);
   const [killCounter, dispatchKillCounter] = useReducer(counterReducer, 0);
   const [shotCounter, dispatchShotCounter] = useReducer(counterReducer, 0);
   const currentGameStateFull = useState(CHALLENGE_STATES.FREE_PLAY);
-  const [currentGameState] = currentGameStateFull;
 
   const createControlledBat = () =>
     createBat(() => isScoreEnabled && dispatchKillCounter('add'));
@@ -49,38 +48,35 @@ export function SinglePlayerDashboard() {
     dispatchShotCounter('reset');
   }
 
+  const accuracy = calcAccuracy(shotCounter, killCounter);
+  const finalScore = accuracy * killCounter;
+
   return (
     <div className="single-player-dashboard">
       <Card>
         <Gutter size="md">
-          <SinglePlayerDashboardScore
+          <MultiPlayerMainDashboardScore
             killCounter={killCounter}
-            accuracy={calcAccuracy(shotCounter, killCounter)}
-            resetDisabled={currentGameState !== 'FREE_PLAY'}
-            sendBatDisabled={['CHALLENGE_READY', 'CHALLENGE_FINISHED'].includes(
-              currentGameState
-            )}
-            onCreateBat={() => iterate(10, createControlledBat)}
-            onResetScore={cleanScore}
+            accuracy={accuracy}
+            finalScore={finalScore}
           />
         </Gutter>
         <Divider />
         <Gutter size="md">
-          <SinglePlayerDashboardChallenge
+          <MultiPlayerMainDashboardChallenge
             currentGameStateFull={currentGameStateFull}
             setIsScoreEnabled={setIsScoreEnabled}
             onResetScore={cleanScore}
             onCreateBat={createControlledBat}
           />
         </Gutter>
-
-        <Divider />
+        {/* <Divider />
         <Gutter size="md">
-          <SinglePlayerDashboardActions
-            buttonsDisabled={currentGameState === 'CHALLENGE_IN_PROGRESS'}
-            onCleanBats={killAllBats}
+          <SinglePlayerDashboardProfile
+            image={currentUser?.picture}
+            name="You"
           />
-        </Gutter>
+        </Gutter> */}
       </Card>
     </div>
   );

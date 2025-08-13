@@ -24,7 +24,7 @@ export function SinglePlayerDashboardScore({
       <div>
         <Title>Your Score</Title>
         <div className="text-center">
-          <Gutter size="xxl">
+          <Gutter size="lg">
             <Text size="xl">{killCounter}</Text>
           </Gutter>
         </div>

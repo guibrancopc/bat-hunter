@@ -1,8 +1,8 @@
+import { useContext, useEffect } from 'react';
 import { NavLink } from 'react-router';
 import './navbar.scss';
-import { Avatar } from '../avatar';
+import { Avatar } from '@components';
 import { AuthContext } from 'src/features/authentication';
-import { useContext, useEffect } from 'react';
 
 export function Navbar() {
   const { currentUser } = useContext(AuthContext);
