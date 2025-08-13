@@ -1,7 +1,7 @@
 import { Avatar } from '@components/avatar';
 import { Gutter, Title } from 'src/components';
 
-export function SinglePlayerDashboardProfile({
+export function ProfileSection({
   image,
   name,
 }: {
@@ -10,7 +10,6 @@ export function SinglePlayerDashboardProfile({
 }) {
   return (
     <section>
-      <Title>Player</Title>
       <Gutter size="md">
         <div className="text-center">
           <Avatar src={image} />

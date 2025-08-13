@@ -114,7 +114,6 @@ export function MultiPlayerMainDashboardChallenge({
 
   return (
     <section>
-      <Title>Game Control</Title>
       <Gutter className="text-center" size="xxl">
         <Text size="lg">
           {handleGameLabel(countdownTime, currentGameModel.label || '')}

@@ -13,8 +13,8 @@ import {
 import { Card, Divider, Gutter } from '@components';
 import { isShotEnabled, ShotEventType } from '@services/shot-service';
 import { MultiPlayerMainDashboardScore } from './_multi-player-main-dashboard-score';
-import { SinglePlayerDashboardProfile } from './_multi-player-main-dashboard-profile';
 import { AuthContext } from '../authentication';
+import { ProfileSection } from 'src/components/profile-section';
 
 export function counterReducer(state: number, action: string) {
   return action === 'add' ? state + 1 : 0;
@@ -72,10 +72,7 @@ export function MultiPlayerMainDashboard() {
         </Gutter>
         {/* <Divider />
         <Gutter size="md">
-          <SinglePlayerDashboardProfile
-            image={currentUser?.picture}
-            name="You"
-          />
+          <ProfileSection image={currentUser?.picture} name="You" />
         </Gutter> */}
       </Card>
     </div>
