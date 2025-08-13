@@ -115,7 +115,7 @@ export function SinglePlayerDashboardChallenge({
   return (
     <section>
       <Title>Game Mode</Title>
-      <Gutter className="text-center" margin={6}>
+      <Gutter className="text-center" size="xxl">
         <Text size="lg">
           {handleGameLabel(countdownTime, currentGameModel.label || '')}
         </Text>
