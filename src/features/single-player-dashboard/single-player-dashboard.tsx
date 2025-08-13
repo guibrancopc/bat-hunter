@@ -11,7 +11,7 @@ import {
   SinglePlayerDashboardChallenge,
   CHALLENGE_STATES,
 } from './_single-player-dashboard-challenge';
-import { Card, Divider } from '@components';
+import { Card, Divider, Gutter } from '@components';
 import { SinglePlayerDashboardScore } from 'src/features/single-player-dashboard/_single-player-dashboard-score';
 import { SinglePlayerDashboardActions } from 'src/features/single-player-dashboard/_single-player-dashboard-actions';
 import { isShotEnabled, ShotEventType } from '@services/shot-service';
@@ -52,7 +52,7 @@ export function SinglePlayerDashboard() {
   return (
     <div className="single-player-dashboard">
       <Card>
-        <Section>
+        <Gutter size="md">
           <SinglePlayerDashboardScore
             killCounter={killCounter}
             accuracy={calcAccuracy(shotCounter, killCounter)}
@@ -63,29 +63,25 @@ export function SinglePlayerDashboard() {
             onCreateBat={() => iterate(10, createControlledBat)}
             onResetScore={cleanScore}
           />
-        </Section>
+        </Gutter>
         <Divider />
-        <Section>
+        <Gutter size="md">
           <SinglePlayerDashboardChallenge
             currentGameStateFull={currentGameStateFull}
             setIsScoreEnabled={setIsScoreEnabled}
             onResetScore={cleanScore}
             onCreateBat={createControlledBat}
           />
-        </Section>
+        </Gutter>
 
         <Divider />
-        <Section>
+        <Gutter size="md">
           <SinglePlayerDashboardActions
             buttonsDisabled={currentGameState === 'CHALLENGE_IN_PROGRESS'}
             onCleanBats={killAllBats}
           />
-        </Section>
+        </Gutter>
       </Card>
     </div>
   );
-}
-
-function Section({ children }: PropsWithChildren) {
-  return <div className="single-player-dashboard-section">{children}</div>;
 }
