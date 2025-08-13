@@ -52,7 +52,7 @@ export function MultiPlayerMainDashboard() {
   const finalScore = accuracy * killCounter;
 
   return (
-    <div className="single-player-dashboard">
+    <div className="multi-player-main-dashboard">
       <Card>
         <Gutter size="md">
           <MultiPlayerMainDashboardScore
