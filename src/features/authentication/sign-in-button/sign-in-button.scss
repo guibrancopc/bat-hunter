@@ -1,9 +1,7 @@
 .sign-in-button {
-  &.sign-in-button-fix {
-    display: block;
-  }
   &.sign-in-button--custom > div > div > div > div {
     border: none;
+    height: 42px;
     border-radius: 0;
     background-color: transparent;
     display: flex;
@@ -23,4 +21,8 @@
       display: none;
     }
   }
+}
+
+div.sign-in-button {
+  display: block;
 }

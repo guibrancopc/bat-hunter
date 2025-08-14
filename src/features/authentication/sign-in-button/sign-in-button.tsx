@@ -39,11 +39,7 @@ export function SignInButton({
   return (
     <>
       <div
-        className={clsx(
-          'sign-in-button',
-          'sign-in-button-fix',
-          custom && 'sign-in-button--custom'
-        )}
+        className={clsx('sign-in-button', custom && 'sign-in-button--custom')}
       >
         <GoogleLogin
           locale="en-US"
