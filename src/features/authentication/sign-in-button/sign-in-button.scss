@@ -1,0 +1,26 @@
+.sign-in-button {
+  &.sign-in-button-fix {
+    display: block;
+  }
+  &.sign-in-button--custom > div > div > div > div {
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    vertical-align: auto;
+    line-height: 24px;
+    font-size: 16px;
+    color: white;
+    outline: none;
+    padding: 0;
+
+    &:before {
+      content: 'Sign In';
+    }
+
+    & > div {
+      display: none;
+    }
+  }
+}

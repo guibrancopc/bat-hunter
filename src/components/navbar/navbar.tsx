@@ -3,6 +3,7 @@ import { NavLink } from 'react-router';
 import './navbar.scss';
 import { Avatar } from '@components';
 import { AuthContext } from 'src/features/authentication';
+import { SignInButton } from 'src/features/authentication/sign-in-button';
 
 export function Navbar() {
   const { currentUser } = useContext(AuthContext);
@@ -29,9 +30,7 @@ export function Navbar() {
             <div>Sign out</div>
           </NavLink>
         ) : (
-          <NavLink to="/login">
-            <div>Sign in</div>
-          </NavLink>
+          <SignInButton custom />
         )}
       </div>
     </div>
