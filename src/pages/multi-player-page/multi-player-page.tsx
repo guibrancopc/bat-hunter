@@ -5,7 +5,6 @@ import { MusicToggle } from 'src/features/music-toogle';
 import { enableBatGame } from 'src/services/game-service';
 import './multi-player-page.scss';
 import { AuthContext } from 'src/features/authentication';
-import { Modal } from 'src/components';
 import { useNavigate } from 'react-router';
 
 export function MultiPlayerPage() {

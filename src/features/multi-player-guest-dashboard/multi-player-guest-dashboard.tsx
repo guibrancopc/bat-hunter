@@ -5,6 +5,7 @@ import { Card, Divider, Gutter } from '@components';
 import { MultiPlayerGuestDashboardScore } from './_multi-player-guest-dashboard-score';
 import { ProfileSection } from '@components/profile-section/profile-section';
 import { AuthContext } from 'src/features/authentication';
+import { GuestStatus } from 'src/components/guest-status';
 
 export function MultiPlayerGuestDashboard() {
   const { currentUser } = useContext(AuthContext);
@@ -18,6 +19,9 @@ export function MultiPlayerGuestDashboard() {
   return (
     <div className="multi-player-guest-dashboard">
       <Card>
+        <div className="status-slot">
+          <GuestStatus status="away" />
+        </div>
         <Gutter size="md">
           <MultiPlayerGuestDashboardScore
             killCounter={killCounter}

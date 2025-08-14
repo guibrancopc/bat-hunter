@@ -4,4 +4,12 @@
   top: 75px;
   right: 25px;
   z-index: 1;
+
+  & .status-slot {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    right: 16px;
+    top: 20px;
+  }
 }
