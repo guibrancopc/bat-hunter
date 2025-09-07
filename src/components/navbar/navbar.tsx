@@ -6,13 +6,12 @@ import { SignInButton } from 'src/features/authentication/sign-in-button';
 
 export function Navbar() {
   const { currentUser } = useAuthContext();
+  const isValidCurrentUser = currentUser?.id;
 
-  // useEffect(() => {
-  //   console.log('NAVBAR::currentUser ', currentUser);
-  // });
-
-  const name = currentUser ? currentUser.firstName : 'guest';
-  const picture = currentUser ? currentUser.picture : '/images/user-sm.jpg';
+  const name = isValidCurrentUser ? currentUser.firstName : 'guest';
+  const picture = isValidCurrentUser
+    ? currentUser.picture
+    : '/images/user-sm.jpg';
 
   return (
     <div className="bh-navbar">
@@ -24,7 +23,7 @@ export function Navbar() {
       <div className="bh-navbar__right">
         <div className="bh-navbar__greetings">Hi {name}!</div>{' '}
         <Avatar src={picture} />
-        {currentUser ? (
+        {isValidCurrentUser ? (
           <NavLink to="/logout">
             <div>Sign out</div>
           </NavLink>
