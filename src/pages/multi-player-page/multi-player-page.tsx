@@ -1,18 +1,18 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { MultiPlayerMainDashboard } from 'src/features/multi-player-main-dashboard';
 import { MultiPlayerGuestDashboard } from 'src/features/multi-player-guest-dashboard';
 import { MusicToggle } from 'src/features/music-toogle';
 import { enableBatGame } from 'src/services/game-service';
 import './multi-player-page.scss';
-import { AuthContext } from 'src/features/authentication';
+import { useAuthContext } from 'src/features/authentication';
 import { useNavigate } from 'react-router';
 
 export function MultiPlayerPage() {
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser } = useAuthContext();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!currentUser) {
+    if (!currentUser?.id) {
       alert(
         'You must sign in to play multi player. Please sign in to come back.'
       );

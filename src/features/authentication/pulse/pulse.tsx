@@ -7,17 +7,13 @@ export function Pulse() {
   const { setCurrentUser } = useAuthContext();
 
   useEffect(() => {
-    const id = setInterval(() => {
+    setInterval(() => {
       if (isLoggedIn()) {
-        console.log('pulsed!', Date.now());
-
         setCurrentUser({
           lastPulseAt: Date.now(),
         });
       }
     }, TEN_SECONDS);
-
-    console.log('setInterval inited!', id);
   }, []);
 
   return <></>;

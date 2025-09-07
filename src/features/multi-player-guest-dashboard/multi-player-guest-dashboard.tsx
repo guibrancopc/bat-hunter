@@ -19,7 +19,7 @@ export function MultiPlayerGuestDashboard() {
     <div className="multi-player-guest-dashboard">
       <Card>
         <div className="status-slot">
-          <GuestStatus status="away" />
+          <GuestStatus lastPulseAt={currentUser?.lastPulseAt} />
         </div>
         <Gutter size="md">
           <MultiPlayerGuestDashboardScore
