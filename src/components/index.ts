@@ -2,6 +2,7 @@ export * from './avatar';
 export * from './button';
 export * from './button-group';
 export * from './card';
+export * from './input';
 export * from './divider';
 export * from './gutter';
 export * from './title';

@@ -2,7 +2,7 @@ import {
   getCurrentUserSession,
   UserSessionType,
 } from 'src/services/authentication-service';
-import { getData, getReactively, setData } from 'src/services/firebase-service';
+import { getData, setData } from 'src/services/firebase-service';
 
 function getCurrentUserId() {
   return getCurrentUserSession()?.id;
@@ -40,11 +40,4 @@ export async function setUserDataInFirebase(
   };
 
   setData('users/' + data.id, newUserData);
-}
-
-export function getUserDataReactivelyFromFirebase(
-  id: string,
-  cb: () => UserSessionType
-) {
-  getReactively('users/' + id, cb);
 }
