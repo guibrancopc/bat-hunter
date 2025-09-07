@@ -1,43 +1,33 @@
-import {
-  getCurrentUserSession,
-  UserSessionType,
-} from 'src/services/authentication-service';
 import { getData, setData } from 'src/services/firebase-service';
+import { v7 as generateUuid } from 'uuid';
 
-function getCurrentUserId() {
-  return getCurrentUserSession()?.id;
+type MatchType = {
+  id: string;
+  hostId?: string;
+  guestId?: string;
+};
+
+export function getMatchFromFirebase(id: string): Promise<MatchType | null> {
+  return getData('match/' + id);
 }
 
-export function getCurrentUserDataFromFirebase() {
-  const currentUserId = getCurrentUserId();
+export async function setMatchInFirebase(data: MatchType & { id: string }) {
+  if (!data?.id) return;
 
-  return currentUserId ? getUserDataFromFirebase(currentUserId) : null;
-}
-
-export function setCurrentUserDataInFirebase(data: UserSessionType) {
-  const currentUserId = getCurrentUserId();
-
-  if (currentUserId) {
-    setUserDataInFirebase({
-      ...data,
-      id: currentUserId,
-    });
-  }
-}
-
-export function getUserDataFromFirebase(id: string) {
-  return getData('users/' + id);
-}
-
-export async function setUserDataInFirebase(
-  data: UserSessionType & { id: string }
-) {
-  const currentUserData = await getUserDataFromFirebase(data.id);
+  const matchData = await getMatchFromFirebase(data.id);
 
   const newUserData = {
-    ...(currentUserData || {}),
+    ...(matchData || {}),
     ...data,
   };
 
-  setData('users/' + data.id, newUserData);
+  setData('match/' + data.id, newUserData);
+}
+
+export function createMatch() {
+  const id = generateUuid();
+
+  setMatchInFirebase({ id });
+
+  return id;
 }

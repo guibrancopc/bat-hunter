@@ -19,14 +19,14 @@ export function setData(path: string, data: any) {
   set(ref(database, path), data);
 }
 
-export function getData(path: string) {
+export function getData<T>(path: string): Promise<T | null> {
   return new Promise((resolve, reject) => {
     get(child(ref(database), path))
       .then((snapshot) => {
         if (snapshot.exists()) {
           resolve(snapshot.val());
         } else {
-          resolve({});
+          resolve(null);
         }
       })
       .catch(reject);

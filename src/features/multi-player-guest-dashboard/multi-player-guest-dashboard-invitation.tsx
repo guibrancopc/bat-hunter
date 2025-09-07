@@ -2,10 +2,16 @@ import './multi-player-guest-dashboard.scss';
 import { Button, Gutter, Input, Title } from '@components';
 import { useEffect, useState } from 'react';
 import { Gap } from 'src/components/gap';
-
-const hasMatch = false;
+import { createMatch } from 'src/models/match-model';
 
 export function MultiPlayerGuestDashboardInvitation() {
+  const [currentMatchId, setCurrentMatchId] = useState('');
+
+  function onCreateGame() {
+    const matchId = createMatch();
+    setCurrentMatchId(matchId);
+  }
+
   return (
     <div className="multi-player-guest-dashboard-invitation">
       <Gutter size="md">
@@ -13,14 +19,18 @@ export function MultiPlayerGuestDashboardInvitation() {
 
         <Gutter size="xl">
           <div>
-            {hasMatch ? (
+            {currentMatchId ? (
               <Gap vertical justify="center" align="center" size="md">
                 <div>Share the invitation link.</div>
-                <UrlCopyButton invitationUrl="http://test.com/a0w9ef809a8wef098" />
+                <UrlCopyButton
+                  invitationUrl={buildInvitationUrl(currentMatchId)}
+                />
               </Gap>
             ) : (
               <Gap justify="center">
-                <Button kind="primary">Create a Game</Button>
+                <Button kind="primary" onClick={onCreateGame}>
+                  Create a Game
+                </Button>
               </Gap>
             )}
           </div>
@@ -28,6 +38,11 @@ export function MultiPlayerGuestDashboardInvitation() {
       </Gutter>
     </div>
   );
+}
+
+// @TODO: update to the correct invitation route
+function buildInvitationUrl(matchId: string) {
+  return `${origin}/invitation-link/${matchId}`;
 }
 
 function UrlCopyButton({ invitationUrl }: { invitationUrl: string }) {
