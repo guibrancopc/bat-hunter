@@ -3,11 +3,19 @@ import {
   setLocalStorageValue,
 } from './local-storage-service';
 
-export function clearUserSession() {
-  setLocalStorageValue('bh-user-session', null);
+export function setUserSessionHashInLocalStorage(value?: string | null) {
+  setLocalStorageValue('bh-user-session', value);
 }
 
-export function getCurrentUserSession() {
+export function clearUserSession() {
+  setUserSessionHashInLocalStorage(null);
+}
+
+export function isLoggedIn() {
+  return !!getCurrentUserSession();
+}
+
+export function getCurrentUserSession(): UserSessionType {
   const currentUserHash = getLocalStorageValue('bh-user-session');
   const currentUserSession = currentUserHash && verboseJwt(currentUserHash);
 
@@ -15,15 +23,16 @@ export function getCurrentUserSession() {
 }
 
 export type UserSessionType = {
-  id: string;
-  firstName: string;
-  lastName: string;
-  name: string;
-  picture: string;
-  email: string;
-  tokenId: string;
-  tokenCreatedAt: number;
-  tokenExpiresAt: number;
+  id?: string;
+  firstName?: string;
+  lastName?: string;
+  name?: string;
+  picture?: string;
+  email?: string;
+  tokenId?: string;
+  tokenCreatedAt?: number;
+  tokenExpiresAt?: number;
+  lastPulseAt?: number;
 };
 
 const thirtyDays = 30 * 24 * 60 * 60 * 1000;
@@ -42,6 +51,7 @@ export function verboseJwt(token: string) {
       picture: jwt.picture,
       tokenCreatedAt: jwt.iat * 1000,
       tokenExpiresAt: jwt.iat * 1000 + thirtyDays,
+      lastPulseAt: Date.now(),
     }
   );
 }

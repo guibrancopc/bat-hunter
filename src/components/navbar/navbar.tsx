@@ -1,16 +1,15 @@
-import { useContext, useEffect } from 'react';
 import { NavLink } from 'react-router';
 import './navbar.scss';
 import { Avatar } from '@components';
-import { AuthContext } from 'src/features/authentication';
+import { useAuthContext } from 'src/features/authentication';
 import { SignInButton } from 'src/features/authentication/sign-in-button';
 
 export function Navbar() {
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser } = useAuthContext();
 
-  useEffect(() => {
-    console.log('NAVBAR: ', currentUser);
-  });
+  // useEffect(() => {
+  //   console.log('NAVBAR::currentUser ', currentUser);
+  // });
 
   const name = currentUser ? currentUser.firstName : 'guest';
   const picture = currentUser ? currentUser.picture : '/images/user-sm.jpg';

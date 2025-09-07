@@ -1,12 +1,13 @@
-import { useContext, useEffect } from 'react';
 import './sign-in-button.scss';
-import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
-import { verboseJwt } from 'src/services/authentication-service';
-import { setLocalStorageValue } from 'src/services/local-storage-service';
-import { disableBatGame, killAllBats } from 'src/services/game-service';
-import { AuthContext } from 'src/features/authentication';
-import { setUserData } from 'src/models/user-model';
 import clsx from 'clsx';
+import { useEffect } from 'react';
+import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
+import {
+  setUserSessionHashInLocalStorage,
+  verboseJwt,
+} from 'src/services/authentication-service';
+import { disableBatGame, killAllBats } from 'src/services/game-service';
+import { useAuthContext } from 'src/features/authentication';
 
 export function SignInButton({
   custom,
@@ -20,18 +21,17 @@ export function SignInButton({
     killAllBats();
   }, []);
 
-  const { setCurrentUser } = useContext(AuthContext);
+  const { setCurrentUser } = useAuthContext();
 
   function _onSuccess(r: CredentialResponse) {
     const userSession = r.credential && verboseJwt(r.credential);
 
-    console.log('response: ', r);
-    console.log('user: ', userSession);
+    // console.log('response: ', r);
+    // console.log('user: ', userSession);
 
     if (userSession) {
-      setUserData(userSession);
       setCurrentUser(userSession);
-      setLocalStorageValue('bh-user-session', r.credential);
+      setUserSessionHashInLocalStorage(r.credential);
       onSuccess?.();
     }
   }

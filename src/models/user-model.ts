@@ -1,37 +1,43 @@
-import { UserSessionType } from 'src/services/authentication-service';
+import {
+  getCurrentUserSession,
+  UserSessionType,
+} from 'src/services/authentication-service';
 import { getData, setData } from 'src/services/firebase-service';
 
-export function getUserData(id: string) {
+function getCurrentUserId() {
+  return getCurrentUserSession()?.id;
+}
+
+export function getCurrentUserDataFromFirebase() {
+  const currentUserId = getCurrentUserId();
+
+  return currentUserId ? getUserDataFromFirebase(currentUserId) : null;
+}
+
+export function setCurrentUserDataInFirebase(data: UserSessionType) {
+  const currentUserId = getCurrentUserId();
+
+  if (currentUserId) {
+    setUserDataInFirebase({
+      ...data,
+      id: currentUserId,
+    });
+  }
+}
+
+export function getUserDataFromFirebase(id: string) {
   return getData('users/' + id);
 }
 
-export async function setUserData({
-  id,
-  email,
-  firstName,
-  lastName,
-  name,
-  picture,
-  tokenCreatedAt,
-  tokenExpiresAt,
-  tokenId,
-}: UserSessionType) {
-  const currentUserData = await getUserData(id);
+export async function setUserDataInFirebase(
+  data: UserSessionType & { id: string }
+) {
+  const currentUserData = await getUserDataFromFirebase(data.id);
 
   const newUserData = {
     ...(currentUserData || {}),
-    ...{
-      id,
-      email,
-      firstName,
-      lastName,
-      name,
-      picture,
-      tokenCreatedAt,
-      tokenExpiresAt,
-      tokenId,
-    },
+    ...data,
   };
 
-  setData('users/' + id, newUserData);
+  setData('users/' + data.id, newUserData);
 }

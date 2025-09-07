@@ -8,11 +8,13 @@ import './App.scss';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import { AuthContextProvider } from './features/authentication';
 import { LogoutPage } from './pages/logout-page';
+import { Pulse } from './features/authentication/pulse';
 
 export function App() {
   return (
     <GoogleOAuthProvider clientId="843345895015-3deqgfmkmhfthrsmrf1ujbvpajgnopi3.apps.googleusercontent.com">
       <AuthContextProvider>
+        <Pulse />
         <div className="app-container">
           <BrowserRouter>
             <header>

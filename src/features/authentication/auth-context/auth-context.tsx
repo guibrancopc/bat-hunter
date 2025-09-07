@@ -1,25 +1,47 @@
-import { createContext, PropsWithChildren, useEffect, useState } from 'react';
+import {
+  createContext,
+  PropsWithChildren,
+  useContext,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react';
+import { setCurrentUserDataInFirebase } from 'src/models/user-model';
 import { getCurrentUserSession } from 'src/services/authentication-service';
 import { UserSessionType } from 'src/services/authentication-service';
 
-export const AuthContext = createContext(
-  {} as {
-    currentUser: UserSessionType | null;
-    setCurrentUser: (v: UserSessionType | null) => void;
-  }
-);
+const AuthContext = createContext({
+  currentUser: {},
+  setCurrentUser: () => {},
+} as {
+  currentUser: UserSessionType | null;
+  setCurrentUser: (v: UserSessionType | null) => void;
+});
 
 export function AuthContextProvider({ children }: PropsWithChildren) {
-  const [currentUser, setCurrentUser] = useState(getCurrentUserSession());
+  const [currentUser, _setCurrentUser] = useState<UserSessionType | null>(
+    getCurrentUserSession()
+  );
 
+  const setCurrentUser = useCallback(
+    (useSessionData: UserSessionType | null) => {
+      if (!useSessionData) {
+        _setCurrentUser(null);
+      }
+
+      _setCurrentUser({
+        ...currentUser,
+        ...useSessionData,
+      });
+    },
+    []
+  );
+
+  // Update Firebase DB
   useEffect(() => {
-    const localStorageUserData = getCurrentUserSession();
-    console.log('localStorageUserData', localStorageUserData);
-    console.log('currentUser', currentUser);
-
-    // if (currentUser && !localStorageUserData) {
-
-    // }
+    if (currentUser) {
+      setCurrentUserDataInFirebase(currentUser);
+    }
   }, [currentUser]);
 
   return (
@@ -28,3 +50,5 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
     </AuthContext.Provider>
   );
 }
+
+export const useAuthContext = () => useContext(AuthContext);

@@ -1,14 +1,13 @@
-import { useContext } from 'react';
 import './multi-player-guest-dashboard.scss';
 import { calcAccuracy } from 'src/services/game-service';
 import { Card, Divider, Gutter } from '@components';
 import { MultiPlayerGuestDashboardScore } from './_multi-player-guest-dashboard-score';
 import { ProfileSection } from '@components/profile-section/profile-section';
-import { AuthContext } from 'src/features/authentication';
+import { useAuthContext } from 'src/features/authentication';
 import { GuestStatus } from 'src/components/guest-status';
 
 export function MultiPlayerGuestDashboard() {
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser } = useAuthContext();
 
   const killCounter = 0;
   const shotCounter = 0;

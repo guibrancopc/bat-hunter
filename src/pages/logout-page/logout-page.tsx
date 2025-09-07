@@ -1,12 +1,12 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { clearUserSession } from 'src/services/authentication-service';
 import { disableBatGame, killAllBats } from 'src/services/game-service';
-import { AuthContext } from 'src/features/authentication';
+import { useAuthContext } from 'src/features/authentication';
 
 export function LogoutPage() {
   const navigate = useNavigate();
-  const { setCurrentUser } = useContext(AuthContext);
+  const { setCurrentUser } = useAuthContext();
 
   useEffect(() => {
     disableBatGame();
