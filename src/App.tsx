@@ -9,6 +9,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import { AuthContextProvider } from './features/authentication';
 import { LogoutPage } from './pages/logout-page';
 import { Pulse } from './features/authentication/pulse';
+import { InvitationPage } from './pages/invitation-page';
 
 export function App() {
   return (
@@ -25,6 +26,10 @@ export function App() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="single-player" element={<SinglePlayerPage />} />
                 <Route path="multi-player" element={<MultiPlayerPage />} />
+                <Route
+                  path="invitation-link/:matchId"
+                  element={<InvitationPage />}
+                />
                 <Route path="login" element={<LoginPage />} />
                 <Route path="logout" element={<LogoutPage />} />
               </Routes>
