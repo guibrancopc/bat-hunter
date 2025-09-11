@@ -27,6 +27,10 @@ export function App() {
                 <Route path="single-player" element={<SinglePlayerPage />} />
                 <Route path="multi-player" element={<MultiPlayerPage />} />
                 <Route
+                  path="multi-player/:matchId"
+                  element={<MultiPlayerPage />}
+                />
+                <Route
                   path="invitation-link/:matchId"
                   element={<InvitationPage />}
                 />
