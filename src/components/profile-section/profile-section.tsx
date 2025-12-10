@@ -1,5 +1,5 @@
 import { Avatar } from '@components/avatar';
-import { Gutter, Title } from 'src/components';
+import { Gutter } from 'src/components';
 
 export function ProfileSection({
   image,
