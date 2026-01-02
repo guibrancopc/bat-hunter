@@ -1,4 +1,4 @@
-import { getData, setData } from 'src/services/firebase-service';
+import { getData, getReactively, setData } from 'src/services/firebase-service';
 import { v7 as generateUuid } from 'uuid';
 
 export type MatchType = {
@@ -30,4 +30,11 @@ export async function setMatchInFirebase(data: MatchType) {
   };
 
   setData('match/' + data.id, newUserData);
+}
+
+export function getMatchDataReactivelyFromFirebase(
+  id: string,
+  cb: (match: MatchType | null) => void
+) {
+  getReactively('match/' + id, cb);
 }

@@ -13,15 +13,15 @@ import {
 import { Card, Divider, Gutter } from '@components';
 import { isShotEnabled, ShotEventType } from '@services/shot-service';
 import { MultiPlayerMainDashboardScore } from './_multi-player-main-dashboard-score';
-// import { useAuthContext } from '../authentication';
-// import { ProfileSection } from 'src/components/profile-section';
+import { useAuthContext } from 'src/features/authentication';
+import { ProfileSection } from '@components/profile-section/profile-section';
 
 export function counterReducer(state: number, action: string) {
   return action === 'add' ? state + 1 : 0;
 }
 
 export function MultiPlayerMainDashboard() {
-  // const { currentUser } = useAuthContext();
+  const { currentUser } = useAuthContext();
   const [isScoreEnabled, setIsScoreEnabled] = useState(true);
   const [killCounter, dispatchKillCounter] = useReducer(counterReducer, 0);
   const [shotCounter, dispatchShotCounter] = useReducer(counterReducer, 0);
@@ -70,10 +70,10 @@ export function MultiPlayerMainDashboard() {
             onCreateBat={createControlledBat}
           />
         </Gutter>
-        {/* <Divider />
+        <Divider />
         <Gutter size="md">
           <ProfileSection image={currentUser?.picture} name="You" />
-        </Gutter> */}
+        </Gutter>
       </Card>
     </div>
   );

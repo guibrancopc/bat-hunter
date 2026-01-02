@@ -13,10 +13,11 @@ export function MultiPlayerPage() {
 
   useEffect(() => {
     if (!currentUser?.id) {
-      alert(
-        'You must sign in to play multi player. Please sign in to come back.'
-      );
-      navigate('/');
+      // @TODO_BUG: IT'S LOGGIN USER OUT EVENTUALLY
+      // alert(
+      //   'You must sign in to play multi player. Please sign in to come back.'
+      // );
+      // navigate('/');
     }
   }, [currentUser]);
 

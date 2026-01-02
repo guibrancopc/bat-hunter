@@ -48,3 +48,10 @@ export function getUserDataReactivelyFromFirebase(
 ) {
   getReactively('users/' + id, cb);
 }
+
+export function getUserLastPulseReactivelyFromFirebase(
+  id: string,
+  cb: (lastPulseAt: number | null) => void
+) {
+  getReactively('users/' + id + '/lastPulseAt', cb);
+}

@@ -5,9 +5,46 @@ import { MultiPlayerGuestDashboardScore } from './_multi-player-guest-dashboard-
 import { ProfileSection } from '@components/profile-section/profile-section';
 import { useAuthContext } from 'src/features/authentication';
 import { GuestStatus } from 'src/components/guest-status';
+import { MatchType } from 'src/models/match-model';
+import {
+  getUserDataFromFirebase,
+  getUserLastPulseReactivelyFromFirebase,
+} from 'src/models/user-model';
+import { useEffect, useMemo, useState } from 'react';
+import { UserSessionType } from 'src/services/authentication-service';
 
-export function MultiPlayerGuestDashboardWithMatch() {
+export function MultiPlayerGuestDashboardWithMatch({
+  match,
+}: {
+  match?: MatchType | null;
+}) {
   const { currentUser } = useAuthContext();
+  const [oponentUser, setOponentUser] = useState<UserSessionType | null>(null);
+  const [oponentLastPulseAt, setOponentLastPulseAt] = useState<number | null>(
+    null
+  );
+
+  const amIHost = useMemo(
+    () => currentUser?.id === match?.hostId,
+    [currentUser?.id, match?.hostId]
+  );
+
+  useEffect(() => {
+    const oponentUserId = amIHost ? match?.guestId : match?.hostId;
+
+    if (oponentUserId) {
+      getUserDataFromFirebase(oponentUserId).then(setOponentUser);
+    }
+  }, [match?.hostId]);
+
+  useEffect(() => {
+    if (oponentUser?.id) {
+      getUserLastPulseReactivelyFromFirebase(
+        oponentUser.id,
+        setOponentLastPulseAt
+      );
+    }
+  }, [oponentUser?.id]);
 
   const killCounter = 0;
   const shotCounter = 0;
@@ -18,10 +55,11 @@ export function MultiPlayerGuestDashboardWithMatch() {
   return (
     <div className="multi-player-guest-dashboard-with-match">
       <div className="status-slot">
-        <GuestStatus lastPulseAt={currentUser?.lastPulseAt} />
+        <GuestStatus lastPulseAt={oponentLastPulseAt || undefined} />
       </div>
       <Gutter size="md">
         <MultiPlayerGuestDashboardScore
+          oponentName={oponentUser?.name?.split(' ')[0]}
           killCounter={killCounter}
           accuracy={accuracy}
           finalScore={finalScore}
@@ -29,10 +67,7 @@ export function MultiPlayerGuestDashboardWithMatch() {
       </Gutter>
       <Divider />
       <Gutter size="md">
-        <ProfileSection
-          image={currentUser?.picture}
-          name={currentUser?.firstName}
-        />
+        <ProfileSection image={oponentUser?.picture} name={oponentUser?.name} />
       </Gutter>
     </div>
   );

@@ -1,21 +1,25 @@
 import { Gutter, Text, Title } from '@components';
 import { Gap } from 'src/components/gap';
 
-type Props = {
-  killCounter: number;
-  accuracy: number;
-  finalScore: number;
-};
-
 export function MultiPlayerGuestDashboardScore({
+  oponentName,
   killCounter = 0,
   accuracy = 100,
   finalScore = 0,
-}: Props) {
+}: {
+  oponentName?: string;
+  killCounter?: number;
+  accuracy?: number;
+  finalScore?: number;
+}) {
   return (
     <section className="bat-game-score-section">
       <div>
-        <Title>Bidjei's Score</Title>
+        {oponentName ? (
+          <Title size="h4">{oponentName}'s Score</Title>
+        ) : (
+          <Title size="h4">Loading...</Title>
+        )}
         <div className="text-center">
           <Gutter size="lg">
             <Text size="xl">{killCounter}</Text>
