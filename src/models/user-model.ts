@@ -26,7 +26,7 @@ export function setCurrentUserDataInFirebase(data: UserSessionType) {
 }
 
 export function getUserDataFromFirebase(id: string) {
-  return getData('users/' + id);
+  return getData('users/' + id) as Promise<UserSessionType | null>;
 }
 
 export async function setUserDataInFirebase(

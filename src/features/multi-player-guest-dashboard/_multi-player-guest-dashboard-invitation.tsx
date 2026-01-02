@@ -3,14 +3,16 @@ import { Button, Gutter, Input, Title } from '@components';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { Gap } from 'src/components/gap';
-import { createMatch } from 'src/models/match-model';
+import { createMatchInFirebase } from 'src/models/match-model';
+import { useAuthContext } from 'src/features/authentication';
 
 export function MultiPlayerGuestDashboardInvitation() {
   const navigate = useNavigate();
   const { matchId } = useParams<{ matchId?: string }>();
+  const { currentUser } = useAuthContext();
 
   function onCreateGame() {
-    const newMatchId = createMatch();
+    const newMatchId = createMatchInFirebase({ hostId: currentUser?.id });
     navigate(`/multi-player/${newMatchId}`);
   }
 
@@ -42,11 +44,6 @@ export function MultiPlayerGuestDashboardInvitation() {
   );
 }
 
-// @TODO: update to the correct invitation route
-function buildInvitationUrl(matchId: string) {
-  return `${origin}/invitation-link/${matchId}`;
-}
-
 function UrlCopyButton({ invitationUrl }: { invitationUrl: string }) {
   const [copied, setCopied] = useState(false);
 
@@ -71,6 +68,11 @@ function UrlCopyButton({ invitationUrl }: { invitationUrl: string }) {
       </Button>
     </>
   );
+}
+
+// @TODO: update to the correct invitation route
+function buildInvitationUrl(matchId: string) {
+  return `${origin}/invitation-link/${matchId}`;
 }
 
 function copyStringToClipboard(value: string) {

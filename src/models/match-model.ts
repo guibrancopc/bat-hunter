@@ -1,20 +1,28 @@
 import { getData, setData } from 'src/services/firebase-service';
 import { v7 as generateUuid } from 'uuid';
 
-type MatchType = {
+export type MatchType = {
   id: string;
   hostId?: string;
   guestId?: string;
 };
 
-export function getMatchFromFirebase(id: string): Promise<MatchType | null> {
+export function getMatchInFirebase(id: string): Promise<MatchType | null> {
   return getData('match/' + id);
 }
 
-export async function setMatchInFirebase(data: MatchType & { id: string }) {
+export function createMatchInFirebase({ hostId }: { hostId?: string }) {
+  const id = generateUuid();
+
+  setMatchInFirebase({ id, hostId });
+
+  return id;
+}
+
+export async function setMatchInFirebase(data: MatchType) {
   if (!data?.id) return;
 
-  const matchData = await getMatchFromFirebase(data.id);
+  const matchData = await getMatchInFirebase(data.id);
 
   const newUserData = {
     ...(matchData || {}),
@@ -22,12 +30,4 @@ export async function setMatchInFirebase(data: MatchType & { id: string }) {
   };
 
   setData('match/' + data.id, newUserData);
-}
-
-export function createMatch() {
-  const id = generateUuid();
-
-  setMatchInFirebase({ id });
-
-  return id;
 }
