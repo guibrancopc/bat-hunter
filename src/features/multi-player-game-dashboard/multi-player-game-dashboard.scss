@@ -1,0 +1,13 @@
+.multi-player-game-dashboard {
+  position: absolute;
+  bottom: 25px;
+  left: 0px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+
+  .multi-player-game-dashboard__card {
+    width: 400px;
+    z-index: 1;
+  }
+}
