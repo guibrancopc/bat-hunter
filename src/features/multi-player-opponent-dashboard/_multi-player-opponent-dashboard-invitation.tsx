@@ -11,7 +11,11 @@ export function MultiPlayerOpponentDashboardInvitation() {
   const { currentUser } = useAuthContext();
 
   function onCreateGame() {
-    const newMatchId = createMatchInFirebase({ hostId: currentUser?.id });
+    if (!currentUser?.id) {
+      return alert('Sorry, match was not created.');
+    }
+
+    const newMatchId = createMatchInFirebase({ hostId: currentUser.id });
     navigate(`/multi-player/${newMatchId}`);
   }
 

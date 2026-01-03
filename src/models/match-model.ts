@@ -8,7 +8,7 @@ export type MatchType = {
 };
 
 export function getMatchInFirebase(id: string): Promise<MatchType | null> {
-  return getData('match/' + id);
+  return getData('matches/' + id);
 }
 
 export function createMatchInFirebase({ hostId }: { hostId?: string }) {
@@ -24,17 +24,17 @@ export async function setMatchInFirebase(data: MatchType) {
 
   const matchData = await getMatchInFirebase(data.id);
 
-  const newUserData = {
+  const newMatchData = {
     ...(matchData || {}),
     ...data,
   };
 
-  setData('match/' + data.id, newUserData);
+  setData('matches/' + data.id, newMatchData);
 }
 
 export function getMatchDataReactivelyFromFirebase(
   id: string,
   cb: (match: MatchType | null) => void
 ) {
-  getReactively('match/' + id, cb);
+  getReactively('matches/' + id, cb);
 }
