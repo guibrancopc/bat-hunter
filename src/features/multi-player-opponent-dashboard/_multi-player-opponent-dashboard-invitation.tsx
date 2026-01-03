@@ -1,4 +1,3 @@
-import './multi-player-guest-dashboard.scss';
 import { Button, Gutter, Input, Title } from '@components';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
@@ -6,7 +5,7 @@ import { Gap } from 'src/components/gap';
 import { createMatchInFirebase } from 'src/models/match-model';
 import { useAuthContext } from 'src/features/authentication';
 
-export function MultiPlayerGuestDashboardInvitation() {
+export function MultiPlayerOpponentDashboardInvitation() {
   const navigate = useNavigate();
   const { matchId } = useParams<{ matchId?: string }>();
   const { currentUser } = useAuthContext();
@@ -70,7 +69,6 @@ function UrlCopyButton({ invitationUrl }: { invitationUrl: string }) {
   );
 }
 
-// @TODO: update to the correct invitation route
 function buildInvitationUrl(matchId: string) {
   return `${origin}/invitation-link/${matchId}`;
 }

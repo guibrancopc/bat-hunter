@@ -1,7 +1,7 @@
-import './multi-player-guest-dashboard.scss';
+import './multi-player-opponent-dashboard.scss';
 import { Card } from '@components';
-import { MultiPlayerGuestDashboardWithMatch } from './_multi-player-guest-dashboard-with-match';
-import { MultiPlayerGuestDashboardInvitation } from './_multi-player-guest-dashboard-invitation';
+import { MultiPlayerOpponentDashboardWithMatch } from './_multi-player-opponent-dashboard-with-match';
+import { MultiPlayerOpponentDashboardInvitation } from './_multi-player-opponent-dashboard-invitation';
 import { useParams } from 'react-router';
 import {
   getMatchDataReactivelyFromFirebase,
@@ -9,7 +9,7 @@ import {
 } from 'src/models/match-model';
 import { useEffect, useMemo, useState } from 'react';
 
-export function MultiPlayerGuestDashboard() {
+export function MultiPlayerOpponentDashboard() {
   const { matchId } = useParams<{ matchId?: string }>();
   const [currentMatch, setCurrentMatch] = useState<MatchType | null>(null);
 
@@ -29,9 +29,9 @@ export function MultiPlayerGuestDashboard() {
     <div className="multi-player-guest-dashboard">
       <Card>
         {hasMatch ? (
-          <MultiPlayerGuestDashboardWithMatch match={currentMatch} />
+          <MultiPlayerOpponentDashboardWithMatch match={currentMatch} />
         ) : (
-          <MultiPlayerGuestDashboardInvitation />
+          <MultiPlayerOpponentDashboardInvitation />
         )}
       </Card>
     </div>

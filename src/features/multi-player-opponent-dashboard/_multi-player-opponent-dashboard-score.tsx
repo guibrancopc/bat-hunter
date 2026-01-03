@@ -1,7 +1,7 @@
 import { Gutter, Text, Title } from '@components';
 import { Gap } from 'src/components/gap';
 
-export function MultiPlayerGuestDashboardScore({
+export function MultiPlayerOpponentDashboardScore({
   oponentName,
   killCounter = 0,
   accuracy = 100,

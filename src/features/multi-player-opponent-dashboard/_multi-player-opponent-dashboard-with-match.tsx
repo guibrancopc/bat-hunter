@@ -1,7 +1,6 @@
-import './multi-player-guest-dashboard.scss';
 import { calcAccuracy } from 'src/services/game-service';
 import { Divider, Gutter } from '@components';
-import { MultiPlayerGuestDashboardScore } from './_multi-player-guest-dashboard-score';
+import { MultiPlayerOpponentDashboardScore } from './_multi-player-opponent-dashboard-score';
 import { ProfileSection } from '@components/profile-section/profile-section';
 import { useAuthContext } from 'src/features/authentication';
 import { GuestStatus } from 'src/components/guest-status';
@@ -13,7 +12,7 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import { UserSessionType } from 'src/services/authentication-service';
 
-export function MultiPlayerGuestDashboardWithMatch({
+export function MultiPlayerOpponentDashboardWithMatch({
   match,
 }: {
   match?: MatchType | null;
@@ -58,7 +57,7 @@ export function MultiPlayerGuestDashboardWithMatch({
         <GuestStatus lastPulseAt={oponentLastPulseAt || undefined} />
       </div>
       <Gutter size="md">
-        <MultiPlayerGuestDashboardScore
+        <MultiPlayerOpponentDashboardScore
           oponentName={oponentUser?.name?.split(' ')[0]}
           killCounter={killCounter}
           accuracy={accuracy}
