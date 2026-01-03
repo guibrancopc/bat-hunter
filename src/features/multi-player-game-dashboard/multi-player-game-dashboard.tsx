@@ -1,57 +1,49 @@
-import { useEffect, useReducer, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './multi-player-game-dashboard.scss';
-import {
-  getIsGameModeOn,
-  setBodyOnClick,
-  calcAccuracy,
-} from 'src/services/game-service';
+import { getIsGameModeOn, setBodyOnClick } from 'src/services/game-service';
 import { createBat } from '@services/fly-engine-service';
 import {
   MATCH_STATES,
   MultiPlayerGameDashboardMatch,
 } from './_multi-player-main-dashboard-match';
-import { Card, Divider, Gutter } from '@components';
+import { Card, Gutter } from '@components';
 import { isShotEnabled, ShotEventType } from '@services/shot-service';
 // import { useAuthContext } from 'src/features/authentication';
-import { ProfileSection } from '@components/profile-section/profile-section';
-
+type CounterReducerType = [number, (action: 'add' | 'reset') => void];
 export function MultiPlayerGameDashboard({
-  currentGameStateFull = [MATCH_STATES.MATCH_READY, () => {}],
-  onCreateBat = () => {},
-  setIsScoreEnabled = () => {},
-  onResetScore = () => {},
+  killCounterReducer,
+  shotCounterReducer,
 }: {
-  currentGameStateFull: [string, (v: string) => void];
-  onCreateBat: () => void;
-  setIsScoreEnabled: (v: boolean) => void;
-  onResetScore: () => void;
+  killCounterReducer: CounterReducerType;
+  shotCounterReducer: CounterReducerType;
 }) {
+  const [killCounter, dispatchKillCounter] = killCounterReducer;
+  const [shotCounter, dispatchShotCounter] = shotCounterReducer;
   // const { currentUser } = useAuthContext();
-  // const [isScoreEnabled, setIsScoreEnabled] = useState(true);
-  // const [killCounter, dispatchKillCounter] = useReducer(counterReducer, 0);
-  // const [shotCounter, dispatchShotCounter] = useReducer(counterReducer, 0);
-  // const currentGameStateFull = useState(MATCH_STATES.MATCH_READY);
+  const [isScoreEnabled, setIsScoreEnabled] = useState(true);
 
-  // const createControlledBat = () =>
-  //   createBat(() => isScoreEnabled && dispatchKillCounter('add'));
+  const currentGameStateFull = useState(MATCH_STATES.MATCH_READY);
 
-  // useEffect(() => {
-  //   setBodyOnClick((e: ShotEventType) => {
-  //     if (isScoreEnabled && getIsGameModeOn() && isShotEnabled(e)) {
-  //       dispatchShotCounter('add');
-  //     }
-  //   });
-  // }, [isScoreEnabled]);
+  const createControlledBat = () =>
+    createBat(() => isScoreEnabled && dispatchKillCounter('add'));
 
-  // useEffect(
-  //   () => console.log('kills x shots: ', `${killCounter} x ${shotCounter}`),
-  //   [shotCounter, killCounter]
-  // );
+  useEffect(() => {
+    setBodyOnClick((e: ShotEventType) => {
+      if (isScoreEnabled && getIsGameModeOn() && isShotEnabled(e)) {
+        dispatchShotCounter('add');
+      }
+    });
+  }, [isScoreEnabled]);
 
-  // function cleanScore() {
-  //   dispatchKillCounter('reset');
-  //   dispatchShotCounter('reset');
-  // }
+  useEffect(
+    () => console.log('kills x shots: ', `${killCounter} x ${shotCounter}`),
+    [shotCounter, killCounter]
+  );
+
+  function cleanScore() {
+    dispatchKillCounter('reset');
+    dispatchShotCounter('reset');
+  }
 
   return (
     <div className="multi-player-game-dashboard">
@@ -60,8 +52,8 @@ export function MultiPlayerGameDashboard({
           <MultiPlayerGameDashboardMatch
             currentGameStateFull={currentGameStateFull}
             setIsScoreEnabled={setIsScoreEnabled}
-            onResetScore={onResetScore}
-            onCreateBat={onCreateBat}
+            onResetScore={cleanScore}
+            onCreateBat={createControlledBat}
           />
         </Gutter>
       </Card>
