@@ -1,6 +1,6 @@
 import './multi-player-main-dashboard.scss';
 import { useReducer } from 'react';
-import { calcAccuracy } from 'src/services/game-service';
+import { calcAccuracy, calcFinalScore } from 'src/services/game-service';
 import { Card, Divider, Gutter } from '@components';
 import { MultiPlayerMainDashboardScore } from './_multi-player-main-dashboard-score';
 import { useAuthContext } from 'src/features/authentication';
@@ -23,7 +23,7 @@ export function MultiPlayerMainDashboard() {
   const [shotCounter] = shotCounterReducer;
 
   const accuracy = calcAccuracy(shotCounter, killCounter);
-  const finalScore = accuracy * killCounter;
+  const finalScore = calcFinalScore(shotCounter, killCounter);
 
   return (
     <>
