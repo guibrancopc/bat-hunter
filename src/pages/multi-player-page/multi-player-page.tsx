@@ -12,7 +12,10 @@ export function MultiPlayerPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log('currentUser', currentUser);
+
     if (!currentUser?.id) {
+      alert('TEST BUG::CURRENT_USER_NOT_FOUND');
       // @TODO_BUG: IT'S LOGGIN USER OUT EVENTUALLY
       // alert(
       //   'You must sign in to play multi player. Please sign in to come back.'

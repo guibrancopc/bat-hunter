@@ -15,7 +15,7 @@ export function MultiPlayerMainDashboardScore({
   return (
     <section className="bat-game-score-section">
       <div>
-        <Title>Your Score</Title>
+        <Title size="h4">Your Score</Title>
         <div className="text-center">
           <Gutter size="lg">
             <Text size="xl">{killCounter}</Text>

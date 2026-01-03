@@ -1,6 +1,6 @@
 import './multi-player-guest-dashboard.scss';
 import { Card } from '@components';
-import { MultiPlayerGuestDashboardWithMatch } from './multi-player-guest-dashboard-with-match';
+import { MultiPlayerGuestDashboardWithMatch } from './_multi-player-guest-dashboard-with-match';
 import { MultiPlayerGuestDashboardInvitation } from './_multi-player-guest-dashboard-invitation';
 import { useParams } from 'react-router';
 import {
