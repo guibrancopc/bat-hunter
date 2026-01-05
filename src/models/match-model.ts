@@ -1,40 +1,43 @@
-import { getData, getReactively, setData } from 'src/services/firebase-service';
+import {
+  getData,
+  getReactively,
+  updateData,
+} from 'src/services/firebase-service';
 import { v7 as generateUuid } from 'uuid';
+import { GameType } from './game-model';
 
 export type MatchType = {
   id: string;
   hostId?: string;
   guestId?: string;
+  createdAt?: number;
+  games?: GameType[];
 };
 
 export function getMatchInFirebase(id: string): Promise<MatchType | null> {
-  return getData('matches/' + id);
+  return getData(`matches/${id}`);
 }
 
 export function createMatchInFirebase({ hostId }: { hostId?: string }) {
   const id = generateUuid();
 
-  setMatchInFirebase({ id, hostId });
+  setMatchInFirebase({ id, hostId, createdAt: Date.now() });
 
   return id;
 }
 
 export async function setMatchInFirebase(data: MatchType) {
-  if (!data?.id) return;
+  if (!data?.id) {
+    console.error('setMatchInFirebase::ERROR: no user id was provided');
+    return;
+  }
 
-  const matchData = await getMatchInFirebase(data.id);
-
-  const newMatchData = {
-    ...(matchData || {}),
-    ...data,
-  };
-
-  setData('matches/' + data.id, newMatchData);
+  updateData(`matches/${data.id}`, data);
 }
 
 export function getMatchDataReactivelyFromFirebase(
   id: string,
   cb: (match: MatchType | null) => void
 ) {
-  getReactively('matches/' + id, cb);
+  getReactively(`matches/${id}`, cb);
 }
