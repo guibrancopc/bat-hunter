@@ -1,5 +1,14 @@
 import { initializeApp } from 'firebase/app';
-import { child, get, getDatabase, onValue, ref, set } from 'firebase/database';
+import {
+  child,
+  get,
+  getDatabase,
+  onValue,
+  ref,
+  set,
+  update,
+  remove,
+} from 'firebase/database';
 
 // TODO: Replace the following with your app's Firebase project configuration
 // See: https://firebase.google.com/docs/web/learn-more#config-object
@@ -14,10 +23,6 @@ const app = initializeApp(firebaseConfig);
 
 // Initialize Realtime Database and get a reference to the service
 const database = getDatabase(app);
-
-export function setData(path: string, data: any) {
-  set(ref(database, path), data);
-}
 
 export function getData<T>(path: string): Promise<T | null> {
   return new Promise((resolve, reject) => {
@@ -40,4 +45,16 @@ export function getReactively(path: string, cb: (data: any) => void) {
     const data = snapshot.val();
     cb(data);
   });
+}
+
+export function setData(path: string, data: any) {
+  set(ref(database, path), data);
+}
+
+export function updateData(path: string, data: any) {
+  update(ref(database, path), data);
+}
+
+export function removeData(path: string) {
+  remove(ref(database, path));
 }
