@@ -4,11 +4,13 @@ import { v7 as generateUuid } from 'uuid';
 type PlayerDataType = {
   shotCounter: number;
   killCounter: number;
+  updatedAt: number;
 };
 
 export type GameType = {
   id: string;
   createdAt: number;
+  updatedAt: number;
   gameState?: string;
   winner?: {
     userId: string;
@@ -24,7 +26,7 @@ export function createGameInFirebase({ matchId }: { matchId?: string }) {
   }
 
   const id = generateUuid();
-  const data = { id, createdAt: Date.now() };
+  const data = { id, createdAt: Date.now(), updatedAt: Date.now() };
 
   setGameInFirebase({ matchId, data });
 
@@ -43,7 +45,9 @@ export async function setGameInFirebase({
     return;
   }
 
-  updateData(`matches/${matchId}/games/${data.id}`, data);
+  const _data = { ...data, updatedAt: Date.now() };
+
+  updateData(`matches/${matchId}/games/${data.id}`, _data);
 }
 
 export async function setPlayerDataInFirebase({
@@ -62,7 +66,9 @@ export async function setPlayerDataInFirebase({
     return;
   }
 
-  updateData(`matches/${matchId}/games/${gameId}/${player}Data`, data);
+  const _data = { ...data, updatedAt: Date.now() };
+
+  updateData(`matches/${matchId}/games/${gameId}/${player}Data`, _data);
 }
 
 // {
