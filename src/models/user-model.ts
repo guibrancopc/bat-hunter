@@ -2,7 +2,11 @@ import {
   getCurrentUserSession,
   UserSessionType,
 } from 'src/services/authentication-service';
-import { getData, getReactively, setData } from 'src/services/firebase-service';
+import {
+  getData,
+  getReactively,
+  updateData,
+} from 'src/services/firebase-service';
 
 function getCurrentUserId() {
   return getCurrentUserSession()?.id;
@@ -32,14 +36,12 @@ export function getUserDataFromFirebase(id: string) {
 export async function setUserDataInFirebase(
   data: UserSessionType & { id: string }
 ) {
-  const currentUserData = await getUserDataFromFirebase(data.id);
+  if (!data?.id) {
+    console.error('setUserDataInFirebase::ERROR: no user id was provided');
+    return;
+  }
 
-  const newUserData = {
-    ...(currentUserData || {}),
-    ...data,
-  };
-
-  setData('users/' + data.id, newUserData);
+  updateData('users/' + data.id, data);
 }
 
 export function getUserDataReactivelyFromFirebase(
