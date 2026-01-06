@@ -26,14 +26,14 @@ function calcStatus(timestamp?: number): 'away' | 'online' | 'offline' {
   const now = Date.now();
   const diff = now - (timestamp || 0);
 
-  const offlineThreashold = 120 * 1000;
-  const awayThreashold = 35 * 1000;
+  const offlineThreshold = 300 * 1000;
+  const awayThreashold = 60 * 1000;
 
-  if (!timestamp || diff >= offlineThreashold) {
+  if (!timestamp || diff >= offlineThreshold) {
     return 'offline';
   }
 
-  if (diff >= awayThreashold && diff < offlineThreashold) {
+  if (diff >= awayThreashold && diff < offlineThreshold) {
     return 'away';
   }
 
