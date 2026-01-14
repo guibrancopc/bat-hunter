@@ -6,45 +6,42 @@ import {
 import { killAllBats } from 'src/services/game-service';
 import { Button, ButtonGroup, Gutter, Text } from '@components';
 import { iterate } from 'src/services/iteration-service';
-import { useNavigate } from 'react-router';
+import { useMultiPlayerMainDashboardTriggers } from './multi-player-main-dashboard-triggers-hook';
 
+// @TODO: rename match to round here
 export const MATCH_STATES = {
   MATCH_READY: 'MATCH_READY',
   MATCH_IN_PROGRESS: 'MATCH_IN_PROGRESS',
   MATCH_FINISHED: 'MATCH_FINISHED',
-};
+} as const;
 
-function handleGameLabel(countdownTime: number, label: string) {
-  const seconds = `${countdownTime}s`;
+type ValueOf<T> = T[keyof T];
 
-  if (countdownTime <= 0) {
-    return label;
-  }
-
-  if (countdownTime <= 10) {
-    return <span style={{ color: '#f05b7b' }}>{seconds}</span>;
-  }
-
-  return seconds;
-}
+export type MatchStatesType = ValueOf<typeof MATCH_STATES>;
 
 export function MultiPlayerGameDashboardMatch({
-  currentGameStateFull = [MATCH_STATES.MATCH_READY, () => {}],
-  onCreateBat = () => {},
-  setIsScoreEnabled = () => {},
   onResetScore = () => {},
+  onShot = () => {},
+  onKill = () => {},
+  onStateChange = () => {},
 }: {
-  currentGameStateFull: [string, (v: string) => void];
-  onCreateBat: () => void;
-  setIsScoreEnabled: (v: boolean) => void;
   onResetScore: () => void;
+  onShot: () => void;
+  onKill: () => void;
+  onStateChange: (state: MatchStatesType) => void;
 }) {
   const COUNTDOWN_TIME_TOTAL = 60;
-
-  const navigate = useNavigate();
-  const [currentGameState, setCurrentGameState] = currentGameStateFull;
+  const [currentGameState, setCurrentGameState] = useState<MatchStatesType>(
+    MATCH_STATES.MATCH_READY
+  );
   const [countdownTime, setCountdownTime] = useState(0);
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout>();
+  const { createControlledBat, setIsScoreEnabled } =
+    useMultiPlayerMainDashboardTriggers({ onShot, onKill });
+
+  useEffect(() => {
+    onStateChange(currentGameState);
+  }, [currentGameState]);
 
   const GAME_MODE = useMemo(
     () => ({
@@ -56,11 +53,11 @@ export function MultiPlayerGameDashboardMatch({
           setIsScoreEnabled(false);
         },
         onMatchStart: () => setCurrentGameState(MATCH_STATES.MATCH_IN_PROGRESS),
-        onCancel: () => navigate('/'),
+        onCancel: undefined,
       },
       [MATCH_STATES.MATCH_IN_PROGRESS]: {
         onStart: () => {
-          iterate(30, onCreateBat);
+          iterate(30, createControlledBat);
           setCountdownTime(COUNTDOWN_TIME_TOTAL);
           setIsScoreEnabled(true);
           playChallengeBackgroundMusic();
@@ -79,7 +76,8 @@ export function MultiPlayerGameDashboardMatch({
 
           setIntervalId(id);
         },
-        onCancel: () => setCurrentGameState(MATCH_STATES.MATCH_FINISHED),
+        onAddBats: createControlledBat,
+        onCancel: () => setCurrentGameState(MATCH_STATES.MATCH_READY),
       },
       [MATCH_STATES.MATCH_FINISHED]: {
         label: "Time's Up!",
@@ -89,6 +87,8 @@ export function MultiPlayerGameDashboardMatch({
           setIsScoreEnabled(false);
         },
         onChallengeReady: () => setCurrentGameState(MATCH_STATES.MATCH_READY),
+        onChallengeReadyLabel: 'Play again',
+        onCancel: undefined,
       },
     }),
     []
@@ -120,17 +120,40 @@ export function MultiPlayerGameDashboardMatch({
           </Button>
         )}
         {currentGameModel.onChallengeReady && (
-          <Button onClick={currentGameModel.onChallengeReady}>Play</Button>
+          <Button onClick={currentGameModel.onChallengeReady}>
+            {currentGameModel.onChallengeReadyLabel || 'Play'}
+          </Button>
         )}
         {currentGameModel.onMatchStart && (
           <Button kind="primary" onClick={currentGameModel.onMatchStart}>
             Start
           </Button>
         )}
+        {currentGameModel.onAddBats && (
+          <Button kind="primary" onClick={currentGameModel.onAddBats}>
+            Add bats
+          </Button>
+        )}
       </ButtonGroup>
     </section>
   );
 }
+
+function handleGameLabel(countdownTime: number, label: string) {
+  const seconds = `${countdownTime}s`;
+
+  if (countdownTime <= 0) {
+    return label;
+  }
+
+  if (countdownTime <= 10) {
+    return <span style={{ color: '#f05b7b' }}>{seconds}</span>;
+  }
+
+  return seconds;
+}
+
+// @TODO: define better the states before coding
 
 /*
 - FREE_PLAY (default)

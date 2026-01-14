@@ -1,39 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer } from 'react';
 import './multi-player-game-dashboard.scss';
-import { getIsGameModeOn, setBodyOnClick } from 'src/services/game-service';
-import { createBat } from '@services/fly-engine-service';
-import {
-  MATCH_STATES,
-  MultiPlayerGameDashboardMatch,
-} from './_multi-player-main-dashboard-match';
+import { MultiPlayerGameDashboardMatch } from './_multi-player-main-dashboard-match';
 import { Card, Gutter } from '@components';
-import { isShotEnabled, ShotEventType } from '@services/shot-service';
-// import { useAuthContext } from 'src/features/authentication';
-type CounterReducerType = [number, (action: 'add' | 'reset') => void];
-export function MultiPlayerGameDashboard({
-  killCounterReducer,
-  shotCounterReducer,
-}: {
-  killCounterReducer: CounterReducerType;
-  shotCounterReducer: CounterReducerType;
-}) {
-  const [killCounter, dispatchKillCounter] = killCounterReducer;
-  const [shotCounter, dispatchShotCounter] = shotCounterReducer;
-  // const { currentUser } = useAuthContext();
-  const [isScoreEnabled, setIsScoreEnabled] = useState(true);
 
-  const currentGameStateFull = useState(MATCH_STATES.MATCH_READY);
-
-  const createControlledBat = () =>
-    createBat(() => isScoreEnabled && dispatchKillCounter('add'));
-
-  useEffect(() => {
-    setBodyOnClick((e: ShotEventType) => {
-      if (isScoreEnabled && getIsGameModeOn() && isShotEnabled(e)) {
-        dispatchShotCounter('add');
-      }
-    });
-  }, [isScoreEnabled]);
+export function MultiPlayerGameDashboard() {
+  const [killCounter, dispatchKillCounter] = useReducer(counterReducer, 0);
+  const [shotCounter, dispatchShotCounter] = useReducer(counterReducer, 0);
 
   useEffect(
     () => console.log('kills x shots: ', `${killCounter} x ${shotCounter}`),
@@ -50,10 +22,18 @@ export function MultiPlayerGameDashboard({
       <Card className="multi-player-game-dashboard__card">
         <Gutter size="md">
           <MultiPlayerGameDashboardMatch
-            currentGameStateFull={currentGameStateFull}
-            setIsScoreEnabled={setIsScoreEnabled}
+            onStateChange={(state) => {
+              console.log('CURRENT_STATE', state);
+              // READY
+              // - Create Game
+              // ON GOING
+              // - Store each kill and shot
+              // FINISHED
+              // - Store the winner
+            }}
+            onKill={() => dispatchKillCounter('add')}
+            onShot={() => dispatchShotCounter('add')}
             onResetScore={cleanScore}
-            onCreateBat={createControlledBat}
           />
         </Gutter>
       </Card>
@@ -61,6 +41,6 @@ export function MultiPlayerGameDashboard({
   );
 }
 
-export function counterReducer(state: number, action: string) {
+export function counterReducer(state: number, action: 'add' | 'reset') {
   return action === 'add' ? state + 1 : 0;
 }

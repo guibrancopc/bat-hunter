@@ -11,6 +11,7 @@ export type MatchType = {
   hostId?: string;
   guestId?: string;
   createdAt?: number;
+  currentGameId?: string;
   games?: GameType[];
 };
 
@@ -37,7 +38,7 @@ export async function setMatchInFirebase(data: MatchType) {
 
 export function getMatchDataReactivelyFromFirebase(
   id: string,
-  cb: (match: MatchType | null) => void
+  cb: (match: MatchType | undefined) => void
 ) {
   getReactively(`matches/${id}`, cb);
 }
