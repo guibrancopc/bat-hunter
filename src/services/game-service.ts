@@ -1,5 +1,6 @@
 import { getAimCursorRegular, ShotEventType } from './shot-service';
 import { pauseAllBackgroundMusic, playBackgroundMusic } from './audio-service';
+import { MatchType } from 'src/models/match-model';
 
 const bodyEl = document.querySelector('body')!;
 
@@ -43,4 +44,9 @@ export function calcFinalScore(shotCounter: number, killCounter: number) {
 
 export function killAllBats() {
   document.querySelectorAll('.flying-bat').forEach((bat) => bat.remove());
+}
+
+export function findCurrentGame(match?: MatchType) {
+  const games = match?.games;
+  return games && Object.values(games).find((game) => !game.winnerId);
 }

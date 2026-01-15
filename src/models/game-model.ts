@@ -4,22 +4,28 @@ import { v7 as generateUuid } from 'uuid';
 type PlayerDataType = {
   shotCounter: number;
   killCounter: number;
-  updatedAt: number;
+  updatedAt?: number;
 };
 
 export type GameType = {
-  id: string;
-  createdAt: number;
-  updatedAt: number;
+  id?: string;
+  createdAt?: number;
+  updatedAt?: number;
   gameState?: string;
-  winner?: {
-    userId: string;
-  };
+  winnerId?: string;
   guestData?: PlayerDataType;
   hostData?: PlayerDataType;
 };
 
-export function createGameInFirebase({ matchId }: { matchId?: string }) {
+export function createGameInFirebase({
+  matchId,
+  onCreated,
+  onError = () => {},
+}: {
+  matchId?: string;
+  onCreated?: (gameId: string) => void;
+  onError?: (error: string) => void;
+}) {
   if (!matchId) {
     console.error('setGameInFirebase::ERROR: no user id was provided');
     return;
@@ -28,7 +34,12 @@ export function createGameInFirebase({ matchId }: { matchId?: string }) {
   const id = generateUuid();
   const data = { id, createdAt: Date.now(), updatedAt: Date.now() };
 
-  setGameInFirebase({ matchId, data });
+  setGameInFirebase({ matchId, data })
+    .then((r) => {
+      console.log('GAME_CREATED_IN_FIREBASE', r);
+      onCreated?.(id);
+    })
+    .catch(onError);
 
   return id;
 }
@@ -80,9 +91,7 @@ export async function setPlayerDataInFirebase({
 //     id
 //     createdAt
 //     gameState
-//     winner {
-//       userId
-//     }
+//     winnerId
 //     guestData {
 //       shotCounter
 //       killCounter

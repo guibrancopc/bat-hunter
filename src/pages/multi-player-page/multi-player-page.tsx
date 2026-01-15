@@ -46,7 +46,7 @@ export function MultiPlayerPage() {
     <div className="multi-player-page">
       <MultiPlayerMainDashboard match={currentMatch} />
       <MultiPlayerOpponentDashboard match={currentMatch} />
-      <MultiPlayerGameDashboard />
+      <MultiPlayerGameDashboard match={currentMatch} />
       <MusicToggle />
     </div>
   );

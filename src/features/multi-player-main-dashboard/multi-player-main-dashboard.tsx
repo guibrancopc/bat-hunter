@@ -5,18 +5,15 @@ import { MultiPlayerMainDashboardScore } from './_multi-player-main-dashboard-sc
 import { useAuthContext } from 'src/features/authentication';
 import { ProfileSection } from '@components/profile-section/profile-section';
 import { MatchType } from 'src/models/match-model';
-
-export function counterReducer(state: number, action: string) {
-  return action === 'add' ? state + 1 : 0;
-}
+import { useGameCounters } from 'src/hooks/game-counters-hook';
 
 export function MultiPlayerMainDashboard({ match }: { match?: MatchType }) {
   const { currentUser } = useAuthContext();
 
-  const currentGame = match?.games?.find((game) => !game?.winner?.userId);
-
-  const shotCounter = currentGame?.hostData?.shotCounter || 0;
-  const killCounter = currentGame?.hostData?.killCounter || 0;
+  const { shotCounter, killCounter } = useGameCounters({
+    match,
+    playerKind: 'currentUser',
+  });
 
   const accuracy = calcAccuracy(shotCounter, killCounter);
   const finalScore = calcFinalScore(shotCounter, killCounter);

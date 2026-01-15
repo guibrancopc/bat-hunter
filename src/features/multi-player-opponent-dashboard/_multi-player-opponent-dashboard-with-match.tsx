@@ -1,4 +1,4 @@
-import { calcAccuracy } from 'src/services/game-service';
+import { calcAccuracy, calcFinalScore } from 'src/services/game-service';
 import { Divider, Gutter } from '@components';
 import { MultiPlayerOpponentDashboardScore } from './_multi-player-opponent-dashboard-score';
 import { ProfileSection } from '@components/profile-section/profile-section';
@@ -11,6 +11,7 @@ import {
 } from 'src/models/user-model';
 import { useEffect, useMemo, useState } from 'react';
 import { UserSessionType } from 'src/services/authentication-service';
+import { useGameCounters } from 'src/hooks/game-counters-hook';
 
 export function MultiPlayerOpponentDashboardWithMatch({
   match,
@@ -45,11 +46,13 @@ export function MultiPlayerOpponentDashboardWithMatch({
     }
   }, [oponentUser?.id]);
 
-  const killCounter = 0;
-  const shotCounter = 0;
+  const { shotCounter, killCounter } = useGameCounters({
+    match: match || undefined,
+    playerKind: 'oponent',
+  });
 
   const accuracy = calcAccuracy(shotCounter, killCounter);
-  const finalScore = accuracy * killCounter;
+  const finalScore = calcFinalScore(shotCounter, killCounter);
 
   return (
     <div className="multi-player-guest-dashboard-with-match">
