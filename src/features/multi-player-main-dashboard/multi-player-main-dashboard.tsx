@@ -12,7 +12,7 @@ export function MultiPlayerMainDashboard({ match }: { match?: MatchType }) {
 
   const { shotCounter, killCounter } = useGameCounters({
     match,
-    playerKind: 'currentUser',
+    playerKind: 'main',
   });
 
   const accuracy = calcAccuracy(shotCounter, killCounter);

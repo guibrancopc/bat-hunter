@@ -8,7 +8,7 @@ export function useGameCounters({
   playerKind,
 }: {
   match?: MatchType;
-  playerKind: 'currentUser' | 'oponent';
+  playerKind: 'main' | 'opponent';
 }) {
   const { currentUser } = useAuthContext();
 
@@ -18,7 +18,10 @@ export function useGameCounters({
     const isCurrentUserTheHost =
       match?.hostId && match?.hostId === currentUser?.id;
 
-    if (isCurrentUserTheHost && playerKind === 'currentUser') {
+    if (
+      (isCurrentUserTheHost && playerKind === 'main') ||
+      (!isCurrentUserTheHost && playerKind === 'opponent')
+    ) {
       return {
         shotCounter: currentGame?.hostData?.shotCounter || 0,
         killCounter: currentGame?.hostData?.killCounter || 0,

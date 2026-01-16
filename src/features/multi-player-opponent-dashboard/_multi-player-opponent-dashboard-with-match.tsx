@@ -48,7 +48,7 @@ export function MultiPlayerOpponentDashboardWithMatch({
 
   const { shotCounter, killCounter } = useGameCounters({
     match: match || undefined,
-    playerKind: 'oponent',
+    playerKind: 'opponent',
   });
 
   const accuracy = calcAccuracy(shotCounter, killCounter);
