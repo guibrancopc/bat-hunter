@@ -26,15 +26,28 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
     return findCurrentGame(match);
   }, [match]);
 
-  // On Mount
+  // Finish game with winner when the page loads
   useEffect(() => {
     if (!isCurrentUserTheHost) return;
 
-    findOrCreateGame(match);
+    if (currentGame?.winnerId && !currentGame?.finished) {
+      finishGameWithWinner(currentGame, match?.id);
+    }
   }, [isCurrentUserTheHost]);
 
+  // Create a new game once there is no unfinished game
+  useEffect(() => {
+    if (!isCurrentUserTheHost) return;
+
+    if (!currentGame) {
+      findOrCreateGame(match);
+    }
+  }, [isCurrentUserTheHost, currentGame]);
+
+  // @TODO: remove this. Only for debug purposes
   useEffect(() => console.log('currentGame: ', currentGame), [currentGame]);
 
+  // Save score data in database
   useEffect(() => {
     console.log('kills x shots: ', `${killCounter} x ${shotCounter}`);
 
@@ -61,17 +74,14 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
         <Gutter size="md">
           <MultiPlayerGameDashboardMatch
             onStateChange={(state) => {
-              console.log('CURRENT_STATE', state);
+              console.log('onStateChange::CURRENT_STATE', state);
 
               if (state === 'MATCH_READY') {
                 cleanScore();
                 setIsGameActive(false);
 
                 if (isCurrentUserTheHost) {
-                  // TODO: How to finish game when user reload the page?
-                  // Tried a useEffect but it was immediately finishing a game when a winner was set
                   finishGameWithWinner(currentGame, match?.id);
-                  findOrCreateGame(match);
                 }
               }
 
@@ -103,11 +113,7 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
   );
 }
 
-function finishGameWithWinner(
-  game?: GameType,
-  matchId?: string,
-  cb?: () => void
-) {
+function finishGameWithWinner(game?: GameType, matchId?: string) {
   if (!matchId || !game?.id) return;
 
   if (!game?.winnerId || game?.finished) return;
@@ -115,7 +121,7 @@ function finishGameWithWinner(
   setGameInFirebase({
     matchId: matchId,
     data: { id: game?.id, finished: true },
-  }).then(cb);
+  });
 }
 
 function setWinner(match?: MatchType) {
@@ -145,22 +151,14 @@ function setWinner(match?: MatchType) {
   }
 }
 
-function findOrCreateGame(
-  match?: MatchType,
-  onCreate?: () => void
-  // setGameId?: (id?: string) => void
-) {
-  const currentGame = findCurrentGame(match);
-
-  if (currentGame) {
-    // setGameId?.(currentGame.id);
+function findOrCreateGame(match?: MatchType) {
+  if (findCurrentGame(match)) {
     return;
   }
 
   if (match?.id) {
     createGameInFirebase({
       matchId: match?.id,
-      onCreated: onCreate,
       onError: () => {
         console.error('ERROR: could not register new game in Firebase.');
       },
