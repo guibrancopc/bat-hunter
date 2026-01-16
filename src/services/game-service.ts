@@ -48,5 +48,16 @@ export function killAllBats() {
 
 export function findCurrentGame(match?: MatchType) {
   const games = match?.games;
-  return games && Object.values(games).find((game) => !game.winnerId);
+  return games && Object.values(games).find((game) => !game.finished);
+}
+
+export function findLastGame(match?: MatchType) {
+  const games = match?.games;
+  const sortedGames =
+    games &&
+    Object.values(games).sort(
+      (a, b) => (b.createdAt || 0) - (a.createdAt || 0)
+    );
+
+  return sortedGames?.[0];
 }

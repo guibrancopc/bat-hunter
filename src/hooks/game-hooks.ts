@@ -1,7 +1,16 @@
 import { useMemo } from 'react';
 import { useAuthContext } from 'src/features/authentication';
 import { MatchType } from 'src/models/match-model';
-import { findCurrentGame } from 'src/services/game-service';
+import { findLastGame } from 'src/services/game-service';
+
+export function useIsCurrentUserTheHost(match?: MatchType) {
+  const { currentUser } = useAuthContext();
+
+  return useMemo(
+    () => match?.hostId && match?.hostId === currentUser?.id,
+    [match, currentUser]
+  );
+}
 
 export function useGameCounters({
   match,
@@ -12,12 +21,10 @@ export function useGameCounters({
 }) {
   const { currentUser } = useAuthContext();
 
-  const currentGame = useMemo(() => findCurrentGame(match), [match]);
+  const currentGame = useMemo(() => findLastGame(match), [match]);
+  const isCurrentUserTheHost = useIsCurrentUserTheHost(match);
 
   return useMemo(() => {
-    const isCurrentUserTheHost =
-      match?.hostId && match?.hostId === currentUser?.id;
-
     if (
       (isCurrentUserTheHost && playerKind === 'main') ||
       (!isCurrentUserTheHost && playerKind === 'opponent')

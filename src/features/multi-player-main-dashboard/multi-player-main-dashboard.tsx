@@ -5,7 +5,7 @@ import { MultiPlayerMainDashboardScore } from './_multi-player-main-dashboard-sc
 import { useAuthContext } from 'src/features/authentication';
 import { ProfileSection } from '@components/profile-section/profile-section';
 import { MatchType } from 'src/models/match-model';
-import { useGameCounters } from 'src/hooks/game-counters-hook';
+import { useGameCounters } from 'src/hooks/game-hooks';
 
 export function MultiPlayerMainDashboard({ match }: { match?: MatchType }) {
   const { currentUser } = useAuthContext();

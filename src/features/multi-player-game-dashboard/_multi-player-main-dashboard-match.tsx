@@ -30,7 +30,8 @@ export function MultiPlayerGameDashboardMatch({
   onKill: () => void;
   onStateChange: (state: MatchStatesType) => void;
 }) {
-  const COUNTDOWN_TIME_TOTAL = 60;
+  // const COUNTDOWN_TIME_TOTAL = 60;
+  const COUNTDOWN_TIME_TOTAL = 15;
   const [currentGameState, setCurrentGameState] = useState<MatchStatesType>(
     MATCH_STATES.MATCH_READY
   );

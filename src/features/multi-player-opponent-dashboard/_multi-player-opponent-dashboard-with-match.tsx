@@ -11,7 +11,7 @@ import {
 } from 'src/models/user-model';
 import { useEffect, useMemo, useState } from 'react';
 import { UserSessionType } from 'src/services/authentication-service';
-import { useGameCounters } from 'src/hooks/game-counters-hook';
+import { useGameCounters } from 'src/hooks/game-hooks';
 
 export function MultiPlayerOpponentDashboardWithMatch({
   match,

@@ -13,6 +13,7 @@ export type GameType = {
   updatedAt?: number;
   gameState?: string;
   winnerId?: string;
+  finished?: boolean;
   guestData?: PlayerDataType;
   hostData?: PlayerDataType;
 };
@@ -52,7 +53,7 @@ export async function setGameInFirebase({
   data: GameType;
 }) {
   if (!data?.id) {
-    console.error('setGameInFirebase::ERROR: no user id was provided');
+    console.error('setGameInFirebase::ERROR: no game id was provided');
     return;
   }
 

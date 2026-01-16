@@ -5,43 +5,44 @@ import { Card, Gutter } from '@components';
 import { MatchType } from 'src/models/match-model';
 import {
   createGameInFirebase,
+  GameType,
   setGameInFirebase,
   setPlayerDataInFirebase,
 } from 'src/models/game-model';
-import { useAuthContext } from '../authentication';
 import { calcFinalScore, findCurrentGame } from 'src/services/game-service';
+import { useIsCurrentUserTheHost } from 'src/hooks/game-hooks';
 
 export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
-  const { currentUser } = useAuthContext();
-
   const [killCounter, dispatchKillCounter] = useReducer(counterReducer, 0);
   const [shotCounter, dispatchShotCounter] = useReducer(counterReducer, 0);
-  const [currentGameId, setCurrentGameId] = useState<string>();
   const [isGameActive, setIsGameActive] = useState(false);
 
-  const playerKind = useMemo(() => {
-    const isCurrentUserTheHost =
-      match?.hostId && match?.hostId === currentUser?.id;
-    return isCurrentUserTheHost ? 'host' : 'guest';
-  }, [match, currentUser]);
+  const isCurrentUserTheHost = useIsCurrentUserTheHost(match);
+  console.log('isCurrentUserTheHost', isCurrentUserTheHost);
 
+  const currentGame = useMemo(() => {
+    if (!match) return;
+
+    return findCurrentGame(match);
+  }, [match]);
+
+  // On Mount
   useEffect(() => {
-    findOrCreateGame(match, setCurrentGameId);
-  }, [match, setCurrentGameId]);
+    if (!isCurrentUserTheHost) return;
 
-  useEffect(
-    () => console.log('currentGameId: ', currentGameId),
-    [currentGameId]
-  );
+    findOrCreateGame(match);
+  }, [isCurrentUserTheHost]);
+
+  useEffect(() => console.log('currentGame: ', currentGame), [currentGame]);
 
   useEffect(() => {
     console.log('kills x shots: ', `${killCounter} x ${shotCounter}`);
 
-    if (match?.id && currentGameId && isGameActive)
+    if (match?.id && currentGame?.id && isGameActive)
       setPlayerDataInFirebase({
         matchId: match.id,
-        gameId: currentGameId,
-        player: playerKind,
+        gameId: currentGame?.id,
+        player: isCurrentUserTheHost ? 'host' : 'guest',
         data: {
           shotCounter,
           killCounter,
@@ -63,8 +64,15 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
               console.log('CURRENT_STATE', state);
 
               if (state === 'MATCH_READY') {
+                cleanScore();
                 setIsGameActive(false);
-                findOrCreateGame(match, setCurrentGameId);
+
+                if (isCurrentUserTheHost) {
+                  // TODO: How to finish game when user reload the page?
+                  // Tried a useEffect but it was immediately finishing a game when a winner was set
+                  finishGameWithWinner(currentGame, match?.id);
+                  findOrCreateGame(match);
+                }
               }
 
               if (state === 'MATCH_IN_PROGRESS') {
@@ -73,7 +81,9 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
 
               if (state === 'MATCH_FINISHED') {
                 setIsGameActive(false);
-                setWinner(match);
+                if (isCurrentUserTheHost) {
+                  setWinner(match);
+                }
               }
 
               // READY
@@ -91,6 +101,21 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
       </Card>
     </div>
   );
+}
+
+function finishGameWithWinner(
+  game?: GameType,
+  matchId?: string,
+  cb?: () => void
+) {
+  if (!matchId || !game?.id) return;
+
+  if (!game?.winnerId || game?.finished) return;
+
+  setGameInFirebase({
+    matchId: matchId,
+    data: { id: game?.id, finished: true },
+  }).then(cb);
 }
 
 function setWinner(match?: MatchType) {
@@ -113,25 +138,29 @@ function setWinner(match?: MatchType) {
         : match?.hostId;
 
   if (match?.id) {
-    setGameInFirebase({ matchId: match.id, data: { winnerId } });
+    setGameInFirebase({
+      matchId: match.id,
+      data: { id: currentGame?.id, winnerId },
+    });
   }
 }
 
 function findOrCreateGame(
   match?: MatchType,
-  setGameId?: (id?: string) => void
+  onCreate?: () => void
+  // setGameId?: (id?: string) => void
 ) {
   const currentGame = findCurrentGame(match);
 
   if (currentGame) {
-    setGameId?.(currentGame.id);
+    // setGameId?.(currentGame.id);
     return;
   }
 
   if (match?.id) {
     createGameInFirebase({
       matchId: match?.id,
-      onCreated: setGameId,
+      onCreated: onCreate,
       onError: () => {
         console.error('ERROR: could not register new game in Firebase.');
       },
