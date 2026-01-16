@@ -7,8 +7,9 @@ import { killAllBats } from 'src/services/game-service';
 import { Button, ButtonGroup, Gutter, Text } from '@components';
 import { iterate } from 'src/services/iteration-service';
 import { useMultiPlayerMainDashboardTriggers } from './multi-player-main-dashboard-triggers-hook';
+import { GameStateType } from 'src/models/game-model';
 
-// @TODO: rename match to round here
+// @TODO: rename match to game here
 export const MATCH_STATES = {
   MATCH_READY: 'MATCH_READY',
   MATCH_IN_PROGRESS: 'MATCH_IN_PROGRESS',
@@ -24,11 +25,15 @@ export function MultiPlayerGameDashboardMatch({
   onShot = () => {},
   onKill = () => {},
   onStateChange = () => {},
+  isCurrentUserTheHost,
+  remoteGameState,
 }: {
   onResetScore: () => void;
   onShot: () => void;
   onKill: () => void;
   onStateChange: (state: MatchStatesType) => void;
+  isCurrentUserTheHost?: boolean;
+  remoteGameState?: GameStateType;
 }) {
   // const COUNTDOWN_TIME_TOTAL = 60;
   const COUNTDOWN_TIME_TOTAL = 15;
@@ -39,6 +44,12 @@ export function MultiPlayerGameDashboardMatch({
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout>();
   const { createControlledBat, setIsScoreEnabled } =
     useMultiPlayerMainDashboardTriggers({ onShot, onKill });
+
+  useEffect(() => {
+    if (!isCurrentUserTheHost && remoteGameState) {
+      setCurrentGameState(remoteGameState);
+    }
+  }, [isCurrentUserTheHost, remoteGameState]);
 
   useEffect(() => {
     onStateChange(currentGameState);
@@ -109,7 +120,7 @@ export function MultiPlayerGameDashboardMatch({
         </Text>
       </Gutter>
       <ButtonGroup flex>
-        {currentGameModel.onCancel && (
+        {currentGameModel.onCancel && isCurrentUserTheHost && (
           <Button
             onClick={() => {
               currentGameModel.onCancel();
@@ -120,12 +131,12 @@ export function MultiPlayerGameDashboardMatch({
             Cancel
           </Button>
         )}
-        {currentGameModel.onChallengeReady && (
+        {currentGameModel.onChallengeReady && isCurrentUserTheHost && (
           <Button onClick={currentGameModel.onChallengeReady}>
             {currentGameModel.onChallengeReadyLabel || 'Play'}
           </Button>
         )}
-        {currentGameModel.onMatchStart && (
+        {currentGameModel.onMatchStart && isCurrentUserTheHost && (
           <Button kind="primary" onClick={currentGameModel.onMatchStart}>
             Start
           </Button>

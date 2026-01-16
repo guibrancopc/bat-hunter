@@ -7,7 +7,7 @@ export function useIsCurrentUserTheHost(match?: MatchType) {
   const { currentUser } = useAuthContext();
 
   return useMemo(
-    () => match?.hostId && match?.hostId === currentUser?.id,
+    () => Boolean(match?.hostId && match?.hostId === currentUser?.id),
     [match, currentUser]
   );
 }

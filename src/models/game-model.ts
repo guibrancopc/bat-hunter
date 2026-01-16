@@ -7,11 +7,16 @@ type PlayerDataType = {
   updatedAt?: number;
 };
 
+export type GameStateType =
+  | 'MATCH_READY'
+  | 'MATCH_IN_PROGRESS'
+  | 'MATCH_FINISHED';
+
 export type GameType = {
   id?: string;
   createdAt?: number;
   updatedAt?: number;
-  gameState?: string;
+  gameState?: GameStateType;
   winnerId?: string;
   finished?: boolean;
   guestData?: PlayerDataType;
@@ -33,7 +38,12 @@ export function createGameInFirebase({
   }
 
   const id = generateUuid();
-  const data = { id, createdAt: Date.now(), updatedAt: Date.now() };
+  const data = {
+    id,
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+    gameState: 'MATCH_READY' as const,
+  };
 
   setGameInFirebase({ matchId, data })
     .then((r) => {

@@ -5,6 +5,7 @@ import { Card, Gutter } from '@components';
 import { MatchType } from 'src/models/match-model';
 import {
   createGameInFirebase,
+  GameStateType,
   GameType,
   setGameInFirebase,
   setPlayerDataInFirebase,
@@ -74,10 +75,12 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
         <Gutter size="md">
           <MultiPlayerGameDashboardMatch
             onStateChange={(state) => {
-              console.log('onStateChange::CURRENT_STATE', state);
+              if (isCurrentUserTheHost && !currentGame?.winnerId) {
+                setGameState(match?.id, currentGame?.id, state);
+              }
+              // console.log('onStateChange::CURRENT_STATE', state);
 
               if (state === 'MATCH_READY') {
-                cleanScore();
                 setIsGameActive(false);
 
                 if (isCurrentUserTheHost) {
@@ -106,6 +109,8 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
             onKill={() => dispatchKillCounter('add')}
             onShot={() => dispatchShotCounter('add')}
             onResetScore={cleanScore}
+            isCurrentUserTheHost={isCurrentUserTheHost}
+            remoteGameState={currentGame?.gameState}
           />
         </Gutter>
       </Card>
@@ -124,7 +129,7 @@ function finishGameWithWinner(game?: GameType, matchId?: string) {
   });
 }
 
-function setWinner(match?: MatchType) {
+function getWinnerId(match?: MatchType) {
   const currentGame = findCurrentGame(match);
   const hostFinalScore = calcFinalScore(
     currentGame?.hostData?.shotCounter || 0,
@@ -136,19 +141,36 @@ function setWinner(match?: MatchType) {
     currentGame?.guestData?.killCounter || 0
   );
 
-  const winnerId =
-    guestFinalScore === hostFinalScore
-      ? 'DRAW'
-      : guestFinalScore > hostFinalScore
-        ? match?.guestId
-        : match?.hostId;
+  return guestFinalScore === hostFinalScore
+    ? 'DRAW'
+    : guestFinalScore > hostFinalScore
+      ? match?.guestId
+      : match?.hostId;
+}
 
-  if (match?.id) {
+function setWinner(match?: MatchType) {
+  const currentGame = findCurrentGame(match);
+  const winnerId = getWinnerId(match);
+
+  if (match?.id && currentGame?.id && winnerId) {
     setGameInFirebase({
       matchId: match.id,
       data: { id: currentGame?.id, winnerId },
     });
   }
+}
+
+function setGameState(
+  matchId?: string,
+  gameId?: string,
+  gameState?: GameStateType
+) {
+  if (!matchId || !gameId || !gameState) return;
+
+  setGameInFirebase({
+    matchId: matchId,
+    data: { id: gameId, gameState },
+  });
 }
 
 function findOrCreateGame(match?: MatchType) {
