@@ -69,43 +69,45 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
     dispatchShotCounter('reset');
   }
 
+  const onStateChange = (state: GameStateType) => {
+    if (isCurrentUserTheHost && !currentGame?.winnerId) {
+      setGameState(match?.id, currentGame?.id, state);
+    }
+
+    if (state === 'MATCH_READY') {
+      setIsGameActive(false);
+
+      if (isCurrentUserTheHost) {
+        finishGameWithWinner(currentGame, match?.id);
+      }
+    }
+
+    if (state === 'MATCH_IN_PROGRESS') {
+      setIsGameActive(true);
+    }
+
+    if (state === 'MATCH_FINISHED') {
+      setIsGameActive(false);
+      if (isCurrentUserTheHost) {
+        const winnerId = getWinnerId(match);
+        setWinner(match?.id, currentGame?.id, winnerId);
+      }
+    }
+
+    // READY
+    // - Find Open Game or Create Game
+    // ON GOING
+    // - Store each kill and shot
+    // FINISHED
+    // - Store the winner
+  };
+
   return (
     <div className="multi-player-game-dashboard">
       <Card className="multi-player-game-dashboard__card">
         <Gutter size="md">
           <MultiPlayerGameDashboardMatch
-            onStateChange={(state) => {
-              if (isCurrentUserTheHost && !currentGame?.winnerId) {
-                setGameState(match?.id, currentGame?.id, state);
-              }
-              // console.log('onStateChange::CURRENT_STATE', state);
-
-              if (state === 'MATCH_READY') {
-                setIsGameActive(false);
-
-                if (isCurrentUserTheHost) {
-                  finishGameWithWinner(currentGame, match?.id);
-                }
-              }
-
-              if (state === 'MATCH_IN_PROGRESS') {
-                setIsGameActive(true);
-              }
-
-              if (state === 'MATCH_FINISHED') {
-                setIsGameActive(false);
-                if (isCurrentUserTheHost) {
-                  setWinner(match);
-                }
-              }
-
-              // READY
-              // - Find Open Game or Create Game
-              // ON GOING
-              // - Store each kill and shot
-              // FINISHED
-              // - Store the winner
-            }}
+            onStateChange={onStateChange}
             onKill={() => dispatchKillCounter('add')}
             onShot={() => dispatchShotCounter('add')}
             onResetScore={cleanScore}
@@ -148,16 +150,13 @@ function getWinnerId(match?: MatchType) {
       : match?.hostId;
 }
 
-function setWinner(match?: MatchType) {
-  const currentGame = findCurrentGame(match);
-  const winnerId = getWinnerId(match);
+function setWinner(matchId?: string, gameId?: string, winnerId?: string) {
+  if (!matchId || !gameId || !winnerId) return;
 
-  if (match?.id && currentGame?.id && winnerId) {
-    setGameInFirebase({
-      matchId: match.id,
-      data: { id: currentGame?.id, winnerId },
-    });
-  }
+  setGameInFirebase({
+    matchId: matchId,
+    data: { id: gameId, winnerId },
+  });
 }
 
 function setGameState(

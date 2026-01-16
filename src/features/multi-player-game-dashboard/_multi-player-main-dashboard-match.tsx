@@ -16,9 +16,9 @@ export const MATCH_STATES = {
   MATCH_FINISHED: 'MATCH_FINISHED',
 } as const;
 
-type ValueOf<T> = T[keyof T];
+// type ValueOf<T> = T[keyof T];
 
-export type MatchStatesType = ValueOf<typeof MATCH_STATES>;
+// type MatchStatesType = ValueOf<typeof MATCH_STATES>;
 
 export function MultiPlayerGameDashboardMatch({
   onResetScore = () => {},
@@ -31,13 +31,13 @@ export function MultiPlayerGameDashboardMatch({
   onResetScore: () => void;
   onShot: () => void;
   onKill: () => void;
-  onStateChange: (state: MatchStatesType) => void;
+  onStateChange: (state: GameStateType) => void;
   isCurrentUserTheHost?: boolean;
   remoteGameState?: GameStateType;
 }) {
   // const COUNTDOWN_TIME_TOTAL = 60;
   const COUNTDOWN_TIME_TOTAL = 15;
-  const [currentGameState, setCurrentGameState] = useState<MatchStatesType>(
+  const [currentGameState, setCurrentGameState] = useState<GameStateType>(
     MATCH_STATES.MATCH_READY
   );
   const [countdownTime, setCountdownTime] = useState(0);
