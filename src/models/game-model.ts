@@ -10,7 +10,8 @@ type PlayerDataType = {
 export type GameStateType =
   | 'MATCH_READY'
   | 'MATCH_IN_PROGRESS'
-  | 'MATCH_FINISHED';
+  | 'MATCH_FINISHED'
+  | 'MATCH_CLOSED';
 
 export type GameType = {
   id?: string;
@@ -18,7 +19,6 @@ export type GameType = {
   updatedAt?: number;
   gameState?: GameStateType;
   winnerId?: string;
-  finished?: boolean;
   guestData?: PlayerDataType;
   hostData?: PlayerDataType;
 };

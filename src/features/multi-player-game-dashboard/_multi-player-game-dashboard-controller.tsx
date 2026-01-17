@@ -9,13 +9,12 @@ import { iterate } from 'src/services/iteration-service';
 import { useGameCounterTriggers } from 'src/hooks/game-hooks';
 import { GameStateType } from 'src/models/game-model';
 
-// @TODO: Create a new state to be between the current Match_finished and the boolean property finished
-
 // @TODO: rename match to game here
 export const MATCH_STATES = {
   MATCH_READY: 'MATCH_READY',
   MATCH_IN_PROGRESS: 'MATCH_IN_PROGRESS',
   MATCH_FINISHED: 'MATCH_FINISHED',
+  MATCH_CLOSED: 'MATCH_CLOSED',
 } as const;
 
 // type ValueOf<T> = T[keyof T];

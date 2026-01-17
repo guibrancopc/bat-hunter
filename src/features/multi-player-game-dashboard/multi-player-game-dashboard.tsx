@@ -37,7 +37,7 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
   useEffect(() => {
     if (!isCurrentUserTheHost) return;
 
-    if (currentGame?.winnerId && !currentGame?.finished) {
+    if (currentGame?.winnerId && !isGameClosed(currentGame)) {
       finishGameWithWinner(currentGame, match?.id);
     }
   }, [isCurrentUserTheHost]);
@@ -52,7 +52,7 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
   }, [isCurrentUserTheHost, currentGame]);
 
   // @TODO: remove this. Only for debug purposes
-  // useEffect(() => console.log('currentGame: ', currentGame), [currentGame]);
+  useEffect(() => console.log('currentGame: ', currentGame), [currentGame]);
 
   // Save score data in database
   useEffect(() => {
@@ -76,10 +76,10 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
   }
 
   useEffect(() => {
-    if (currentGame?.winnerId && !currentGame?.finished) {
+    if (currentGame?.winnerId && !isGameClosed(currentGame)) {
       setOpenResultModal(true);
     }
-  }, [currentGame?.winnerId, currentGame?.finished]);
+  }, [currentGame?.winnerId, currentGame?.gameState]);
 
   const onStateChange = (state: GameStateType) => {
     if (isCurrentUserTheHost && !currentGame?.winnerId) {
@@ -126,14 +126,18 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
   );
 }
 
+function isGameClosed(game?: GameType) {
+  return game?.gameState === 'MATCH_CLOSED';
+}
+
 function finishGameWithWinner(game?: GameType, matchId?: string) {
   if (!matchId || !game?.id) return;
 
-  if (!game?.winnerId || game?.finished) return;
+  if (!game?.winnerId || isGameClosed(game)) return;
 
   setGameInFirebase({
     matchId: matchId,
-    data: { id: game?.id, finished: true },
+    data: { id: game?.id, gameState: 'MATCH_CLOSED' },
   });
 }
 

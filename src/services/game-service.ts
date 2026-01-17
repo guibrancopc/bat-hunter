@@ -48,7 +48,10 @@ export function killAllBats() {
 
 export function findCurrentGame(match?: MatchType) {
   const games = match?.games;
-  return games && Object.values(games).find((game) => !game.finished);
+  return (
+    games &&
+    Object.values(games).find((game) => game.gameState !== 'MATCH_CLOSED')
+  );
 }
 
 export function findLastGame(match?: MatchType) {
