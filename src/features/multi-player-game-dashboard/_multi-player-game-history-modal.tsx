@@ -79,11 +79,11 @@ export function MultiPlayerGameHistoryModal({
                       <div>Winner: {calcWinnerName(game?.winnerId)} 🎉</div>
                       <div>
                         {currentUser?.firstName}: {currentData.kills} kills |{' '}
-                        {currentData.shots} shots | {currentData.score} score
+                        {currentData.shots} shots | score: {currentData.score}
                       </div>
                       <div>
                         {opponentUser?.firstName}: {opponentData.kills} kills |{' '}
-                        {opponentData.shots} shots | {opponentData.score} score
+                        {opponentData.shots} shots | score: {opponentData.score}
                       </div>
                     </Gap>
                   </Gutter>
