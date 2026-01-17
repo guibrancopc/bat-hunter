@@ -14,9 +14,11 @@ import {
 } from 'src/models/game-model';
 import { calcFinalScore, findCurrentGame } from 'src/services/game-service';
 import { useIsCurrentUserTheHost } from 'src/hooks/game-hooks';
+import { MultiPlayerGameResultModal } from './_multi-player-game-result-modal';
 
 export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
   const isCurrentUserTheHost = useIsCurrentUserTheHost(match);
+  const [openResultModal, setOpenResultModal] = useState(false);
   const [killCounter, dispatchKillCounter] = useReducer(counterReducer, 0);
   const [shotCounter, dispatchShotCounter] = useReducer(counterReducer, 0);
 
@@ -50,7 +52,7 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
   }, [isCurrentUserTheHost, currentGame]);
 
   // @TODO: remove this. Only for debug purposes
-  useEffect(() => console.log('currentGame: ', currentGame), [currentGame]);
+  // useEffect(() => console.log('currentGame: ', currentGame), [currentGame]);
 
   // Save score data in database
   useEffect(() => {
@@ -73,6 +75,12 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
     dispatchShotCounter('reset');
   }
 
+  useEffect(() => {
+    if (currentGame?.winnerId && !currentGame?.finished) {
+      setOpenResultModal(true);
+    }
+  }, [currentGame?.winnerId, currentGame?.finished]);
+
   const onStateChange = (state: GameStateType) => {
     if (isCurrentUserTheHost && !currentGame?.winnerId) {
       setGameState(match?.id, currentGame?.id, state);
@@ -93,20 +101,28 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
   };
 
   return (
-    <div className="multi-player-game-dashboard">
-      <Card className="multi-player-game-dashboard__card">
-        <Gutter size="md">
-          <MultiPlayerGameDashboardController
-            onKill={() => dispatchKillCounter('add')}
-            onShot={() => dispatchShotCounter('add')}
-            onStateChange={onStateChange}
-            onResetScore={cleanScore}
-            isCurrentUserTheHost={isCurrentUserTheHost}
-            remoteGameState={currentGame?.gameState}
-          />
-        </Gutter>
-      </Card>
-    </div>
+    <>
+      <div className="multi-player-game-dashboard">
+        <Card className="multi-player-game-dashboard__card">
+          <Gutter size="md">
+            <MultiPlayerGameDashboardController
+              onKill={() => dispatchKillCounter('add')}
+              onShot={() => dispatchShotCounter('add')}
+              onStateChange={onStateChange}
+              onResetScore={cleanScore}
+              isCurrentUserTheHost={isCurrentUserTheHost}
+              remoteGameState={currentGame?.gameState}
+            />
+          </Gutter>
+        </Card>
+      </div>
+      <MultiPlayerGameResultModal
+        open={openResultModal}
+        onClose={() => setOpenResultModal(false)}
+        match={match}
+        game={currentGame}
+      />
+    </>
   );
 }
 

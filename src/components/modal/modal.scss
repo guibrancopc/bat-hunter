@@ -1,5 +1,16 @@
 .bh-modal {
+  // display: flex;
+  // justify-content: center;
+
+  position: fixed;
+  height: 100vh;
+  width: 100vw;
+  top: 0px;
+  left: 0px;
+  z-index: 2;
+
   .bh-modal__overlay {
+    position: relative;
     background-color: #222;
     opacity: 0.8;
     position: fixed;
@@ -7,19 +18,38 @@
     left: 0;
     height: 100vh;
     width: 100vw;
-    z-index: 2;
+    z-index: 3;
   }
 
   .bh-modal__container {
+    position: relative;
     border-radius: 8px;
     background-color: #353535;
+    padding: 16px;
     color: #e2e2e2;
+    width: 500px;
+    z-index: 4;
     margin-left: auto;
     margin-right: auto;
-    padding: 16px;
-    position: relative;
-    top: 100px;
-    width: 700px;
-    z-index: 3;
+    top: 30%;
+
+    & header {
+      border-bottom: 1px solid red;
+    }
+
+    & footer {
+      border-top: 1px solid red;
+    }
+
+    .bh-modal__close-button {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background-color: transparent;
+      border: none;
+      color: #e2e2e2;
+      font-size: 16px;
+      cursor: pointer;
+    }
   }
 }
