@@ -3,7 +3,7 @@ import { createBat } from 'src/services/fly-engine-service';
 import { getIsGameModeOn, setBodyOnClick } from 'src/services/game-service';
 import { isShotEnabled, ShotEventType } from 'src/services/shot-service';
 
-export function useMultiPlayerMainDashboardTriggers({
+export function useMultiPlayerGameDashboardCountersHelper({
   onShot,
   onKill,
 }: {

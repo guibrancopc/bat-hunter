@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useReducer, useState } from 'react';
 import './multi-player-game-dashboard.scss';
-import { MultiPlayerGameDashboardMatch } from './_multi-player-main-dashboard-match';
+import { MultiPlayerGameDashboardController } from './_multi-player-game-dashboard-controller';
 import { Card, Gutter } from '@components';
 import { MatchType } from 'src/models/match-model';
 import {
@@ -106,7 +106,7 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
     <div className="multi-player-game-dashboard">
       <Card className="multi-player-game-dashboard__card">
         <Gutter size="md">
-          <MultiPlayerGameDashboardMatch
+          <MultiPlayerGameDashboardController
             onKill={() => dispatchKillCounter('add')}
             onShot={() => dispatchShotCounter('add')}
             onStateChange={onStateChange}

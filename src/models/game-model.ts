@@ -93,6 +93,32 @@ export async function setPlayerDataInFirebase({
   updateData(`matches/${matchId}/games/${gameId}/${player}Data`, _data);
 }
 
+export function setGameWinner(
+  matchId?: string,
+  gameId?: string,
+  winnerId?: string
+) {
+  if (!matchId || !gameId || !winnerId) return;
+
+  setGameInFirebase({
+    matchId: matchId,
+    data: { id: gameId, winnerId },
+  });
+}
+
+export function setGameState(
+  matchId?: string,
+  gameId?: string,
+  gameState?: GameStateType
+) {
+  if (!matchId || !gameId || !gameState) return;
+
+  setGameInFirebase({
+    matchId: matchId,
+    data: { id: gameId, gameState },
+  });
+}
+
 // {
 //   id
 //   createdAt

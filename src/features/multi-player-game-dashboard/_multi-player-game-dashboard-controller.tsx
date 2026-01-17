@@ -6,7 +6,7 @@ import {
 import { killAllBats } from 'src/services/game-service';
 import { Button, ButtonGroup, Gutter, Text } from '@components';
 import { iterate } from 'src/services/iteration-service';
-import { useMultiPlayerMainDashboardTriggers } from './multi-player-main-dashboard-triggers-hook';
+import { useMultiPlayerGameDashboardCountersHelper } from './_multi-player-game-dashboard-helpers';
 import { GameStateType } from 'src/models/game-model';
 
 // @TODO: rename match to game here
@@ -20,7 +20,7 @@ export const MATCH_STATES = {
 
 // type MatchStatesType = ValueOf<typeof MATCH_STATES>;
 
-export function MultiPlayerGameDashboardMatch({
+export function MultiPlayerGameDashboardController({
   onResetScore = () => {},
   onShot = () => {},
   onKill = () => {},
@@ -43,7 +43,7 @@ export function MultiPlayerGameDashboardMatch({
   const [countdownTime, setCountdownTime] = useState(0);
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout>();
   const { createControlledBat, setIsScoreEnabled } =
-    useMultiPlayerMainDashboardTriggers({ onShot, onKill });
+    useMultiPlayerGameDashboardCountersHelper({ onShot, onKill });
 
   useEffect(() => {
     if (!isCurrentUserTheHost && remoteGameState) {
