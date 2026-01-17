@@ -106,6 +106,7 @@ export function MultiPlayerGameDashboardController({
         },
         onChallengeReady: () => setCurrentGameState(GAME_STATES.GAME_READY),
         onChallengeReadyLabel: 'Play again',
+        onOpenHistory,
         onCancel: undefined,
       },
     }),
@@ -143,7 +144,7 @@ export function MultiPlayerGameDashboardController({
           </Button>
         )}
         {currentGameModel.onChallengeReady && isCurrentUserTheHost && (
-          <Button onClick={currentGameModel.onChallengeReady}>
+          <Button onClick={currentGameModel.onChallengeReady} kind="primary">
             {currentGameModel.onChallengeReadyLabel || 'Play'}
           </Button>
         )}

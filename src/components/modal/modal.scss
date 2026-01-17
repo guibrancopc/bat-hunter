@@ -8,6 +8,7 @@
   top: 0px;
   left: 0px;
   z-index: 2;
+  overflow-y: scroll;
 
   .bh-modal__overlay {
     position: relative;
@@ -30,7 +31,8 @@
     z-index: 4;
     margin-left: auto;
     margin-right: auto;
-    top: 30%;
+    margin-top: 100px;
+    margin-bottom: 100px;
 
     & header {
       border-bottom: 1px solid #4e4e4e;
