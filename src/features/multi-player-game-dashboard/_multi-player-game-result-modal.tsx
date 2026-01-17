@@ -19,11 +19,9 @@ export function MultiPlayerGameResultModal({
   match?: MatchType;
   game?: GameType;
 }) {
-  console.log('MODAL OPEN', open);
   const { currentUser } = useAuthContext();
   const [opponentUser, setOpponentUser] = useState<UserSessionType | null>();
   const isCurrentUserTheHost = currentUser?.id === match?.hostId;
-  const isCurrentUserTheWinner = currentUser?.id === game?.winnerId;
 
   useEffect(() => {
     const oponentUserId = isCurrentUserTheHost ? match?.guestId : match?.hostId;
@@ -52,7 +50,7 @@ export function MultiPlayerGameResultModal({
     <Modal open={open} onClose={onClose}>
       <Gutter size="xxl">
         <Title center size="h1" weight="medium">
-          {isCurrentUserTheWinner ? 'You Win! 🎉' : 'You lose! 💔'}
+          {buildTitleMessage(game?.winnerId, currentUser?.id)}
         </Title>
         <Gutter direction="top" size="xl">
           <Gap justify="center">
@@ -70,4 +68,19 @@ export function MultiPlayerGameResultModal({
       </Gutter>
     </Modal>
   );
+}
+
+function buildTitleMessage(winnerId?: string, currentUserId?: string) {
+  const isDraw = winnerId === 'DRAW';
+  const isCurrentUserTheWinner = currentUserId === winnerId;
+
+  if (isDraw) {
+    return 'Same score! 🤝';
+  }
+
+  if (isCurrentUserTheWinner) {
+    return 'You Win! 🎉';
+  }
+
+  return 'You lose! 💔';
 }
