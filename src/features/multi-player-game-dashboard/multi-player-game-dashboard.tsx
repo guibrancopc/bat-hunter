@@ -15,10 +15,12 @@ import {
 import { calcFinalScore, findCurrentGame } from 'src/services/game-service';
 import { useIsCurrentUserTheHost } from 'src/hooks/game-hooks';
 import { MultiPlayerGameResultModal } from './_multi-player-game-result-modal';
+import { MultiPlayerGameHistoryModal } from './_multi-player-game-history-modal';
 
 export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
   const isCurrentUserTheHost = useIsCurrentUserTheHost(match);
   const [openResultModal, setOpenResultModal] = useState(false);
+  const [openHhistoryModal, setOpenHhistoryModal] = useState(false);
   const [killCounter, dispatchKillCounter] = useReducer(counterReducer, 0);
   const [shotCounter, dispatchShotCounter] = useReducer(counterReducer, 0);
 
@@ -108,6 +110,7 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
             <MultiPlayerGameDashboardController
               onKill={() => dispatchKillCounter('add')}
               onShot={() => dispatchShotCounter('add')}
+              onOpenHistory={() => setOpenHhistoryModal(true)}
               onStateChange={onStateChange}
               onResetScore={cleanScore}
               isCurrentUserTheHost={isCurrentUserTheHost}
@@ -121,6 +124,11 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
         onClose={() => setOpenResultModal(false)}
         match={match}
         game={currentGame}
+      />
+      <MultiPlayerGameHistoryModal
+        match={match}
+        open={openHhistoryModal}
+        onClose={() => setOpenHhistoryModal(false)}
       />
     </>
   );
@@ -144,13 +152,13 @@ function finishGameWithWinner(game?: GameType, matchId?: string) {
 function getWinnerId(match?: MatchType) {
   const currentGame = findCurrentGame(match);
   const hostFinalScore = calcFinalScore(
-    currentGame?.hostData?.shotCounter || 0,
-    currentGame?.hostData?.killCounter || 0
+    currentGame?.hostData?.shotCounter,
+    currentGame?.hostData?.killCounter
   );
 
   const guestFinalScore = calcFinalScore(
-    currentGame?.guestData?.shotCounter || 0,
-    currentGame?.guestData?.killCounter || 0
+    currentGame?.guestData?.shotCounter,
+    currentGame?.guestData?.killCounter
   );
 
   return guestFinalScore === hostFinalScore

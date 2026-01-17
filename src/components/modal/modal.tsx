@@ -28,7 +28,7 @@ export function Modal({
           &#x2715;
         </button>
         {header && <header>{header}</header>}
-        <div>{children}</div>
+        <main>{children}</main>
         {footer && <footer>{footer}</footer>}
       </div>
     </div>

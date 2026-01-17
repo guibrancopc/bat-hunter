@@ -37,13 +37,13 @@ export function MultiPlayerGameResultModal({
   const opponentData = isCurrentUserTheHost ? game?.guestData : game?.hostData;
 
   const currentUserFinalScore = calcFinalScore(
-    currentUserData?.shotCounter || 0,
-    currentUserData?.killCounter || 0
+    currentUserData?.shotCounter,
+    currentUserData?.killCounter
   );
 
   const opponentUserFinalScore = calcFinalScore(
-    opponentData?.shotCounter || 0,
-    opponentData?.killCounter || 0
+    opponentData?.shotCounter,
+    opponentData?.killCounter
   );
 
   return (

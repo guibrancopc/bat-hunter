@@ -25,7 +25,6 @@
     position: relative;
     border-radius: 8px;
     background-color: #353535;
-    padding: 16px;
     color: #e2e2e2;
     width: 500px;
     z-index: 4;
@@ -34,11 +33,17 @@
     top: 30%;
 
     & header {
-      border-bottom: 1px solid red;
+      border-bottom: 1px solid #4e4e4e;
+      padding: 16px;
+    }
+
+    & main {
+      padding: 16px;
     }
 
     & footer {
-      border-top: 1px solid red;
+      border-top: 1px solid #4e4e4e;
+      padding: 16px;
     }
 
     .bh-modal__close-button {

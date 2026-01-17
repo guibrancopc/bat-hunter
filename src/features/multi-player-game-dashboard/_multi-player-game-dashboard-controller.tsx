@@ -26,12 +26,14 @@ export function MultiPlayerGameDashboardController({
   onShot = () => {},
   onKill = () => {},
   onStateChange = () => {},
+  onOpenHistory = () => {},
   isCurrentUserTheHost,
   remoteGameState,
 }: {
   onResetScore: () => void;
   onShot: () => void;
   onKill: () => void;
+  onOpenHistory: () => void;
   onStateChange: (state: GameStateType) => void;
   isCurrentUserTheHost?: boolean;
   remoteGameState?: GameStateType;
@@ -68,6 +70,7 @@ export function MultiPlayerGameDashboardController({
           setIsScoreEnabled(false);
         },
         onMatchStart: () => setCurrentGameState(GAME_STATES.GAME_IN_PROGRESS),
+        onOpenHistory,
         onCancel: undefined,
       },
       [GAME_STATES.GAME_IN_PROGRESS]: {
@@ -117,7 +120,7 @@ export function MultiPlayerGameDashboardController({
 
   return (
     <section>
-      <Gutter className="text-center" size="xxl">
+      <Gutter className="text-center" size="lg">
         <Text size="lg">
           {handleGameLabel(countdownTime, currentGameModel.label || '')}
         </Text>
@@ -132,6 +135,11 @@ export function MultiPlayerGameDashboardController({
             }}
           >
             Cancel
+          </Button>
+        )}
+        {currentGameModel.onOpenHistory && (
+          <Button kind="secondary" onClick={currentGameModel.onOpenHistory}>
+            History
           </Button>
         )}
         {currentGameModel.onChallengeReady && isCurrentUserTheHost && (

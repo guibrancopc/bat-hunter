@@ -37,9 +37,9 @@ export function calcAccuracy(shotCounter: number, killCounter: number) {
   return Math.round(raw * 100);
 }
 
-export function calcFinalScore(shotCounter: number, killCounter: number) {
-  const accuracy = calcAccuracy(shotCounter, killCounter);
-  return accuracy * killCounter;
+export function calcFinalScore(shotCounter?: number, killCounter?: number) {
+  const accuracy = calcAccuracy(shotCounter || 0, killCounter || 0);
+  return accuracy * (killCounter || 0);
 }
 
 export function killAllBats() {
@@ -54,12 +54,20 @@ export function findCurrentGame(match?: MatchType) {
 }
 
 export function findLastGame(match?: MatchType) {
-  const games = match?.games;
-  const sortedGames =
-    games &&
-    Object.values(games).sort(
-      (a, b) => (b.createdAt || 0) - (a.createdAt || 0)
-    );
+  const sortedGames = buildGameSortedArray(match?.games);
 
   return sortedGames?.[0];
+}
+
+export function buildGameSortedArray(
+  games?: MatchType['games'],
+  order?: 'ASC' | 'DESC'
+) {
+  if (!games) return null;
+
+  const sortMultiplier = order === 'ASC' ? -1 : 1;
+
+  return Object.values(games).sort(
+    (a, b) => ((b.createdAt || 0) - (a.createdAt || 0)) * sortMultiplier
+  );
 }
