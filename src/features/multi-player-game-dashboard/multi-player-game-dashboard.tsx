@@ -19,13 +19,17 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
   const isCurrentUserTheHost = useIsCurrentUserTheHost(match);
   const [killCounter, dispatchKillCounter] = useReducer(counterReducer, 0);
   const [shotCounter, dispatchShotCounter] = useReducer(counterReducer, 0);
-  const [isGameActive, setIsGameActive] = useState(false);
 
   const currentGame = useMemo(() => {
     if (!match) return;
 
     return findCurrentGame(match);
   }, [match]);
+
+  const isGameInProgress = useMemo(
+    () => currentGame?.gameState === 'MATCH_IN_PROGRESS',
+    [currentGame?.gameState]
+  );
 
   // Finish game with winner when the page loads
   useEffect(() => {
@@ -52,7 +56,7 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
   useEffect(() => {
     console.log('kills x shots: ', `${killCounter} x ${shotCounter}`);
 
-    if (match?.id && currentGame?.id && isGameActive)
+    if (match?.id && currentGame?.id && isGameInProgress)
       setPlayerDataInFirebase({
         matchId: match.id,
         gameId: currentGame?.id,
@@ -75,31 +79,17 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
     }
 
     if (state === 'MATCH_READY') {
-      setIsGameActive(false);
-
       if (isCurrentUserTheHost) {
         finishGameWithWinner(currentGame, match?.id);
       }
     }
 
-    if (state === 'MATCH_IN_PROGRESS') {
-      setIsGameActive(true);
-    }
-
     if (state === 'MATCH_FINISHED') {
-      setIsGameActive(false);
       if (isCurrentUserTheHost) {
         const winnerId = getWinnerId(match);
         setGameWinner(match?.id, currentGame?.id, winnerId);
       }
     }
-
-    // READY
-    // - Find Open Game or Create Game
-    // ON GOING
-    // - Store each kill and shot
-    // FINISHED
-    // - Store the winner
   };
 
   return (
