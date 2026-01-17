@@ -10,16 +10,16 @@ import { useGameCounterTriggers } from 'src/hooks/game-hooks';
 import { GameStateType } from 'src/models/game-model';
 
 // @TODO: rename match to game here
-export const MATCH_STATES = {
-  MATCH_READY: 'MATCH_READY',
-  MATCH_IN_PROGRESS: 'MATCH_IN_PROGRESS',
-  MATCH_FINISHED: 'MATCH_FINISHED',
-  MATCH_CLOSED: 'MATCH_CLOSED',
+export const GAME_STATES = {
+  GAME_READY: 'GAME_READY',
+  GAME_IN_PROGRESS: 'GAME_IN_PROGRESS',
+  GAME_FINISHED: 'GAME_FINISHED',
+  GAME_CLOSED: 'GAME_CLOSED',
 } as const;
 
 // type ValueOf<T> = T[keyof T];
 
-// type MatchStatesType = ValueOf<typeof MATCH_STATES>;
+// type MatchStatesType = ValueOf<typeof GAME_STATES>;
 
 export function MultiPlayerGameDashboardController({
   onResetScore = () => {},
@@ -39,7 +39,7 @@ export function MultiPlayerGameDashboardController({
   // const COUNTDOWN_TIME_TOTAL = 60;
   const COUNTDOWN_TIME_TOTAL = 15;
   const [currentGameState, setCurrentGameState] = useState<GameStateType>(
-    MATCH_STATES.MATCH_READY
+    GAME_STATES.GAME_READY
   );
   const [countdownTime, setCountdownTime] = useState(0);
   const [intervalId, setIntervalId] = useState<NodeJS.Timeout>();
@@ -60,17 +60,17 @@ export function MultiPlayerGameDashboardController({
 
   const GAME_MODE = useMemo(
     () => ({
-      [MATCH_STATES.MATCH_READY]: {
+      [GAME_STATES.GAME_READY]: {
         label: 'Get Ready!',
         onStart: () => {
           onResetScore();
           killAllBats();
           setIsScoreEnabled(false);
         },
-        onMatchStart: () => setCurrentGameState(MATCH_STATES.MATCH_IN_PROGRESS),
+        onMatchStart: () => setCurrentGameState(GAME_STATES.GAME_IN_PROGRESS),
         onCancel: undefined,
       },
-      [MATCH_STATES.MATCH_IN_PROGRESS]: {
+      [GAME_STATES.GAME_IN_PROGRESS]: {
         onStart: () => {
           iterate(30, createControlledBat);
           setCountdownTime(COUNTDOWN_TIME_TOTAL);
@@ -81,7 +81,7 @@ export function MultiPlayerGameDashboardController({
 
           const id = setInterval(() => {
             if (counter <= 0) {
-              setCurrentGameState(MATCH_STATES.MATCH_FINISHED);
+              setCurrentGameState(GAME_STATES.GAME_FINISHED);
               clearInterval(id);
             }
 
@@ -92,16 +92,16 @@ export function MultiPlayerGameDashboardController({
           setIntervalId(id);
         },
         onAddBats: createControlledBat,
-        onCancel: () => setCurrentGameState(MATCH_STATES.MATCH_READY),
+        onCancel: () => setCurrentGameState(GAME_STATES.GAME_READY),
       },
-      [MATCH_STATES.MATCH_FINISHED]: {
+      [GAME_STATES.GAME_FINISHED]: {
         label: "Time's Up!",
         onStart: () => {
           killAllBats();
           playBackgroundMusic();
           setIsScoreEnabled(false);
         },
-        onChallengeReady: () => setCurrentGameState(MATCH_STATES.MATCH_READY),
+        onChallengeReady: () => setCurrentGameState(GAME_STATES.GAME_READY),
         onChallengeReadyLabel: 'Play again',
         onCancel: undefined,
       },
@@ -176,7 +176,7 @@ function handleGameLabel(countdownTime: number, label: string) {
 -- Display Button: Challenge Mode
 -- Reset score
 
-- MATCH_READY
+- GAME_READY
 -- Display: Get Ready!
 -- Display Button: Free Play | Start
 -- Reset score
@@ -184,12 +184,12 @@ function handleGameLabel(countdownTime: number, label: string) {
 -- Block shot and kill metrics.
 -- Block "Send Bat" button.
 
-- MATCH_IN_PROGRESS
+- GAME_IN_PROGRESS
 -- Display: [Countdown]
 -- Block "Reset", "Close", "Clean Bats", "Reset" buttons.
 -- change music - find something more intense
 
-- MATCH_FINISHED
+- GAME_FINISHED
 -- Display: Time's up!
 -- Display Button: Free Play | Start
 -- Kill All Bats

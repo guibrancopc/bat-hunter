@@ -29,7 +29,7 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
   }, [match]);
 
   const isGameInProgress = useMemo(
-    () => currentGame?.state === 'MATCH_IN_PROGRESS',
+    () => currentGame?.state === 'GAME_IN_PROGRESS',
     [currentGame?.state]
   );
 
@@ -86,13 +86,13 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
       setGameState(match?.id, currentGame?.id, state);
     }
 
-    if (state === 'MATCH_READY') {
+    if (state === 'GAME_READY') {
       if (isCurrentUserTheHost) {
         finishGameWithWinner(currentGame, match?.id);
       }
     }
 
-    if (state === 'MATCH_FINISHED') {
+    if (state === 'GAME_FINISHED') {
       if (isCurrentUserTheHost) {
         const winnerId = getWinnerId(match);
         setGameWinner(match?.id, currentGame?.id, winnerId);
@@ -127,7 +127,7 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
 }
 
 function isGameClosed(game?: GameType) {
-  return game?.state === 'MATCH_CLOSED';
+  return game?.state === 'GAME_CLOSED';
 }
 
 function finishGameWithWinner(game?: GameType, matchId?: string) {
@@ -137,7 +137,7 @@ function finishGameWithWinner(game?: GameType, matchId?: string) {
 
   setGameInFirebase({
     matchId: matchId,
-    data: { id: game?.id, state: 'MATCH_CLOSED' },
+    data: { id: game?.id, state: 'GAME_CLOSED' },
   });
 }
 

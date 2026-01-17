@@ -8,10 +8,10 @@ type PlayerDataType = {
 };
 
 export type GameStateType =
-  | 'MATCH_READY'
-  | 'MATCH_IN_PROGRESS'
-  | 'MATCH_FINISHED'
-  | 'MATCH_CLOSED';
+  | 'GAME_READY'
+  | 'GAME_IN_PROGRESS'
+  | 'GAME_FINISHED'
+  | 'GAME_CLOSED';
 
 export type GameType = {
   id?: string;
@@ -42,7 +42,7 @@ export function createGameInFirebase({
     id,
     createdAt: Date.now(),
     updatedAt: Date.now(),
-    state: 'MATCH_READY' as const,
+    state: 'GAME_READY' as const,
   };
 
   setGameInFirebase({ matchId, data })
