@@ -8,18 +8,18 @@ import {
   GameStateType,
   GameType,
   setGameInFirebase,
+  setGameState,
+  setGameWinner,
   setPlayerDataInFirebase,
 } from 'src/models/game-model';
 import { calcFinalScore, findCurrentGame } from 'src/services/game-service';
 import { useIsCurrentUserTheHost } from 'src/hooks/game-hooks';
 
 export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
+  const isCurrentUserTheHost = useIsCurrentUserTheHost(match);
   const [killCounter, dispatchKillCounter] = useReducer(counterReducer, 0);
   const [shotCounter, dispatchShotCounter] = useReducer(counterReducer, 0);
   const [isGameActive, setIsGameActive] = useState(false);
-
-  const isCurrentUserTheHost = useIsCurrentUserTheHost(match);
-  console.log('isCurrentUserTheHost', isCurrentUserTheHost);
 
   const currentGame = useMemo(() => {
     if (!match) return;
@@ -90,7 +90,7 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
       setIsGameActive(false);
       if (isCurrentUserTheHost) {
         const winnerId = getWinnerId(match);
-        setWinner(match?.id, currentGame?.id, winnerId);
+        setGameWinner(match?.id, currentGame?.id, winnerId);
       }
     }
 
@@ -107,9 +107,9 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
       <Card className="multi-player-game-dashboard__card">
         <Gutter size="md">
           <MultiPlayerGameDashboardMatch
-            onStateChange={onStateChange}
             onKill={() => dispatchKillCounter('add')}
             onShot={() => dispatchShotCounter('add')}
+            onStateChange={onStateChange}
             onResetScore={cleanScore}
             isCurrentUserTheHost={isCurrentUserTheHost}
             remoteGameState={currentGame?.gameState}
@@ -148,28 +148,6 @@ function getWinnerId(match?: MatchType) {
     : guestFinalScore > hostFinalScore
       ? match?.guestId
       : match?.hostId;
-}
-
-function setWinner(matchId?: string, gameId?: string, winnerId?: string) {
-  if (!matchId || !gameId || !winnerId) return;
-
-  setGameInFirebase({
-    matchId: matchId,
-    data: { id: gameId, winnerId },
-  });
-}
-
-function setGameState(
-  matchId?: string,
-  gameId?: string,
-  gameState?: GameStateType
-) {
-  if (!matchId || !gameId || !gameState) return;
-
-  setGameInFirebase({
-    matchId: matchId,
-    data: { id: gameId, gameState },
-  });
 }
 
 function findOrCreateGame(match?: MatchType) {
