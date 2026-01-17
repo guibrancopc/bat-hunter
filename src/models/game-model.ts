@@ -17,7 +17,7 @@ export type GameType = {
   id?: string;
   createdAt?: number;
   updatedAt?: number;
-  gameState?: GameStateType;
+  state?: GameStateType;
   winnerId?: string;
   guestData?: PlayerDataType;
   hostData?: PlayerDataType;
@@ -42,7 +42,7 @@ export function createGameInFirebase({
     id,
     createdAt: Date.now(),
     updatedAt: Date.now(),
-    gameState: 'MATCH_READY' as const,
+    state: 'MATCH_READY' as const,
   };
 
   setGameInFirebase({ matchId, data })
@@ -109,13 +109,13 @@ export function setGameWinner(
 export function setGameState(
   matchId?: string,
   gameId?: string,
-  gameState?: GameStateType
+  state?: GameStateType
 ) {
-  if (!matchId || !gameId || !gameState) return;
+  if (!matchId || !gameId || !state) return;
 
   setGameInFirebase({
     matchId: matchId,
-    data: { id: gameId, gameState },
+    data: { id: gameId, state },
   });
 }
 
@@ -127,7 +127,7 @@ export function setGameState(
 //   games {
 //     id
 //     createdAt
-//     gameState
+//     state
 //     winnerId
 //     guestData {
 //       shotCounter

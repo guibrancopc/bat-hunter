@@ -29,8 +29,8 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
   }, [match]);
 
   const isGameInProgress = useMemo(
-    () => currentGame?.gameState === 'MATCH_IN_PROGRESS',
-    [currentGame?.gameState]
+    () => currentGame?.state === 'MATCH_IN_PROGRESS',
+    [currentGame?.state]
   );
 
   // Finish game with winner when the page loads
@@ -79,7 +79,7 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
     if (currentGame?.winnerId && !isGameClosed(currentGame)) {
       setOpenResultModal(true);
     }
-  }, [currentGame?.winnerId, currentGame?.gameState]);
+  }, [currentGame?.winnerId, currentGame?.state]);
 
   const onStateChange = (state: GameStateType) => {
     if (isCurrentUserTheHost && !currentGame?.winnerId) {
@@ -111,7 +111,7 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
               onStateChange={onStateChange}
               onResetScore={cleanScore}
               isCurrentUserTheHost={isCurrentUserTheHost}
-              remoteGameState={currentGame?.gameState}
+              remoteGameState={currentGame?.state}
             />
           </Gutter>
         </Card>
@@ -127,7 +127,7 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
 }
 
 function isGameClosed(game?: GameType) {
-  return game?.gameState === 'MATCH_CLOSED';
+  return game?.state === 'MATCH_CLOSED';
 }
 
 function finishGameWithWinner(game?: GameType, matchId?: string) {
@@ -137,7 +137,7 @@ function finishGameWithWinner(game?: GameType, matchId?: string) {
 
   setGameInFirebase({
     matchId: matchId,
-    data: { id: game?.id, gameState: 'MATCH_CLOSED' },
+    data: { id: game?.id, state: 'MATCH_CLOSED' },
   });
 }
 
