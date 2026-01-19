@@ -46,14 +46,7 @@ export async function setUserDataInFirebase(
 
 export function getUserDataReactivelyFromFirebase(
   id: string,
-  cb: () => UserSessionType
+  cb: (userData: UserSessionType) => void
 ) {
   getReactively('users/' + id, cb);
-}
-
-export function getUserLastPulseReactivelyFromFirebase(
-  id: string,
-  cb: (lastPulseAt: number | null) => void
-) {
-  getReactively('users/' + id + '/lastPulseAt', cb);
 }

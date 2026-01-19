@@ -7,6 +7,7 @@ import { GuestStatus } from 'src/components/guest-status';
 import { MatchType } from 'src/models/match-model';
 import {
   getUserDataFromFirebase,
+  getUserDataReactivelyFromFirebase,
   getUserLastPulseReactivelyFromFirebase,
 } from 'src/models/user-model';
 import { useEffect, useMemo, useState } from 'react';
@@ -19,10 +20,7 @@ export function MultiPlayerOpponentDashboardWithMatch({
   match?: MatchType | null;
 }) {
   const { currentUser } = useAuthContext();
-  const [oponentUser, setOponentUser] = useState<UserSessionType | null>(null);
-  const [oponentLastPulseAt, setOponentLastPulseAt] = useState<number | null>(
-    null
-  );
+  const [oponentUser, setOponentUser] = useState<UserSessionType>();
 
   const amIHost = useMemo(
     () => currentUser?.id === match?.hostId,
@@ -33,18 +31,9 @@ export function MultiPlayerOpponentDashboardWithMatch({
     const oponentUserId = amIHost ? match?.guestId : match?.hostId;
 
     if (oponentUserId) {
-      getUserDataFromFirebase(oponentUserId).then(setOponentUser);
+      getUserDataReactivelyFromFirebase(oponentUserId, setOponentUser);
     }
   }, [match?.hostId]);
-
-  useEffect(() => {
-    if (oponentUser?.id) {
-      getUserLastPulseReactivelyFromFirebase(
-        oponentUser.id,
-        setOponentLastPulseAt
-      );
-    }
-  }, [oponentUser?.id]);
 
   const { shotCounter, killCounter } = useGameCounters({
     match: match || undefined,
@@ -57,7 +46,10 @@ export function MultiPlayerOpponentDashboardWithMatch({
   return (
     <div className="multi-player-guest-dashboard-with-match">
       <div className="status-slot">
-        <GuestStatus lastPulseAt={oponentLastPulseAt || undefined} />
+        <GuestStatus
+          lastClickAt={oponentUser?.lastClickAt}
+          away={oponentUser?.away}
+        />
       </div>
       <Gutter size="md">
         <MultiPlayerOpponentDashboardScore

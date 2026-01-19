@@ -32,7 +32,8 @@ export type UserSessionType = {
   tokenId?: string;
   tokenCreatedAt?: number;
   tokenExpiresAt?: number;
-  lastPulseAt?: number;
+  lastClickAt?: number;
+  away?: boolean;
 };
 
 const thirtyDays = 30 * 24 * 60 * 60 * 1000;
@@ -51,7 +52,7 @@ export function verboseJwt(token: string) {
       picture: jwt.picture,
       tokenCreatedAt: jwt.iat * 1000,
       tokenExpiresAt: jwt.iat * 1000 + thirtyDays,
-      lastPulseAt: Date.now(),
+      lastClickAt: Date.now(),
     }
   );
 }

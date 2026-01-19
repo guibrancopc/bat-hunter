@@ -1,7 +1,13 @@
 import './guest-status.scss';
 
-export function GuestStatus({ lastPulseAt }: { lastPulseAt?: number }) {
-  const status = calcStatus(lastPulseAt);
+export function GuestStatus({
+  lastClickAt,
+  away,
+}: {
+  lastClickAt?: number;
+  away?: boolean;
+}) {
+  const status = calcStatus(lastClickAt, away);
 
   const colors = {
     online: 'green',
@@ -22,18 +28,20 @@ export function GuestStatus({ lastPulseAt }: { lastPulseAt?: number }) {
   );
 }
 
-function calcStatus(timestamp?: number): 'away' | 'online' | 'offline' {
+function calcStatus(
+  lastClickAt?: number,
+  away?: boolean
+): 'away' | 'online' | 'offline' {
   const now = Date.now();
-  const diff = now - (timestamp || 0);
+  const diff = now - (lastClickAt || 0);
 
-  const offlineThreshold = 300 * 1000;
-  const awayThreashold = 60 * 1000;
+  const OFFLINE_THRESHOLD = 5 * 60 * 1000; // 5min
 
-  if (!timestamp || diff >= offlineThreshold) {
+  if (!lastClickAt || diff >= OFFLINE_THRESHOLD) {
     return 'offline';
   }
 
-  if (diff >= awayThreashold && diff < offlineThreshold) {
+  if (away) {
     return 'away';
   }
 
