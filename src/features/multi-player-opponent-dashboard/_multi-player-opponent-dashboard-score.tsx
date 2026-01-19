@@ -2,12 +2,12 @@ import { Gutter, Text, Title } from '@components';
 import { Gap } from 'src/components/gap';
 
 export function MultiPlayerOpponentDashboardScore({
-  oponentName,
+  opponentName,
   killCounter = 0,
   accuracy = 100,
   finalScore = 0,
 }: {
-  oponentName?: string;
+  opponentName?: string;
   killCounter?: number;
   accuracy?: number;
   finalScore?: number;
@@ -15,8 +15,8 @@ export function MultiPlayerOpponentDashboardScore({
   return (
     <section className="bat-game-score-section">
       <div>
-        {oponentName ? (
-          <Title size="h4">{oponentName}'s Score</Title>
+        {opponentName ? (
+          <Title size="h4">{opponentName}'s Score</Title>
         ) : (
           <Title size="h4">Loading...</Title>
         )}

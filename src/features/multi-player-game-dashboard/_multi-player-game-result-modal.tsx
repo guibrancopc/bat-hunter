@@ -24,10 +24,12 @@ export function MultiPlayerGameResultModal({
   const isCurrentUserTheHost = currentUser?.id === match?.hostId;
 
   useEffect(() => {
-    const oponentUserId = isCurrentUserTheHost ? match?.guestId : match?.hostId;
+    const opponentUserId = isCurrentUserTheHost
+      ? match?.guestId
+      : match?.hostId;
 
-    if (oponentUserId) {
-      getUserDataFromFirebase(oponentUserId).then(setOpponentUser);
+    if (opponentUserId) {
+      getUserDataFromFirebase(opponentUserId).then(setOpponentUser);
     }
   }, [match?.hostId]);
 
