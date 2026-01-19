@@ -5,6 +5,7 @@ import {
 } from 'src/services/firebase-service';
 import { v7 as generateUuid } from 'uuid';
 import { GameType } from './game-model';
+import { MessageType } from './chat-model';
 
 export type MatchType = {
   id: string;
@@ -13,6 +14,7 @@ export type MatchType = {
   createdAt?: number;
   currentGameId?: string;
   games?: GameType[];
+  messages?: MessageType[];
 };
 
 export function getMatchInFirebase(id: string): Promise<MatchType | null> {
@@ -29,7 +31,7 @@ export function createMatchInFirebase({ hostId }: { hostId?: string }) {
 
 export async function setMatchInFirebase(data: MatchType) {
   if (!data?.id) {
-    console.error('setMatchInFirebase::ERROR: no user id was provided');
+    console.error('setMatchInFirebase::ERROR: no match id was provided');
     return;
   }
 

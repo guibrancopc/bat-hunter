@@ -48,13 +48,13 @@ export function getReactively(path: string, cb: (data: any) => void) {
 }
 
 export function setData(path: string, data: any) {
-  set(ref(database, path), data);
+  return set(ref(database, path), data);
 }
 
 export function updateData(path: string, data: any) {
-  update(ref(database, path), data);
+  return update(ref(database, path), data);
 }
 
 export function removeData(path: string) {
-  remove(ref(database, path));
+  return remove(ref(database, path));
 }

@@ -54,7 +54,7 @@ export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
   }, [isCurrentUserTheHost, currentGame]);
 
   // @TODO: remove this. Only for debug purposes
-  useEffect(() => console.log('currentGame: ', currentGame), [currentGame]);
+  // useEffect(() => console.log('currentGame: ', currentGame), [currentGame]);
 
   // Save score data in database
   useEffect(() => {
