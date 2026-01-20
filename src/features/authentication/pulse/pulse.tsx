@@ -31,7 +31,7 @@ export function Pulse() {
 }
 
 function onEveryUserClick(cb: () => void) {
-  window.document.addEventListener('click', cb);
+  window.addEventListener('click', cb);
 }
 
 function onBlur(cb: () => void) {

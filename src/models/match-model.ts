@@ -5,7 +5,7 @@ import {
 } from 'src/services/firebase-service';
 import { v7 as generateUuid } from 'uuid';
 import { GameType } from './game-model';
-import { MessageType } from './chat-model';
+import { MessageType } from './messages-model';
 
 export type MatchType = {
   id: string;
