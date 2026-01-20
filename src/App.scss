@@ -31,6 +31,10 @@ a:focus {
   font-weight: 500;
 }
 
+div {
+  box-sizing: border-box;
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
     color: #213547;

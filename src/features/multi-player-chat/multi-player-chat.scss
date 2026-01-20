@@ -1,0 +1,35 @@
+.multi-player-chat {
+  border: transparent;
+  position: fixed;
+  bottom: 0px;
+  left: 24px;
+  width: 260px;
+  border-radius: 8px 8px 0 0;
+
+  header {
+    cursor: pointer;
+    border-radius: 8px 8px 0 0;
+    background-color: #353535;
+    padding: 8px;
+  }
+
+  .multi-player-chat__collapse {
+    max-height: 0px;
+    overflow: hidden;
+    transition: max-height 0.2s ease-in-out;
+
+    &.open {
+      max-height: 300px;
+    }
+  }
+
+  main {
+    padding: 8px;
+    background-color: #585858;
+  }
+
+  footer {
+    padding: 8px;
+    background-color: #585858;
+  }
+}

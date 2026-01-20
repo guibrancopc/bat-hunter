@@ -4,23 +4,24 @@ import { v7 as generateUuid } from 'uuid';
 export type MessageType = {
   id?: string;
   createdAt?: number;
-  userId?: string;
+  authorId?: string;
+  readerId?: string;
   message?: string;
 };
 
 export async function createMessageInFirebase({
   matchId,
-  userId,
+  authorId,
   message,
   onCreated,
 }: {
   matchId?: string;
-  userId?: string;
+  authorId?: string;
   message?: string;
   onCreated?: (gameId: string) => void;
   onError?: (error: string) => void;
 }) {
-  if (!matchId || !userId || !message) {
+  if (!matchId || !authorId || !message) {
     console.error('createMessageInFirebase::ERROR: missing required paramters');
     return;
   }
@@ -29,7 +30,7 @@ export async function createMessageInFirebase({
   const data = {
     id,
     createdAt: Date.now(),
-    userId,
+    authorId,
     message,
   };
 

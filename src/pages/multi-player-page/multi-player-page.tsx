@@ -11,6 +11,7 @@ import {
   MatchType,
 } from 'src/models/match-model';
 import { MultiPlayerGameDashboard } from 'src/features/multi-player-game-dashboard';
+import { MultiPlayerChat } from 'src/features/multi-player-chat';
 
 export function MultiPlayerPage() {
   const { currentUser } = useAuthContext();
@@ -47,6 +48,7 @@ export function MultiPlayerPage() {
       <MultiPlayerMainDashboard match={currentMatch} />
       <MultiPlayerOpponentDashboard match={currentMatch} />
       <MultiPlayerGameDashboard match={currentMatch} />
+      <MultiPlayerChat match={currentMatch} />
       <MusicToggle />
     </div>
   );

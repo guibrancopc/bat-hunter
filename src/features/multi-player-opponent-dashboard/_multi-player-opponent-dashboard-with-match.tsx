@@ -16,6 +16,8 @@ export function MultiPlayerOpponentDashboardWithMatch({
   match?: MatchType | null;
 }) {
   const { currentUser } = useAuthContext();
+
+  // @TODO: create a context to manage opponent user data
   const [opponentUser, setOpponentUser] = useState<UserSessionType>();
 
   const amIHost = useMemo(
