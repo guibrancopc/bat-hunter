@@ -1,19 +1,39 @@
 .bh-text {
   margin: 0;
 
-  &.bh-text__size--sm {
+  &.bh-text--block {
+    display: block;
+  }
+
+  &.bh-text--secondary {
+    color: #ccc;
+  }
+
+  &.bh-text__size--xxs {
+    font-size: 11px;
+  }
+
+  &.bh-text__size--xs {
     font-size: 12px;
   }
 
+  &.bh-text__size--sm {
+    font-size: 16px;
+  }
+
   &.bh-text__size--md {
-    font-size: 24px;
+    font-size: 20px;
   }
 
   &.bh-text__size--lg {
-    font-size: 32px;
+    font-size: 24px;
   }
 
   &.bh-text__size--xl {
+    font-size: 32px;
+  }
+
+  &.bh-text__size--xxl {
     font-size: 64px;
   }
 
@@ -25,5 +45,13 @@
   }
   &.bh-text__weight--bold {
     font-weight: 800;
+  }
+
+  &.bh-text__align--center {
+    text-align: center;
+  }
+
+  &.bh-text__align--right {
+    text-align: right;
   }
 }

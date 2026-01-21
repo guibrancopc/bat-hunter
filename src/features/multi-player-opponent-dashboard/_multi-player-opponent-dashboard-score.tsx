@@ -22,7 +22,7 @@ export function MultiPlayerOpponentDashboardScore({
         )}
         <div className="text-center">
           <Gutter size="lg">
-            <Text size="xl">{killCounter}</Text>
+            <Text size="xxl">{killCounter}</Text>
           </Gutter>
         </div>
       </div>

@@ -4,9 +4,10 @@ import { useEffect, useMemo, useState } from 'react';
 import { getUserDataReactivelyFromFirebase } from 'src/models/user-model';
 import { MatchType } from 'src/models/match-model';
 import { UserSessionType } from 'src/services/authentication-service';
-import { Input } from 'src/components';
+import { Input, Text } from 'src/components';
 import clsx from 'clsx';
 import { TextArea } from 'src/components/text-area/text-area';
+import { Gap } from 'src/components/gap';
 
 export function MultiPlayerChat({ match }: { match?: MatchType }) {
   const [chatOpen, setChatOpen] = useState(false);
@@ -15,6 +16,8 @@ export function MultiPlayerChat({ match }: { match?: MatchType }) {
 
   // @TODO: create a context to manage opponent user data
   const [opponentUser, setOpponentUser] = useState<UserSessionType>();
+
+  useEffect(scrollTopBottom, [chatOpen]);
 
   const amIHost = useMemo(
     () => currentUser?.id === match?.hostId,
@@ -35,7 +38,67 @@ export function MultiPlayerChat({ match }: { match?: MatchType }) {
       <section
         className={clsx('multi-player-chat__collapse', { open: chatOpen })}
       >
-        <main>Talks</main>
+        <main className="multi-player-chat__container">
+          <div className="multi-player-chat__scroll-cotainer">
+            <Gap vertical>
+              <ChatMessage
+                authorName="Jose"
+                text="Hey how"
+                timestamp={1768958272156}
+              />
+              <ChatMessage
+                self
+                authorName="Jose"
+                text="Let's Go"
+                timestamp={1769958272156}
+              />{' '}
+              <ChatMessage
+                authorName="Jose"
+                text="Hey how"
+                timestamp={1768958272156}
+              />
+              <ChatMessage
+                self
+                authorName="Jose"
+                text="Let's Go"
+                timestamp={1769958272156}
+              />{' '}
+              <ChatMessage
+                authorName="Jose"
+                text="Hey how"
+                timestamp={1768958272156}
+              />
+              <ChatMessage
+                self
+                authorName="Jose"
+                text="Let's Go"
+                timestamp={1769958272156}
+              />{' '}
+              <ChatMessage
+                authorName="Jose"
+                text="Hey how"
+                timestamp={1768958272156}
+              />
+              <ChatMessage
+                self
+                authorName="Jose"
+                text="Let's Go"
+                timestamp={1769958272156}
+              />{' '}
+              <ChatMessage
+                authorName="Jose"
+                text="Hey how"
+                timestamp={1768958272156}
+              />
+              <ChatMessage
+                self
+                authorName="Jose"
+                text="Let's Go"
+                timestamp={1769958272156}
+              />
+            </Gap>
+          </div>
+        </main>
         <footer>
           <TextArea name="chat-input" />
         </footer>
@@ -44,16 +107,41 @@ export function MultiPlayerChat({ match }: { match?: MatchType }) {
   );
 }
 
-function Message({
+function scrollTopBottom() {
+  const container = document.querySelector('.multi-player-chat main');
+
+  if (container) {
+    container.scrollTop = container?.scrollHeight;
+  }
+}
+
+function ChatMessage({
   text,
-  author,
+  authorName,
   timestamp,
   self,
 }: {
   text: string;
-  author: string;
   timestamp: number;
-  self: boolean;
+  authorName?: string;
+  self?: boolean;
 }) {
-  return <></>;
+  const datetime = new Date(timestamp);
+  const fullDatetimeHumanized = datetime.toLocaleString();
+  const timeHumanized = fullDatetimeHumanized.split(', ')[1];
+  const name = self ? 'You' : authorName;
+  const align = self ? 'right' : undefined;
+
+  return (
+    <div className="chat-message">
+      <span>
+        <Text block size="sm" align={align}>
+          {text}
+        </Text>
+        <Text secondary size="xxs" align={align}>
+          {name}, <span title={fullDatetimeHumanized}>{timeHumanized}</span>
+        </Text>
+      </span>
+    </div>
+  );
 }
