@@ -16,7 +16,7 @@ export function Text({
   secondary?: boolean;
   size?: 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxs';
   weight?: 'light' | 'medium' | 'bold';
-  align?: 'center' | 'right';
+  align?: 'left' | 'center' | 'right';
 }>) {
   const _block = block || !!align;
 

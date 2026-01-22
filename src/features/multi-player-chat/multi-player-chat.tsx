@@ -1,23 +1,31 @@
 import './multi-player-chat.scss';
 import { useAuthContext } from 'src/features/authentication';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { getUserDataReactivelyFromFirebase } from 'src/models/user-model';
 import { MatchType } from 'src/models/match-model';
 import { UserSessionType } from 'src/services/authentication-service';
-import { Input, Text } from 'src/components';
+import { Text } from 'src/components';
 import clsx from 'clsx';
 import { TextArea } from 'src/components/text-area/text-area';
 import { Gap } from 'src/components/gap';
+import { createMessageInFirebase } from 'src/models/message-model';
+import { buildArray } from 'src/services/array-service';
 
 export function MultiPlayerChat({ match }: { match?: MatchType }) {
+  const chatScrollContainerRef = useRef<HTMLElement | null>(null);
   const [chatOpen, setChatOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [currentMessage, setCurrentMessage] = useState<string | undefined>();
   const { currentUser } = useAuthContext();
   const messages = match?.messages;
 
   // @TODO: create a context to manage opponent user data
   const [opponentUser, setOpponentUser] = useState<UserSessionType>();
 
-  useEffect(scrollTopBottom, [chatOpen]);
+  useEffect(
+    () => scrollTopBottom(chatScrollContainerRef.current),
+    [chatOpen, messages]
+  );
 
   const amIHost = useMemo(
     () => currentUser?.id === match?.hostId,
@@ -32,84 +40,72 @@ export function MultiPlayerChat({ match }: { match?: MatchType }) {
     }
   }, [match?.hostId]);
 
+  function saveMessage() {
+    setIsSubmitting(true);
+    createMessageInFirebase({
+      matchId: match?.id,
+      authorId: currentUser?.id,
+      message: currentMessage,
+    })
+      .then(() => {
+        setCurrentMessage('');
+        scrollTopBottom(chatScrollContainerRef.current);
+      })
+      .catch((e) => {
+        console.error('MultiPlayerChat::Error: Message could not be saved', e);
+      })
+      .finally(() => setIsSubmitting(false));
+  }
+
+  const messagesArray = buildArray(messages);
+
   return (
     <div className="multi-player-chat">
-      <header onClick={() => setChatOpen(!chatOpen)}>Chat (12)</header>
+      <header onClick={() => setChatOpen(!chatOpen)}>
+        Chat ({messagesArray?.length})
+      </header>
       <section
         className={clsx('multi-player-chat__collapse', { open: chatOpen })}
       >
-        <main className="multi-player-chat__container">
+        <main
+          ref={chatScrollContainerRef}
+          className="multi-player-chat__container"
+        >
           <div className="multi-player-chat__scroll-cotainer">
-            <Gap vertical>
-              <ChatMessage
-                authorName="Jose"
-                text="Hey how"
-                timestamp={1768958272156}
-              />
-              <ChatMessage
-                self
-                authorName="Jose"
-                text="Let's Go"
-                timestamp={1769958272156}
-              />{' '}
-              <ChatMessage
-                authorName="Jose"
-                text="Hey how"
-                timestamp={1768958272156}
-              />
-              <ChatMessage
-                self
-                authorName="Jose"
-                text="Let's Go"
-                timestamp={1769958272156}
-              />{' '}
-              <ChatMessage
-                authorName="Jose"
-                text="Hey how"
-                timestamp={1768958272156}
-              />
-              <ChatMessage
-                self
-                authorName="Jose"
-                text="Let's Go"
-                timestamp={1769958272156}
-              />{' '}
-              <ChatMessage
-                authorName="Jose"
-                text="Hey how"
-                timestamp={1768958272156}
-              />
-              <ChatMessage
-                self
-                authorName="Jose"
-                text="Let's Go"
-                timestamp={1769958272156}
-              />{' '}
-              <ChatMessage
-                authorName="Jose"
-                text="Hey how"
-                timestamp={1768958272156}
-              />
-              <ChatMessage
-                self
-                authorName="Jose"
-                text="Let's Go"
-                timestamp={1769958272156}
-              />
+            <Gap vertical size="md">
+              {messagesArray.map((message) => {
+                const isSelf = message?.authorId === currentUser?.id;
+                const name = isSelf ? currentUser?.name : opponentUser?.name;
+
+                return (
+                  <ChatMessage
+                    self={isSelf}
+                    key={message?.id}
+                    authorName={name?.split(' ')[0]}
+                    text={message?.message || ''}
+                    timestamp={message?.createdAt || 0}
+                  />
+                );
+              })}
             </Gap>
           </div>
         </main>
         <footer>
-          <TextArea name="chat-input" />
+          <TextArea
+            className="chat-input"
+            name="chat-input"
+            disabled={isSubmitting}
+            value={currentMessage}
+            onChange={setCurrentMessage}
+            onReturn={saveMessage}
+          />
         </footer>
       </section>
     </div>
   );
 }
 
-function scrollTopBottom() {
-  const container = document.querySelector('.multi-player-chat main');
-
+function scrollTopBottom(container: HTMLElement | null) {
   if (container) {
     container.scrollTop = container?.scrollHeight;
   }
@@ -130,18 +126,16 @@ function ChatMessage({
   const fullDatetimeHumanized = datetime.toLocaleString();
   const timeHumanized = fullDatetimeHumanized.split(', ')[1];
   const name = self ? 'You' : authorName;
-  const align = self ? 'right' : undefined;
+  const align = self ? 'right' : 'left';
 
   return (
-    <div className="chat-message">
-      <span>
-        <Text block size="sm" align={align}>
-          {text}
-        </Text>
-        <Text secondary size="xxs" align={align}>
-          {name}, <span title={fullDatetimeHumanized}>{timeHumanized}</span>
-        </Text>
-      </span>
+    <div className="chat-message" style={{ width: '100%' }}>
+      <Text block size="sm" align={align}>
+        {text}
+      </Text>
+      <Text secondary size="xxs" align={align}>
+        {name}, <span title={fullDatetimeHumanized}>{timeHumanized}</span>
+      </Text>
     </div>
   );
 }

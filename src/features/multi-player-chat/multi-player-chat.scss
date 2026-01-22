@@ -3,9 +3,10 @@
   border: none;
   position: fixed;
   bottom: 0px;
-  left: 24px;
+  right: 30px;
   width: 260px;
   border-radius: 8px 8px 0 0;
+  z-index: 5;
 
   header {
     cursor: pointer;
@@ -34,9 +35,5 @@
   footer {
     padding: 12px;
     background-color: #585858;
-  }
-
-  .chat-message {
-    width: 100%;
   }
 }

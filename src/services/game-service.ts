@@ -59,6 +59,7 @@ export function findLastGame(match?: MatchType) {
   return sortedGames?.[0];
 }
 
+// @TODO: use buildArray service here
 export function buildGameSortedArray(
   games?: MatchType['games'],
   order?: 'ASC' | 'DESC'
