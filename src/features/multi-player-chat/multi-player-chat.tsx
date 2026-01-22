@@ -69,7 +69,18 @@ export function MultiPlayerChat({ match }: { match?: MatchType }) {
   return (
     <div className="multi-player-chat">
       <header onClick={() => setChatOpen(!chatOpen)}>
-        Chat {!!unreadMessagesCounter && `(${unreadMessagesCounter})`}
+        <Gap justify="space-between" align="center">
+          <div>
+            Chat {!!unreadMessagesCounter && `(${unreadMessagesCounter})`}
+          </div>
+          <div>
+            {!!unreadMessagesCounter && (
+              <span style={{ verticalAlign: 'text-top', fontSize: 12 }}>
+                🔴
+              </span>
+            )}
+          </div>
+        </Gap>
       </header>
       <section
         className={clsx('multi-player-chat__collapse', { open: chatOpen })}
@@ -102,7 +113,7 @@ export function MultiPlayerChat({ match }: { match?: MatchType }) {
             className="chat-input"
             name="chat-input"
             disabled={isSubmitting}
-            value={currentMessage}
+            value={trim(currentMessage)}
             onChange={setCurrentMessage}
             onReturn={saveMessage}
           />
@@ -116,6 +127,10 @@ function scrollTopBottom(container: HTMLElement | null) {
   if (container) {
     container.scrollTop = container?.scrollHeight;
   }
+}
+
+function trim(message?: string) {
+  return message === '\n' ? '' : message;
 }
 
 function ChatMessage({
