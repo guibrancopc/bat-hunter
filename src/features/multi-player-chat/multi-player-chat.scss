@@ -25,12 +25,9 @@
     }
   }
 
-  .multi-player-chat__scroll-cotainer {
-    border: none;
-  }
-
   main {
     padding: 12px;
+    border-bottom: solid 1px #585858;
     background-color: #585858;
     overflow-y: scroll;
     max-height: 200px;
