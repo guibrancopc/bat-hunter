@@ -1,5 +1,4 @@
 import './sign-in-button.scss';
-import clsx from 'clsx';
 import { useEffect } from 'react';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import {
@@ -9,13 +8,7 @@ import {
 import { disableBatGame, killAllBats } from 'src/services/game-service';
 import { useAuthContext } from 'src/features/authentication';
 
-export function SignInButton({
-  custom,
-  onSuccess,
-}: {
-  custom?: boolean;
-  onSuccess?: () => void;
-}) {
+export function SignInButton({ onSuccess }: { onSuccess?: () => void }) {
   useEffect(() => {
     disableBatGame();
     killAllBats();
@@ -26,9 +19,6 @@ export function SignInButton({
   function _onSuccess(r: CredentialResponse) {
     const userSession = r.credential && verboseJwt(r.credential);
 
-    // console.log('response: ', r);
-    // console.log('user: ', userSession);
-
     if (userSession) {
       setCurrentUser(userSession);
       setUserSessionHashInLocalStorage(r.credential);
@@ -37,23 +27,14 @@ export function SignInButton({
   }
 
   return (
-    <>
-      <div
-        className={clsx('sign-in-button', custom && 'sign-in-button--custom')}
-      >
-        <GoogleLogin
-          locale="en-US"
-          shape="circle"
-          onSuccess={_onSuccess}
-          onError={onError}
-        />
-      </div>
-      <style>{`
-        .sign-in-button {
-          display: none;
-        }
-      `}</style>
-    </>
+    <div className="sign-in-button">
+      <GoogleLogin
+        locale="en-US"
+        shape="circle"
+        onSuccess={_onSuccess}
+        onError={onError}
+      />
+    </div>
   );
 }
 

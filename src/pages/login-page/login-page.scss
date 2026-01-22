@@ -8,5 +8,16 @@
     width: 300px;
     text-align: center;
     z-index: 2;
+
+    & .sign-in-button {
+      border-radius: 50px;
+      box-shadow: 5px 5px 15px #222;
+    }
+  }
+
+  & .login-page__bg {
+    position: fixed;
+    height: var(--full-height);
+    z-index: 1;
   }
 }

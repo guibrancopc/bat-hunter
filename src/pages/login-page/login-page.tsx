@@ -7,6 +7,7 @@ export function LoginPage() {
 
   return (
     <div className="login-page">
+      <img className="login-page__bg" src="/images/sign-in-bg.jpg" />
       <div className="login-page__box">
         <SignInButton onSuccess={() => navigate('/')} />
       </div>
