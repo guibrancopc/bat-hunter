@@ -23,12 +23,9 @@ export function MultiPlayerPage() {
     if (matchId) {
       getMatchDataReactivelyFromFirebase(matchId, setCurrentMatch);
     }
-    console.log('currentMatch', currentMatch);
   }, [matchId]);
 
   useEffect(() => {
-    console.log('currentUser', currentUser);
-
     if (!currentUser?.id) {
       alert('TEST BUG::CURRENT_USER_NOT_FOUND');
       // @TODO_BUG: IT'S LOGGIN USER OUT EVENTUALLY
