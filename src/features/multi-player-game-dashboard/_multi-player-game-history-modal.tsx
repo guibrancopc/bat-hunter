@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Gutter, Modal } from 'src/components';
+import { Gutter, Modal, Text } from 'src/components';
 import { Gap } from 'src/components/gap';
 import { getUserDataFromFirebase } from 'src/models/user-model';
 import { useAuthContext } from '../authentication';
@@ -97,7 +97,7 @@ export function MultiPlayerGameHistoryModal({
           </ol>
         </div>
       ) : (
-        <div>No games yet to show.</div>
+        <Text align="center">No games yet to show.</Text>
       )}
     </Modal>
   );

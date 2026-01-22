@@ -1,36 +1,33 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useAuthContext } from '../auth-context';
-import { isLoggedIn } from 'src/services/authentication-service';
-import { debounce } from 'src/services/debounce-service';
 
 const DELAY_IN_SECONDS = 20 * 1000;
 
+// It's fine since there is only a single instance of this component in the whole application.
+// Using useState was registering multiple event listeners as a side effect.
+let lastPulseAt = 0;
+
 export function Pulse() {
   const { setCurrentUser } = useAuthContext();
-  const [lastClickAt, setLastClickAt] = useState(0);
 
   useEffect(() => {
-    debounce(() =>
-      onEveryUserClick(() => {
-        if (!isLoggedIn()) return;
+    onPulse(() => {
+      const now = Date.now();
 
-        const now = Date.now();
-
-        if (now > lastClickAt + DELAY_IN_SECONDS) {
-          setLastClickAt(now);
-          setCurrentUser({ lastClickAt: now, away: false });
-        }
-      })
-    );
-
+      if (now > lastPulseAt + DELAY_IN_SECONDS) {
+        lastPulseAt = now;
+        setCurrentUser({ lastPulseAt: now, away: false });
+      }
+    });
     onBlur(() => setCurrentUser({ away: true }));
-    onFocus(() => setCurrentUser({ away: false }));
+    onFocus(() => setCurrentUser({ away: false, lastPulseAt: Date.now() }));
   }, []);
 
   return <></>;
 }
 
-function onEveryUserClick(cb: () => void) {
+function onPulse(cb: () => void) {
+  window.addEventListener('mouseover', cb);
   window.addEventListener('click', cb);
 }
 

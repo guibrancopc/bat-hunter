@@ -32,7 +32,7 @@ export type UserSessionType = {
   tokenId?: string;
   tokenCreatedAt?: number;
   tokenExpiresAt?: number;
-  lastClickAt?: number;
+  lastPulseAt?: number;
   away?: boolean;
 };
 
@@ -52,7 +52,7 @@ export function verboseJwt(token: string) {
       picture: jwt.picture,
       tokenCreatedAt: jwt.iat * 1000,
       tokenExpiresAt: jwt.iat * 1000 + thirtyDays,
-      lastClickAt: Date.now(),
+      lastPulseAt: Date.now(),
     }
   );
 }

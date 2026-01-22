@@ -7,7 +7,10 @@ import {
   useState,
 } from 'react';
 import { setCurrentUserDataInFirebase } from 'src/models/user-model';
-import { getCurrentUserSession } from 'src/services/authentication-service';
+import {
+  getCurrentUserSession,
+  isLoggedIn,
+} from 'src/services/authentication-service';
 import { UserSessionType } from 'src/services/authentication-service';
 
 const AuthContext = createContext({
@@ -25,8 +28,11 @@ export function AuthContextProvider({ children }: PropsWithChildren) {
 
   const setCurrentUser = useCallback(
     (useSessionData: UserSessionType | null) => {
+      if (!isLoggedIn()) return;
+
       if (!useSessionData) {
         _setCurrentUser(null);
+        return;
       }
 
       _setCurrentUser({

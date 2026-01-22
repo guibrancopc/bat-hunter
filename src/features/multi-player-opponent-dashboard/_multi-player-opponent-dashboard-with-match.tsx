@@ -45,7 +45,7 @@ export function MultiPlayerOpponentDashboardWithMatch({
     <div className="multi-player-guest-dashboard-with-match">
       <div className="status-slot">
         <GuestStatus
-          lastClickAt={opponentUser?.lastClickAt}
+          lastPulseAt={opponentUser?.lastPulseAt}
           away={opponentUser?.away}
         />
       </div>
