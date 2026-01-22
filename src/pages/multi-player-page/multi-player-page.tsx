@@ -12,12 +12,15 @@ import {
 } from 'src/models/match-model';
 import { MultiPlayerGameDashboard } from 'src/features/multi-player-game-dashboard';
 import { MultiPlayerChat } from 'src/features/multi-player-chat';
+import { isLoggedIn } from 'src/services/authentication-service';
+import { SignInModal } from 'src/features/sign-in-modal/sign-in-modal';
 
 export function MultiPlayerPage() {
   const { currentUser } = useAuthContext();
 
   const { matchId } = useParams<{ matchId?: string }>();
   const [currentMatch, setCurrentMatch] = useState<MatchType>();
+  const [signInModalOpen, setSignInModalOpen] = useState(false);
 
   useEffect(() => {
     if (matchId) {
@@ -26,13 +29,8 @@ export function MultiPlayerPage() {
   }, [matchId]);
 
   useEffect(() => {
-    if (!currentUser?.id) {
-      alert('TEST BUG::CURRENT_USER_NOT_FOUND');
-      // @TODO_BUG: IT'S LOGGIN USER OUT EVENTUALLY
-      // alert(
-      //   'You must sign in to play multi player. Please sign in to come back.'
-      // );
-      // navigate('/');
+    if (!currentUser?.id && !isLoggedIn()) {
+      setSignInModalOpen(true);
     }
   }, [currentUser]);
 
@@ -42,6 +40,10 @@ export function MultiPlayerPage() {
 
   return (
     <div className="multi-player-page">
+      <SignInModal
+        open={signInModalOpen}
+        onClose={() => setSignInModalOpen(false)}
+      />
       <MultiPlayerMainDashboard match={currentMatch} />
       <MultiPlayerOpponentDashboard match={currentMatch} />
       <MultiPlayerGameDashboard match={currentMatch} />

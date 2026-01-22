@@ -7,7 +7,7 @@ export function LoginPage() {
 
   return (
     <div className="login-page">
-      <div className="box">
+      <div className="login-page__box">
         <SignInButton onSuccess={() => navigate('/')} />
       </div>
     </div>
