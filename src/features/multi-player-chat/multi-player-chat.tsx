@@ -12,20 +12,29 @@ import { createMessageInFirebase } from 'src/models/message-model';
 import { buildArray } from 'src/services/array-service';
 
 export function MultiPlayerChat({ match }: { match?: MatchType }) {
+  const { currentUser } = useAuthContext();
   const chatScrollContainerRef = useRef<HTMLElement | null>(null);
+
   const [chatOpen, setChatOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [readMessagesCounter, setReadMessagesCounter] = useState(0);
   const [currentMessage, setCurrentMessage] = useState<string | undefined>();
-  const { currentUser } = useAuthContext();
+
   const messages = match?.messages;
+  const messagesArray = buildArray(messages);
+  const unreadMessagesCounter =
+    (messagesArray?.length || 0) - readMessagesCounter;
 
   // @TODO: create a context to manage opponent user data
   const [opponentUser, setOpponentUser] = useState<UserSessionType>();
 
-  useEffect(
-    () => scrollTopBottom(chatScrollContainerRef.current),
-    [chatOpen, messages]
-  );
+  useEffect(() => {
+    scrollTopBottom(chatScrollContainerRef.current);
+
+    if (chatOpen) {
+      setReadMessagesCounter(messagesArray?.length);
+    }
+  }, [chatOpen, messages]);
 
   const amIHost = useMemo(
     () => currentUser?.id === match?.hostId,
@@ -57,12 +66,10 @@ export function MultiPlayerChat({ match }: { match?: MatchType }) {
       .finally(() => setIsSubmitting(false));
   }
 
-  const messagesArray = buildArray(messages);
-
   return (
     <div className="multi-player-chat">
       <header onClick={() => setChatOpen(!chatOpen)}>
-        Chat ({messagesArray?.length})
+        Chat {!!unreadMessagesCounter && `(${unreadMessagesCounter})`}
       </header>
       <section
         className={clsx('multi-player-chat__collapse', { open: chatOpen })}
