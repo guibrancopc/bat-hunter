@@ -57,8 +57,6 @@ export function MultiPlayerGameHistoryModal({
 
   const gamesArray = buildGameSortedArray(match?.games, 'ASC');
 
-  console.log('gamesArray', gamesArray);
-
   return (
     <Modal open={open} onClose={onClose} header="Games History">
       {gamesArray ? (
@@ -68,14 +66,18 @@ export function MultiPlayerGameHistoryModal({
               if (
                 !['GAME_FINISHED', 'GAME_CLOSED'].includes(game.state || '')
               ) {
-                return <li>This game is still pending. Go play it!</li>;
+                return (
+                  <li key={game?.id}>
+                    This game is still pending. Go play it!
+                  </li>
+                );
               }
 
               const currentData = getUserData(game, 'MAIN');
               const opponentData = getUserData(game, 'OPPONENT');
 
               return (
-                <li>
+                <li key={game?.id}>
                   <Gutter direction="bottom" size="xl">
                     <Gap vertical>
                       <div>Winner: {calcWinnerName(game?.winnerId)} 🎉</div>
