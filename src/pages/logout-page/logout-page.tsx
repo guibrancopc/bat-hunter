@@ -1,24 +1,15 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router';
 import { clearUserSession } from 'src/services/authentication-service';
-import { disableBatGame, killAllBats } from 'src/services/game-service';
-import { useAuthContext } from 'src/features/authentication';
+import { loadNewPage } from 'src/services/route-service';
 
 export function LogoutPage() {
-  const navigate = useNavigate();
-  const { setCurrentUser } = useAuthContext();
-
   useEffect(() => {
-    disableBatGame();
-    killAllBats();
+    // disableBatGame();
+    // killAllBats();
+    // setCurrentUser(null);
     clearUserSession();
-    setCurrentUser(null);
-    navigate('/');
+    loadNewPage('/');
   }, []);
 
-  return (
-    <div className="logout-page" style={{ color: 'white', fontSize: '239px' }}>
-      Loading...
-    </div>
-  );
+  return <div className="logout-page">Loading...</div>;
 }
