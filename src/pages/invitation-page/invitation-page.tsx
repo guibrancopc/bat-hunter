@@ -48,7 +48,7 @@ export function InvitationPage() {
 
   return (
     <>
-      <SignInModal open={signInModalOpen} onClose={() => navigate('/')} />
+      <SignInModal open={signInModalOpen} onClose={() => setSignInModalOpen(false)} />
       <Gutter size="xxl">
         <Gutter direction="vertical" size="xxl" className="text-center">
           <Text>
