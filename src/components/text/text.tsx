@@ -14,7 +14,7 @@ export function Text({
   className?: string;
   block?: boolean;
   secondary?: boolean;
-  size?: 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxs';
+  size?: 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
   weight?: 'light' | 'medium' | 'bold';
   align?: 'left' | 'center' | 'right';
 }>) {

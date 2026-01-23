@@ -1,4 +1,4 @@
-import { PropsWithChildren, useEffect, useState } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 import clsx from 'clsx';
 import './modal.scss';
 
@@ -17,8 +17,8 @@ export function Modal({
   footer?: React.ReactNode;
 }>) {
   useEffect(() => {
-    onEscape(onClose)
-  }, [onClose])
+    onEscape(onClose);
+  }, [onClose]);
 
   if (!open) {
     return null;
@@ -40,7 +40,7 @@ export function Modal({
 }
 
 function onEscape(cb?: () => void) {
-  window.addEventListener('keyup', e => {
+  window.addEventListener('keyup', (e) => {
     if (e.key === 'Escape') cb?.();
-  })
+  });
 }
