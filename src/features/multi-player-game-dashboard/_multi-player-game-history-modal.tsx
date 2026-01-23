@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Gutter, Modal, Text } from 'src/components';
+import { useEffect, useMemo, useState } from 'react';
+import { Gutter, Modal, Text, Title } from 'src/components';
 import { Gap } from 'src/components/gap';
 import { getUserDataFromFirebase } from 'src/models/user-model';
 import { useAuthContext } from '../authentication';
@@ -8,6 +8,7 @@ import { GameType } from 'src/models/game-model';
 import { UserSessionType } from 'src/services/authentication-service';
 import {
   buildGameSortedArray,
+  calcAccuracy,
   calcFinalScore,
 } from 'src/services/game-service';
 
@@ -24,7 +25,7 @@ export function MultiPlayerGameHistoryModal({
   const [opponentUser, setOpponentUser] = useState<UserSessionType | null>();
   const isCurrentUserTheHost = currentUser?.id === match?.hostId;
 
-  function calcWinnerName(winnerId?: string) {
+  function retrieveWinnerName(winnerId?: string) {
     if (winnerId === 'DRAW') return 'Same Score!';
     if (winnerId === currentUser?.id) return currentUser?.firstName;
     if (winnerId === opponentUser?.id) return opponentUser?.firstName;
@@ -57,10 +58,32 @@ export function MultiPlayerGameHistoryModal({
 
   const gamesArray = buildGameSortedArray(match?.games, 'ASC');
 
+  const { currentWins, opponentWins } = useMemo(() => {
+    const init = { currentWins: 0, opponentWins: 0 };
+
+    return (
+      gamesArray?.reduce((acc, game) => {
+        const currentIncrease = game?.winnerId === currentUser?.id ? 1 : 0;
+        const opponentIncrease = game?.winnerId === opponentUser?.id ? 1 : 0;
+
+        return {
+          currentWins: acc.currentWins + currentIncrease,
+          opponentWins: acc.opponentWins + opponentIncrease,
+        };
+      }, init) || init
+    );
+  }, [gamesArray]);
+
   return (
     <Modal open={open} onClose={onClose} header="Games History">
       {gamesArray ? (
         <div>
+          <FinalRanking
+            opponentWins={opponentWins}
+            currentUserWins={currentWins}
+            opponentName={opponentUser?.firstName}
+            currentUserName={currentUser?.firstName}
+          />
           <ol>
             {gamesArray.map((game) => {
               if (
@@ -75,19 +98,28 @@ export function MultiPlayerGameHistoryModal({
 
               const currentData = getUserData(game, 'MAIN');
               const opponentData = getUserData(game, 'OPPONENT');
+              const currentAccuracy = calcAccuracy(
+                currentData?.shots,
+                currentData?.kills
+              );
+              const opponentAccuracy = calcAccuracy(
+                opponentData?.shots,
+                opponentData?.kills
+              );
 
               return (
                 <li key={game?.id}>
                   <Gutter direction="bottom" size="xl">
                     <Gap vertical>
-                      <div>Winner: {calcWinnerName(game?.winnerId)} 🎉</div>
+                      <div>Winner: {retrieveWinnerName(game?.winnerId)} 🎉</div>
                       <div>
                         {currentUser?.firstName}: {currentData.kills} kills |{' '}
-                        {currentData.shots} shots | score: {currentData.score}
+                        {currentAccuracy}% accuracy | score: {currentData.score}
                       </div>
                       <div>
                         {opponentUser?.firstName}: {opponentData.kills} kills |{' '}
-                        {opponentData.shots} shots | score: {opponentData.score}
+                        {opponentAccuracy}% accuracy | score:{' '}
+                        {opponentData.score}
                       </div>
                     </Gap>
                   </Gutter>
@@ -100,5 +132,41 @@ export function MultiPlayerGameHistoryModal({
         <Text align="center">No games yet to show.</Text>
       )}
     </Modal>
+  );
+}
+
+function FinalRanking({
+  currentUserName,
+  currentUserWins,
+  opponentWins,
+  opponentName,
+}: {
+  currentUserName?: string;
+  currentUserWins: number;
+  opponentName?: string;
+  opponentWins: number;
+}) {
+  return (
+    <Gutter direction="top" size="xl">
+      <Gap justify="center" align="center">
+        <Gutter size="lg">
+          <div className="text-right">
+            <Title weight="medium" size="h1">
+              {currentUserWins}
+            </Title>
+          </div>
+          <div className="text-right">{currentUserName}</div>
+        </Gutter>
+        <div>X</div>
+        <Gutter size="lg">
+          <div>
+            <Title weight="medium" size="h1">
+              {opponentWins}
+            </Title>
+          </div>
+          <div>{opponentName}</div>
+        </Gutter>
+      </Gap>
+    </Gutter>
   );
 }
