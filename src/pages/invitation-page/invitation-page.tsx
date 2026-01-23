@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { Button, ButtonGroup, Gutter, Text } from 'src/components';
+import { SignInModal } from 'src/features/sign-in-modal';
 import {
   getMatchInFirebase,
   MatchType,
@@ -16,6 +17,7 @@ export function InvitationPage() {
   const navigate = useNavigate();
   const { matchId } = useParams<{ matchId: string }>();
   const [match, setMatch] = useState<MatchType | null>(null);
+  const [signInModalOpen, setSignInModalOpen] = useState(false);
   const [gameHost, setGameHost] = useState<UserSessionType | null>(null);
 
   useEffect(() => {
@@ -36,10 +38,7 @@ export function InvitationPage() {
     if (!matchId) return;
 
     if (!getCurrentUserSession()?.id) {
-      alert(
-        'You must sign in to play multi player. Please sign in to come back.'
-      );
-      navigate('/logout');
+      setSignInModalOpen(true);
       return;
     }
 
@@ -48,20 +47,23 @@ export function InvitationPage() {
   }
 
   return (
-    <Gutter size="xxl">
-      <Gutter direction="vertical" size="xxl" className="text-center">
-        <Text>
-          You're invited to a battle with {gameHostName}. Wanna join the game?
-        </Text>
+    <>
+      <SignInModal open={signInModalOpen} onClose={() => navigate('/')} />
+      <Gutter size="xxl">
+        <Gutter direction="vertical" size="xxl" className="text-center">
+          <Text>
+            You're invited to a battle with {gameHostName}. Wanna join the game?
+          </Text>
+        </Gutter>
+        <div className="text-center">
+          <ButtonGroup>
+            <Button onClick={() => navigate('/')}>Nope</Button>
+            <Button kind="primary" onClick={onJoinBattle} disabled={!matchId}>
+              Join battle
+            </Button>
+          </ButtonGroup>
+        </div>
       </Gutter>
-      <div className="text-center">
-        <ButtonGroup>
-          <Button onClick={() => navigate('/')}>Nope</Button>
-          <Button kind="primary" onClick={onJoinBattle} disabled={!matchId}>
-            Join battle
-          </Button>
-        </ButtonGroup>
-      </div>
-    </Gutter>
+    </>
   );
 }
