@@ -7,6 +7,7 @@ import {
 } from 'src/services/authentication-service';
 import { disableBatGame, killAllBats } from 'src/services/game-service';
 import { useAuthContext } from 'src/features/authentication';
+import { enforceUTF8Encoding } from 'src/services/encoding-service';
 
 export function SignInButton({ onSuccess }: { onSuccess?: () => void }) {
   useEffect(() => {
@@ -17,10 +18,22 @@ export function SignInButton({ onSuccess }: { onSuccess?: () => void }) {
   const { setCurrentUser } = useAuthContext();
 
   function _onSuccess(r: CredentialResponse) {
-    const userSession = r.credential && verboseJwt(r.credential);
+    if (!r.credential) {
+      console.error('Error on Google Sign In - No credential was provided.');
+      return;
+    }
+
+    const userSession = verboseJwt(r.credential);
+
+    const fixedUserSession = {
+      ...userSession,
+      firstName: enforceUTF8Encoding(userSession?.firstName || ''),
+      lastName: enforceUTF8Encoding(userSession?.lastName || ''),
+      name: enforceUTF8Encoding(userSession?.name || ''),
+    };
 
     if (userSession) {
-      setCurrentUser(userSession);
+      setCurrentUser(fixedUserSession);
       setUserSessionHashInLocalStorage(r.credential);
       onSuccess?.();
     }

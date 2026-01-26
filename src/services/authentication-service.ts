@@ -1,3 +1,4 @@
+import { enforceUTF8Encoding } from './encoding-service';
 import {
   getLocalStorageValue,
   setLocalStorageValue,
@@ -19,7 +20,14 @@ export function getCurrentUserSession(): UserSessionType {
   const currentUserHash = getLocalStorageValue('bh-user-session');
   const currentUserSession = currentUserHash && verboseJwt(currentUserHash);
 
-  return currentUserSession;
+  const fixedUserSession = {
+    ...currentUserSession,
+    firstName: enforceUTF8Encoding(currentUserSession?.firstName || ''),
+    lastName: enforceUTF8Encoding(currentUserSession?.lastName || ''),
+    name: enforceUTF8Encoding(currentUserSession?.name || ''),
+  };
+
+  return fixedUserSession;
 }
 
 export type UserSessionType = {
