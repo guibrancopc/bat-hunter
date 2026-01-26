@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { MultiPlayerMainDashboard } from 'src/features/multi-player-main-dashboard';
-import { MultiPlayerOpponentDashboard } from 'src/features/multi-player-opponent-dashboard';
+import { MultiPlayerMainDashboard } from 'src/features/multi-player/multi-player-main-dashboard';
+import { MultiPlayerOpponentDashboard } from 'src/features/multi-player/multi-player-opponent-dashboard';
 import { MusicToggle } from 'src/features/music-toogle';
 import { enableBatGame } from 'src/services/game-service';
 import './multi-player-page.scss';
@@ -10,8 +10,8 @@ import {
   getMatchDataReactivelyFromFirebase,
   MatchType,
 } from 'src/models/match-model';
-import { MultiPlayerGameDashboard } from 'src/features/multi-player-game-dashboard';
-import { MultiPlayerChat } from 'src/features/multi-player-chat';
+import { MultiPlayerGameDashboard } from 'src/features/multi-player/multi-player-game-dashboard';
+import { MultiPlayerChat } from 'src/features/multi-player/multi-player-chat';
 import { isLoggedIn } from 'src/services/authentication-service';
 import { SignInModal } from 'src/features/sign-in-modal/sign-in-modal';
 

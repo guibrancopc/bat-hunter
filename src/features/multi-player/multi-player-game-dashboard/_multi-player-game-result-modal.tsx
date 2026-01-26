@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Gutter, Modal, Title } from 'src/components';
 import { Gap } from 'src/components/gap';
 import { getUserDataFromFirebase } from 'src/models/user-model';
-import { useAuthContext } from '../authentication';
+import { useAuthContext } from '../../authentication';
 import { MatchType } from 'src/models/match-model';
 import { GameType } from 'src/models/game-model';
 import { UserSessionType } from 'src/services/authentication-service';
