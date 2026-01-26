@@ -4,12 +4,11 @@
   height: var(--full-height);
 
   & .login-page__box {
-    padding-top: 300px;
-    width: 300px;
+    margin-top: 300px;
     text-align: center;
     z-index: 2;
 
-    & .sign-in-button {
+    & .sign-in-button > div > div {
       border-radius: 50px;
       box-shadow: 5px 5px 15px #222;
     }
