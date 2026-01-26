@@ -3,6 +3,7 @@ import './text-area.scss';
 import { useRef } from 'react';
 
 export function TextArea({
+  placeholder,
   className,
   value,
   name,
@@ -11,6 +12,7 @@ export function TextArea({
   onChange,
   onReturn,
 }: {
+  placeholder?: string;
   className?: string;
   value?: string;
   name: string;
@@ -30,6 +32,7 @@ export function TextArea({
   return (
     <textarea
       className={clsx('bh-text-area', className)}
+      placeholder={placeholder}
       ref={textareaRef}
       readOnly={readOnly}
       disabled={disabled}
