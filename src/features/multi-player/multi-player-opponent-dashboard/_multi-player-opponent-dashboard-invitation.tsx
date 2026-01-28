@@ -4,24 +4,27 @@ import { useNavigate, useParams } from 'react-router';
 import { Gap } from 'src/components/gap';
 import { createMatchInFirebase } from 'src/models/match-model';
 import { useAuthContext } from 'src/features/authentication';
+import { SignInModal } from 'src/features/sign-in-modal';
 
 export function MultiPlayerOpponentDashboardInvitation() {
   const navigate = useNavigate();
   const { matchId } = useParams<{ matchId?: string }>();
   const { currentUser } = useAuthContext();
+  const [signInModalOpen, setSignInModalOpen] = useState(false);
 
   function onCreateGame() {
     if (!currentUser?.id) {
-      return alert('Sorry, match was not created.');
+      setSignInModalOpen(true);
+      return;
     }
 
     const newMatchId = createMatchInFirebase({ hostId: currentUser.id });
     navigate(`/multi-player/${newMatchId}`);
   }
 
-  console.log('currentMatchId', matchId);
-
   return (
+    <>
+    <SignInModal open={signInModalOpen} onClose={() => setSignInModalOpen(false)} />
     <div className="multi-player-guest-dashboard-invitation">
       <Gutter size="md">
         <Title>Match Setup</Title>
@@ -44,6 +47,7 @@ export function MultiPlayerOpponentDashboardInvitation() {
         </Gutter>
       </Gutter>
     </div>
+    </>
   );
 }
 

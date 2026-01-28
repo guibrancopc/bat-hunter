@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Gutter, Modal, Title } from 'src/components';
+import { Gutter, Modal, Title } from 'src/components';
 import { Gap } from 'src/components/gap';
 import { getUserDataFromFirebase } from 'src/models/user-model';
 import { useAuthContext } from '../../authentication';
