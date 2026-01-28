@@ -32,6 +32,12 @@ export function InvitationPage() {
     }
   }, [match?.hostId]);
 
+  useEffect(() => {
+    if (match?.guestId) {
+      navigate(`/multi-player/${matchId}`);
+    }
+  }, [match?.guestId])
+
   const gameHostName = gameHost?.name;
 
   function onJoinBattle() {
