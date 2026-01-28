@@ -9,7 +9,6 @@ import { iterate } from 'src/services/iteration-service';
 import { useGameCounterTriggers } from 'src/hooks/game-hooks';
 import { GameStateType } from 'src/models/game-model';
 
-// @TODO: rename match to game here
 export const GAME_STATES = {
   GAME_READY: 'GAME_READY',
   GAME_IN_PROGRESS: 'GAME_IN_PROGRESS',
@@ -17,9 +16,16 @@ export const GAME_STATES = {
   GAME_CLOSED: 'GAME_CLOSED',
 } as const;
 
-// type ValueOf<T> = T[keyof T];
-
-// type MatchStatesType = ValueOf<typeof GAME_STATES>;
+type GameModeConfigType = {
+  label?: string;
+  onStart: () => void;
+  onMatchStart?: () => void;
+  onOpenHistory?: () => void;
+  onCancel?: () => void;
+  onAddBats?: () => void;
+  onChallengeReady?: () => void;
+  onChallengeReadyLabel?: string;
+};
 
 export function MultiPlayerGameDashboardController({
   onResetScore = () => {},
@@ -38,7 +44,7 @@ export function MultiPlayerGameDashboardController({
   isCurrentUserTheHost?: boolean;
   remoteGameState?: GameStateType;
 }) {
-  const COUNTDOWN_TIME_TOTAL = 60;
+  const COUNTDOWN_TIME_TOTAL = 15;
   const [currentGameState, setCurrentGameState] = useState<GameStateType>(
     GAME_STATES.GAME_READY
   );
@@ -59,7 +65,7 @@ export function MultiPlayerGameDashboardController({
     onStateChange(currentGameState);
   }, [currentGameState]);
 
-  const GAME_MODE = useMemo(
+  const GAME_MODE: Record<GameStateType, GameModeConfigType> = useMemo(
     () => ({
       [GAME_STATES.GAME_READY]: {
         label: 'Get Ready!',
@@ -108,6 +114,13 @@ export function MultiPlayerGameDashboardController({
         onOpenHistory,
         onCancel: undefined,
       },
+      [GAME_STATES.GAME_CLOSED]: {
+        label: 'Game Closed',
+        onStart: () => {
+          killAllBats();
+          setIsScoreEnabled(false);
+        },
+      },
     }),
     []
   );
@@ -115,6 +128,7 @@ export function MultiPlayerGameDashboardController({
   useEffect(() => {
     GAME_MODE[currentGameState].onStart();
   }, [currentGameState, GAME_MODE]);
+
   const currentGameModel = GAME_MODE[currentGameState];
 
   return (
@@ -128,7 +142,7 @@ export function MultiPlayerGameDashboardController({
         {currentGameModel.onCancel && isCurrentUserTheHost && (
           <Button
             onClick={() => {
-              currentGameModel.onCancel();
+              currentGameModel.onCancel?.();
               clearInterval(intervalId);
               setCountdownTime(0);
             }}
@@ -174,33 +188,3 @@ function handleGameLabel(countdownTime: number, label: string) {
 
   return seconds;
 }
-
-// @TODO: define better the states before coding
-
-/*
-- FREE_PLAY (default)
--- Display: FREE PLAY
--- Display Button: Challenge Mode
--- Reset score
-
-- GAME_READY
--- Display: Get Ready!
--- Display Button: Free Play | Start
--- Reset score
--- Kill All Bats
--- Block shot and kill metrics.
--- Block "Send Bat" button.
-
-- GAME_IN_PROGRESS
--- Display: [Countdown]
--- Block "Reset", "Close", "Clean Bats", "Reset" buttons.
--- change music - find something more intense
-
-- GAME_FINISHED
--- Display: Time's up!
--- Display Button: Free Play | Start
--- Kill All Bats
--- Return to regular music
--- Block shot and kill metrics.
--- Block "Send Bat" button.
-*/
