@@ -14,6 +14,7 @@ import { MultiPlayerGameDashboard } from 'src/features/multi-player/multi-player
 import { MultiPlayerChat } from 'src/features/multi-player/multi-player-chat';
 import { isLoggedIn } from 'src/services/authentication-service';
 import { SignInModal } from 'src/features/sign-in-modal/sign-in-modal';
+import { MultiPlayerContextProvider } from 'src/features/multi-player/multi-player-context';
 
 export function MultiPlayerPage() {
   const { currentUser } = useAuthContext();
@@ -40,15 +41,17 @@ export function MultiPlayerPage() {
 
   return (
     <div className="multi-player-page">
-      <SignInModal
-        open={signInModalOpen}
-        onClose={() => setSignInModalOpen(false)}
-      />
-      <MultiPlayerMainDashboard match={currentMatch} />
-      <MultiPlayerOpponentDashboard match={currentMatch} />
-      <MultiPlayerGameDashboard match={currentMatch} />
-      <MultiPlayerChat match={currentMatch} />
-      <MusicToggle />
+      <MultiPlayerContextProvider>
+        <SignInModal
+          open={signInModalOpen}
+          onClose={() => setSignInModalOpen(false)}
+        />
+        <MultiPlayerMainDashboard match={currentMatch} />
+        <MultiPlayerOpponentDashboard match={currentMatch} />
+        <MultiPlayerGameDashboard match={currentMatch} />
+        <MultiPlayerChat match={currentMatch} />
+        <MusicToggle />
+      </MultiPlayerContextProvider>
     </div>
   );
 }

@@ -110,7 +110,7 @@ export function MultiPlayerChat({ match }: { match?: MatchType }) {
         </main>
         <footer>
           <TextArea
-            placeholder="Hit enter/return to send"
+            placeholder="Hit enter to send"
             className="chat-input"
             name="chat-input"
             disabled={isSubmitting}
