@@ -27,6 +27,8 @@ type GameModeConfigType = {
   onChallengeReadyLabel?: string;
 };
 
+let intervalId: NodeJS.Timeout;
+
 export function MultiPlayerGameDashboardController({
   onResetScore = () => {},
   onShot = () => {},
@@ -49,7 +51,7 @@ export function MultiPlayerGameDashboardController({
     GAME_STATES.GAME_READY
   );
   const [countdownTime, setCountdownTime] = useState(0);
-  const [intervalId, setIntervalId] = useState<NodeJS.Timeout>();
+
   const { createControlledBat, setIsScoreEnabled } = useGameCounterTriggers({
     onShot,
     onKill,
@@ -73,6 +75,8 @@ export function MultiPlayerGameDashboardController({
           onResetScore();
           killAllBats();
           setIsScoreEnabled(false);
+          clearInterval(intervalId);
+          setCountdownTime(0);
         },
         onMatchStart: () => setCurrentGameState(GAME_STATES.GAME_IN_PROGRESS),
         onOpenHistory,
@@ -97,7 +101,7 @@ export function MultiPlayerGameDashboardController({
             counter -= 1;
           }, 1000);
 
-          setIntervalId(id);
+          intervalId = id;
         },
         onAddBats: createControlledBat,
         onCancel: () => setCurrentGameState(GAME_STATES.GAME_READY),
@@ -143,8 +147,6 @@ export function MultiPlayerGameDashboardController({
           <Button
             onClick={() => {
               currentGameModel.onCancel?.();
-              clearInterval(intervalId);
-              setCountdownTime(0);
             }}
           >
             Cancel

@@ -5,7 +5,6 @@ import { useAuthContext } from 'src/features/authentication';
 
 export function Navbar() {
   const { currentUser } = useAuthContext();
-  console.log('Navbar::currentUser', currentUser);
   const isValidCurrentUser = currentUser?.id;
 
   const name = isValidCurrentUser ? currentUser.firstName : 'guest';
