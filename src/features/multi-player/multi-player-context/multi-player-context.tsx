@@ -52,11 +52,6 @@ export function MultiPlayerContextProvider({ children }: PropsWithChildren) {
     }
   }, [currentUser, match]);
 
-  useEffect(() => {
-    console.log('opponentUser', opponentUser);
-    console.log('match 1', match);
-  }, [opponentUser, match]);
-
   return (
     <MultiPlayerContext.Provider value={{ opponentUser, match }}>
       {children}

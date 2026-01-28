@@ -55,9 +55,6 @@ export function MultiPlayerGameDashboard() {
     }
   }, [isCurrentUserTheHost, currentGame]);
 
-  // @TODO: remove this. Only for debug purposes
-  // useEffect(() => console.log('currentGame: ', currentGame), [currentGame]);
-
   // Save score data in database
   useEffect(() => {
     console.log('kills x shots: ', `${killCounter} x ${shotCounter}`);

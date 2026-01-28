@@ -46,7 +46,7 @@ export function MultiPlayerGameDashboardController({
   isCurrentUserTheHost?: boolean;
   remoteGameState?: GameStateType;
 }) {
-  const COUNTDOWN_TIME_TOTAL = 15;
+  const COUNTDOWN_TIME_TOTAL = 60;
   const [currentGameState, setCurrentGameState] = useState<GameStateType>(
     GAME_STATES.GAME_READY
   );
