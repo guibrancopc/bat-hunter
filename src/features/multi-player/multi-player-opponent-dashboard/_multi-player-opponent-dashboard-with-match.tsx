@@ -2,36 +2,17 @@ import { calcAccuracy, calcFinalScore } from 'src/services/game-service';
 import { Divider, Gutter } from '@components';
 import { MultiPlayerOpponentDashboardScore } from './_multi-player-opponent-dashboard-score';
 import { ProfileSection } from '@components/profile-section/profile-section';
-import { useAuthContext } from 'src/features/authentication';
 import { GuestStatus } from 'src/components/guest-status';
 import { MatchType } from 'src/models/match-model';
-import { getUserDataReactivelyFromFirebase } from 'src/models/user-model';
-import { useEffect, useMemo, useState } from 'react';
-import { UserSessionType } from 'src/services/authentication-service';
 import { useGameCounters } from 'src/hooks/game-hooks';
+import { useMultiPlayerContext } from '../multi-player-context';
 
 export function MultiPlayerOpponentDashboardWithMatch({
   match,
 }: {
   match?: MatchType | null;
 }) {
-  const { currentUser } = useAuthContext();
-
-  // @TODO: create a context to manage opponent user data
-  const [opponentUser, setOpponentUser] = useState<UserSessionType>();
-
-  const amIHost = useMemo(
-    () => currentUser?.id === match?.hostId,
-    [currentUser?.id, match?.hostId]
-  );
-
-  useEffect(() => {
-    const opponentUserId = amIHost ? match?.guestId : match?.hostId;
-
-    if (opponentUserId) {
-      getUserDataReactivelyFromFirebase(opponentUserId, setOpponentUser);
-    }
-  }, [match?.hostId]);
+  const { opponentUser } = useMultiPlayerContext();
 
   const { shotCounter, killCounter } = useGameCounters({
     match: match || undefined,

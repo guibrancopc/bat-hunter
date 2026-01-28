@@ -1,12 +1,10 @@
-import { useEffect, useState } from 'react';
 import { Gutter, Modal, Title } from 'src/components';
 import { Gap } from 'src/components/gap';
-import { getUserDataFromFirebase } from 'src/models/user-model';
-import { useAuthContext } from '../../authentication';
+import { useAuthContext } from 'src/features/authentication';
 import { MatchType } from 'src/models/match-model';
 import { GameType } from 'src/models/game-model';
-import { UserSessionType } from 'src/services/authentication-service';
 import { calcFinalScore } from 'src/services/game-service';
+import { useMultiPlayerContext } from '../multi-player-context';
 
 export function MultiPlayerGameResultModal({
   open,
@@ -20,18 +18,8 @@ export function MultiPlayerGameResultModal({
   game?: GameType;
 }) {
   const { currentUser } = useAuthContext();
-  const [opponentUser, setOpponentUser] = useState<UserSessionType | null>();
+  const { opponentUser } = useMultiPlayerContext();
   const isCurrentUserTheHost = currentUser?.id === match?.hostId;
-
-  useEffect(() => {
-    const opponentUserId = isCurrentUserTheHost
-      ? match?.guestId
-      : match?.hostId;
-
-    if (opponentUserId) {
-      getUserDataFromFirebase(opponentUserId).then(setOpponentUser);
-    }
-  }, [match?.hostId]);
 
   const currentUserData = isCurrentUserTheHost
     ? game?.hostData

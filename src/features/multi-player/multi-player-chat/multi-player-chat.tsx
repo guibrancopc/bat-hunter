@@ -1,8 +1,6 @@
 import './multi-player-chat.scss';
 import { useAuthContext } from 'src/features/authentication';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { getUserDataReactivelyFromFirebase } from 'src/models/user-model';
-import { UserSessionType } from 'src/services/authentication-service';
+import { useEffect, useRef, useState } from 'react';
 import { Text } from 'src/components';
 import clsx from 'clsx';
 import { TextArea } from 'src/components/text-area/text-area';
@@ -12,7 +10,7 @@ import { buildArray } from 'src/services/array-service';
 import { useMultiPlayerContext } from 'src/features/multi-player/multi-player-context';
 
 export function MultiPlayerChat() {
-  const { match } = useMultiPlayerContext();
+  const { match, opponentUser } = useMultiPlayerContext();
   const { currentUser } = useAuthContext();
   const chatScrollContainerRef = useRef<HTMLElement | null>(null);
 
@@ -26,9 +24,6 @@ export function MultiPlayerChat() {
   const unreadMessagesCounter =
     (messagesArray?.length || 0) - readMessagesCounter;
 
-  // @TODO: create a context to manage opponent user data
-  const [opponentUser, setOpponentUser] = useState<UserSessionType>();
-
   useEffect(() => {
     scrollTopBottom(chatScrollContainerRef.current);
 
@@ -36,19 +31,6 @@ export function MultiPlayerChat() {
       setReadMessagesCounter(messagesArray?.length);
     }
   }, [chatOpen, messages]);
-
-  const amIHost = useMemo(
-    () => currentUser?.id === match?.hostId,
-    [currentUser?.id, match?.hostId]
-  );
-
-  useEffect(() => {
-    const opponentUserId = amIHost ? match?.guestId : match?.hostId;
-
-    if (opponentUserId) {
-      getUserDataReactivelyFromFirebase(opponentUserId, setOpponentUser);
-    }
-  }, [match?.hostId]);
 
   function saveMessage() {
     setIsSubmitting(true);

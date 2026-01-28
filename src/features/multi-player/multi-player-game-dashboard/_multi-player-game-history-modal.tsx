@@ -1,16 +1,15 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { Gutter, Modal, Text, Title } from 'src/components';
 import { Gap } from 'src/components/gap';
-import { getUserDataFromFirebase } from 'src/models/user-model';
-import { useAuthContext } from '../../authentication';
+import { useAuthContext } from 'src/features/authentication';
 import { MatchType } from 'src/models/match-model';
 import { GameType } from 'src/models/game-model';
-import { UserSessionType } from 'src/services/authentication-service';
 import {
   buildGameSortedArray,
   calcAccuracy,
   calcFinalScore,
 } from 'src/services/game-service';
+import { useMultiPlayerContext } from 'src/features/multi-player/multi-player-context';
 
 export function MultiPlayerGameHistoryModal({
   open,
@@ -22,7 +21,7 @@ export function MultiPlayerGameHistoryModal({
   match?: MatchType;
 }) {
   const { currentUser } = useAuthContext();
-  const [opponentUser, setOpponentUser] = useState<UserSessionType | null>();
+  const { opponentUser } = useMultiPlayerContext();
   const isCurrentUserTheHost = currentUser?.id === match?.hostId;
 
   function retrieveWinnerName(winnerId?: string) {
@@ -45,16 +44,6 @@ export function MultiPlayerGameHistoryModal({
       score: calcFinalScore(data?.shotCounter, data?.killCounter) || 0,
     };
   }
-
-  useEffect(() => {
-    const opponentUserId = isCurrentUserTheHost
-      ? match?.guestId
-      : match?.hostId;
-
-    if (opponentUserId) {
-      getUserDataFromFirebase(opponentUserId).then(setOpponentUser);
-    }
-  }, [match?.hostId]);
 
   const gamesArray = buildGameSortedArray(match?.games, 'ASC');
 
