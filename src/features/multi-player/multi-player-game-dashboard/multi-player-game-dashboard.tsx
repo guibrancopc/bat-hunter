@@ -16,8 +16,10 @@ import { calcFinalScore, findCurrentGame } from 'src/services/game-service';
 import { useIsCurrentUserTheHost } from 'src/hooks/game-hooks';
 import { MultiPlayerGameResultModal } from './_multi-player-game-result-modal';
 import { MultiPlayerGameHistoryModal } from './_multi-player-game-history-modal';
+import { useMultiPlayerContext } from 'src/features/multi-player/multi-player-context';
 
-export function MultiPlayerGameDashboard({ match }: { match?: MatchType }) {
+export function MultiPlayerGameDashboard() {
+  const { match } = useMultiPlayerContext();
   const isCurrentUserTheHost = useIsCurrentUserTheHost(match);
   const [openResultModal, setOpenResultModal] = useState(false);
   const [openHhistoryModal, setOpenHhistoryModal] = useState(false);

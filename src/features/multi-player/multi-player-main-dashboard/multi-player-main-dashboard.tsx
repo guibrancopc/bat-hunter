@@ -4,11 +4,12 @@ import { Card, Divider, Gutter } from '@components';
 import { MultiPlayerMainDashboardScore } from './_multi-player-main-dashboard-score';
 import { useAuthContext } from 'src/features/authentication';
 import { ProfileSection } from '@components/profile-section/profile-section';
-import { MatchType } from 'src/models/match-model';
 import { useGameCounters } from 'src/hooks/game-hooks';
+import { useMultiPlayerContext } from 'src/features/multi-player/multi-player-context';
 
-export function MultiPlayerMainDashboard({ match }: { match?: MatchType }) {
+export function MultiPlayerMainDashboard() {
   const { currentUser } = useAuthContext();
+  const { match } = useMultiPlayerContext();
 
   const { shotCounter, killCounter } = useGameCounters({
     match,

@@ -16,17 +16,17 @@ import { UserSessionType } from 'src/services/authentication-service';
 
 const MultiPlayerContext = createContext({
   opponentUser: null,
-  match: null,
+  match: undefined,
 } as {
   opponentUser: UserSessionType | null;
-  match: MatchType | null | undefined;
+  match: MatchType | undefined;
 });
 
 export function MultiPlayerContextProvider({ children }: PropsWithChildren) {
   const [opponentUser, setOpponentUser] = useState<UserSessionType | null>(
     null
   );
-  const [match, setMatch] = useState<MatchType | null | undefined>(null);
+  const [match, setMatch] = useState<MatchType | undefined>(undefined);
   const { currentUser } = useAuthContext();
   const { matchId } = useParams<{ matchId?: string }>();
 
@@ -39,7 +39,7 @@ export function MultiPlayerContextProvider({ children }: PropsWithChildren) {
     }
 
     getMatchDataReactivelyFromFirebase(matchId, setMatch);
-  }, [matchId]);
+  }, [matchId, setMatch]);
 
   useEffect(() => {
     if (!currentUser || !match) return;
@@ -51,6 +51,11 @@ export function MultiPlayerContextProvider({ children }: PropsWithChildren) {
       getUserDataReactivelyFromFirebase(opponentUserId, setOpponentUser);
     }
   }, [currentUser, match]);
+
+  useEffect(() => {
+    console.log('opponentUser', opponentUser);
+    console.log('match 1', match);
+  }, [opponentUser, match]);
 
   return (
     <MultiPlayerContext.Provider value={{ opponentUser, match }}>

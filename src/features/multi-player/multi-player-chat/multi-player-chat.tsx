@@ -2,7 +2,6 @@ import './multi-player-chat.scss';
 import { useAuthContext } from 'src/features/authentication';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { getUserDataReactivelyFromFirebase } from 'src/models/user-model';
-import { MatchType } from 'src/models/match-model';
 import { UserSessionType } from 'src/services/authentication-service';
 import { Text } from 'src/components';
 import clsx from 'clsx';
@@ -10,8 +9,10 @@ import { TextArea } from 'src/components/text-area/text-area';
 import { Gap } from 'src/components/gap';
 import { createMessageInFirebase } from 'src/models/message-model';
 import { buildArray } from 'src/services/array-service';
+import { useMultiPlayerContext } from 'src/features/multi-player/multi-player-context';
 
-export function MultiPlayerChat({ match }: { match?: MatchType }) {
+export function MultiPlayerChat() {
+  const { match } = useMultiPlayerContext();
   const { currentUser } = useAuthContext();
   const chatScrollContainerRef = useRef<HTMLElement | null>(null);
 
