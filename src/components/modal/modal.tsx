@@ -9,12 +9,14 @@ export function Modal({
   footer,
   open,
   onClose,
+  preventOverlayClosing,
 }: PropsWithChildren<{
   open: boolean;
   onClose?: () => void;
   className?: string;
   header?: React.ReactNode;
   footer?: React.ReactNode;
+  preventOverlayClosing?: boolean;
 }>) {
   const [eventListenerCallback, setEventListenerCallback] =
     useState<(e: KeyboardEvent) => void | undefined>();
@@ -29,6 +31,7 @@ export function Modal({
 
     if (eventListenerCallback) {
       clearOnEscape(eventListenerCallback);
+      setEventListenerCallback(undefined);
     }
   }, [open, onClose]);
 
@@ -38,7 +41,10 @@ export function Modal({
 
   return (
     <div className={clsx(className, 'bh-modal')}>
-      <div className="bh-modal__overlay" onClick={onClose}></div>
+      <div
+        className="bh-modal__overlay"
+        onClick={() => !preventOverlayClosing && onClose?.()}
+      ></div>
       <div className="bh-modal__container">
         <button className="bh-modal__close-button" onClick={onClose}>
           &#x2715;

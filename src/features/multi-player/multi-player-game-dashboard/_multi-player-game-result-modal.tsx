@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Gutter, Modal, Title } from 'src/components';
+import { Button, Gutter, Modal, Title } from 'src/components';
 import { Gap } from 'src/components/gap';
 import { getUserDataFromFirebase } from 'src/models/user-model';
 import { useAuthContext } from '../../authentication';
@@ -49,7 +49,7 @@ export function MultiPlayerGameResultModal({
   );
 
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal open={open} onClose={onClose} preventOverlayClosing>
       <Gutter size="xxl">
         <Title center size="h1" weight="medium">
           {buildTitleMessage(game?.winnerId, currentUser?.id)}
